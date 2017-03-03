@@ -1,0 +1,69 @@
+extends ../layout.pug
+block contenido
+  #page-wrapper
+    .row
+      .col-md-4.col-md-offset-4
+        .login-panel.panel.panel-default
+          .panel-heading
+            h3.panel-title Actualizar
+          .panel-body
+            form(action="/users/"+usuarioUpdate.username+"?_method=PUT",method="POST")
+              fieldset
+                .form-group
+                  h5  Usuario:
+                  input.form-control(type="text",name="username",value=usuarioUpdate.username, pattern="^([a-zA-Z0-9]{4,20})$", title="El nombre de usuario debe tener unicamente letras y numeros, minimo 4 caracteres y 20 como maximo" required)
+                .form-group
+                  h5  Nombres:
+                  input.form-control(type="text",name="name",value=usuarioUpdate.nombre, pattern="{3,40}$", title="El nombre  debe tener un minimo 3 caracteres y 40 como maximo" required)
+                .form-group
+                  h5  Apellidos:
+                  input.form-control(type="text" ,name="last_name", value=usuarioUpdate.apellido, pattern="{3,40}$", title="El apellido debe tener un minimo 3 caracteres y 40 como maximo" required)
+
+                if AlertContrasena
+                  .alert.alert-warning.alert-dismissable
+                    button.close(type='button', data-dismiss='alert', aria-hidden='true') ×
+                    | Las contraseñas no coinciden
+                  .form-group.has-error
+                    h5  Contraseña:
+                    input#inputError.form-control(type="text", name="password",value=pw,pattern="^([a-zA-Z0-9]{8,20})$", title="La contraseña debe tener como minimo 8 caracteres y maximo 20" required)
+                  .form-group.has-error
+                    h5  Confirmación de contraseña:
+                    input#inputError.form-control(type="text", name="password_confirmation", value=pwc,pattern="^([a-zA-Z0-9]{8,20})$", title="La contraseña debe tener como minimo 8 caracteres y maximo 20" required)
+
+                else
+
+                  .form-group
+                    h5  Contraseña:
+                    input.form-control(type="text" ,name="password",value=usuarioUpdate.password, pattern="^([a-zA-Z0-9]{4,20})$", title="La contraseña debe tener unicamente letras y numeros, minimo 4 caracteres y 20 como maximo" required)
+                  .form-group
+                    h5  Confirmación de contraseña:
+                    input.form-control(type="text" ,name="password_confirmation" ,value=usuarioUpdate.password, pattern="^([a-zA-Z0-9]{4,20})$",title="La contraseña debe tener unicamente letras y numeros, minimo 4 caracteres y 20 como maximo" required)
+
+                if usuario.permisos == 2
+                  .form-group
+                    h5  Sucursal:
+                    select.form-control(name="plaza")
+                      for sucursal in sucursales
+                        option(name="1") #{sucursal.plaza}
+                  //esto todavia hay que ver los estilos para poner un select en vez de un input
+                  .form-group
+                    h5  Permisos:
+                    select.form-control(name="permisos")
+                      option(name="admin") Administrador
+                      option(name="normal") Recepcionista
+                  // boton para registrar
+                h5  Estado:
+                select.form-control(name="status")
+                  option(name="activo") Activo
+                  option(name="inactivo") Inactivo
+                .form-group
+                input(type="submit" value="Actualizar" class="btn btn-lg btn-primary btn-block")
+
+  // jQuery
+  script(src='/src/vendor/jquery/jquery.min.js')
+  // Bootstrap Core JavaScript
+  script(src='/src/vendor/bootstrap/js/bootstrap.min.js')
+  // Metis Menu Plugin JavaScript
+  script(src='/src/vendor/metisMenu/metisMenu.min.js')
+  // Custom Theme JavaScript
+  script(src='/src/dist/js/sb-admin-2.js')

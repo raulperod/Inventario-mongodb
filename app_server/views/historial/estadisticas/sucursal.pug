@@ -1,0 +1,67 @@
+extends ../../layout.pug
+block contenido
+  #page-wrapper
+
+  
+      script(src='/src/vendor/jquery/jquery.min.js')
+      // Bootstrap Core JavaScript
+      script(src='/src/vendor/bootstrap/js/bootstrap.min.js')
+      // Metis Menu Plugin JavaScript
+      script(src='/src/vendor/metisMenu/metisMenu.min.js')
+      // DataTables JavaScript
+      script(src='/src/vendor/datatables/js/jquery.dataTables.min.js')
+      script(src='/src/vendor/datatables-plugins/dataTables.bootstrap.min.js')
+      script(src='/src/vendor/datatables-responsive/dataTables.responsive.js')
+      // Custom Theme JavaScript
+      script(src='/src/dist/js/sb-admin-2.js')
+      .row
+        .col-lg-12
+          h3.page-header Estadisticas
+        // /.col-lg-12
+      // /.row
+      .row
+        .col-lg-6
+          .panel.panel-default
+            .panel-heading
+              | Productos usados por categorias
+            // /.panel-heading
+            .panel-body
+              .flot-chart
+                #flot-pie-chart.flot-chart-content
+            // /.panel-body
+          // /.panel
+        // /.col-lg-6  
+        .col-lg-6
+          .panel.panel-default
+            .panel-heading
+              | Producto en la sucursal
+            // /.panel-heading
+            .panel-body
+              #morris-donut-chart
+            // /.panel-body
+          // /.panel
+        // /.col-lg-6  
+        .col-lg-12
+          .panel.panel-default
+            .panel-heading
+              | Producto por mes
+            // /.panel-heading
+            .panel-body
+              #morris-bar-chart
+            // /.panel-body
+          // /.panel
+        // /.col-lg-6        	
+      // Flot Charts JavaScript
+      script(src='/src/vendor/flot/excanvas.min.js')
+      script(src='/src/vendor/flot/jquery.flot.js')
+      script(src='/src/vendor/flot/jquery.flot.pie.js')
+      script(src='/src/vendor/flot/jquery.flot.resize.js')
+      script(src='/src/vendor/flot/jquery.flot.time.js')
+      script(src='/src/vendor/flot-tooltip/jquery.flot.tooltip.min.js')
+      script(src='/src/data/flot-data.js')
+
+      // Morris Charts JavaScript
+      script(src='/src/vendor/raphael/raphael.min.js')
+      script(src='/src/vendor/morrisjs/morris.min.js')
+      script(src='/src/data/morris-data2.js')  
+  

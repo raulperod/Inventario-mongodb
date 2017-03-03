@@ -1,0 +1,73 @@
+extends ../layout.pug
+block contenido
+
+  #page-wrapper
+    .row
+      .col-lg-12
+        h3.page-header Bajas de Productos
+    .row
+      .col-lg-12
+        .panel.panel-default
+          .panel-heading
+            | Productos
+          .panel-body
+            table#dataTables-example.table.table-striped.table-bordered.table-hover
+              thead
+                tr
+                  th Producto
+                  th Cantidad
+                  th Usuario
+                  if usuario.permisos == 2
+                    th Sucursal
+                  th Fecha
+              tbody
+                if usuario.permisos == 1
+                  for baja in bajas
+                    tr.odd.gradeX
+                      td #{baja.producto.nombre}
+                      td #{baja.cantidad}
+                      td #{baja.usuario.nombre} #{baja.usuario.apellido}
+                      td #{baja.fecha.toString().replace("(Hora estándar Montañas, EE.UU.)", "")}
+                else
+
+                  for baja in bajas
+                    tr.odd.gradeX
+                      td #{baja.producto.nombre}
+                      td #{baja.cantidad}
+                      td #{baja.usuario.nombre} #{baja.usuario.apellido}
+                      td #{baja.sucursal.plaza}
+                      td #{baja.fecha.toString().replace("(Hora estándar Montañas, EE.UU.)", "")}
+            // /.panel-body
+        // /.panel
+      // /.col-lg-12
+    // /.row
+    // jQuery
+    script(src='/src/vendor/jquery/jquery.min.js')
+    // Bootstrap Core JavaScript
+    script(src='/src/vendor/bootstrap/js/bootstrap.min.js')
+    // Metis Menu Plugin JavaScript
+    script(src='/src/vendor/metisMenu/metisMenu.min.js')
+    // DataTables JavaScript
+    script(src='/src/vendor/datatables/js/jquery.dataTables.min.js')
+    script(src='/src/vendor/datatables-plugins/dataTables.bootstrap.min.js')
+    script(src='/src/vendor/datatables-responsive/dataTables.responsive.js')
+    // Custom Theme JavaScript
+    script(src='/src/dist/js/sb-admin-2.js')
+    // Page-Level Demo Scripts - Tables - Use for reference
+    if usuario.permisos == 2
+      script.
+        $(document).ready(function() {
+          $('#dataTables-example').DataTable({
+            responsive: true,
+            "order": [[ 4, "desc" ]]
+          });
+        });
+    else
+
+      script.
+        $(document).ready(function() {
+          $('#dataTables-example').DataTable({
+            responsive: true,
+            "order": [[ 3, "desc" ]]
+          });
+        });

@@ -1,0 +1,76 @@
+extends ../../layout.pug
+block contenido
+  #page-wrapper
+
+  
+      script(src='/src/vendor/jquery/jquery.min.js')
+      // Bootstrap Core JavaScript
+      script(src='/src/vendor/bootstrap/js/bootstrap.min.js')
+      // Metis Menu Plugin JavaScript
+      script(src='/src/vendor/metisMenu/metisMenu.min.js')
+      // DataTables JavaScript
+      script(src='/src/vendor/datatables/js/jquery.dataTables.min.js')
+      script(src='/src/vendor/datatables-plugins/dataTables.bootstrap.min.js')
+      script(src='/src/vendor/datatables-responsive/dataTables.responsive.js')
+      // Custom Theme JavaScript
+      script(src='/src/dist/js/sb-admin-2.js')
+      .row
+        .col-lg-12
+          h3.page-header Estadisticas
+        // /.col-lg-12
+      // /.row
+      .row
+        script(type='text/javascript', src='https://www.gstatic.com/charts/loader.js')
+        script(type='text/javascript').
+          google.charts.load('current', {'packages':['corechart']});
+          google.charts.setOnLoadCallback(drawChart);
+          function drawChart() {
+          var data = google.visualization.arrayToDataTable([
+          ['Mes', 'Dila', 'Cantabria'],
+          ['Enero',  1000,      400],
+          ['Febrero',  1170,      460],
+          ['Marzo',  660,       1120],
+          ['Abril',  1030,      540]
+          ]);
+          var options = {
+          title: 'Almacen',
+          hAxis: {title: 'Mes',  titleTextStyle: {color: '#333'}},
+          vAxis: {minValue: 0}
+          };
+          var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+          chart.draw(data, options);
+          }
+        .col-lg-12
+          .panel.panel-default
+            .panel-heading
+              | Productos en almacen actuales
+            // /.panel-heading
+            .panel-body
+              #chart_div(style='width: 100%; height: 500px;')
+            // /.panel-body
+          // /.panel
+        // /.col-lg-12               	
+        .col-lg-6
+          .panel.panel-default
+            .panel-heading
+              | Productos usados
+            // /.panel-heading
+            .panel-body
+              #morris-bar-chart
+            // /.panel-body
+          // /.panel
+        // /.col-lg-6
+        .col-lg-6
+          .panel.panel-default
+            .panel-heading
+              | Productos en almacen actuales
+            // /.panel-heading
+            .panel-body
+              #morris-donut-chart
+            // /.panel-body
+          // /.panel
+        // /.col-lg-6
+        // Morris Charts JavaScript
+        script(src='/src/vendor/raphael/raphael.min.js')
+        script(src='/src/vendor/morrisjs/morris.min.js')
+        script(src='/src/data/morris-data.js')  
