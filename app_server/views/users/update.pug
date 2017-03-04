@@ -64,10 +64,10 @@ block contenido
                     input.form-control(type="text", name="last_name", value=ln,pattern="{1,40}$", title="El apellido debe tener un maximo de 40 caracteres" required)
                   .form-group
                     h5  Contraseña:
-                    input.form-control(type="password", name="password", value=pw,pattern="^([a-zA-Z0-9]{8,20})$", title="La contraseña debe tener como minimo 8 caracteres y maximo 20" required)
+                    input.form-control(type="text", name="password", value=pw,pattern="^([a-zA-Z0-9]{8,20})$", title="La contraseña debe tener como minimo 8 caracteres y maximo 20" required)
                   .form-group
                     h5  Confirmación de contraseña:
-                    input.form-control(type="password", name="password_confirmation", value=pwc,pattern="^([a-zA-Z0-9]{8,20})$", title="La contraseña debe tener como minimo 8 caracteres y maximo 20" required)
+                    input.form-control(type="text", name="password_confirmation", value=pwc,pattern="^([a-zA-Z0-9]{8,20})$", title="La contraseña debe tener como minimo 8 caracteres y maximo 20" required)
                   if usuario.permisos == 2
                     .form-group
                       link(href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css', rel='stylesheet')
@@ -105,10 +105,10 @@ block contenido
                     | Las contraseñas no coinciden
                   .form-group.has-error
                     h5  Contraseña:
-                    input#inputError.form-control(type="password", name="password", value=pw,pattern="^([a-zA-Z0-9]{8,20})$", title="La contraseña debe tener como minimo 8 caracteres y maximo 20" required)
+                    input#inputError.form-control(type="text", name="password", value=pw,pattern="^([a-zA-Z0-9]{8,20})$", title="La contraseña debe tener como minimo 8 caracteres y maximo 20" required)
                   .form-group.has-error
                     h5  Confirmación de contraseña:
-                    input#inputError.form-control(type="password", name="password_confirmation", value=pwc,pattern="^([a-zA-Z0-9]{8,20})$", title="La contraseña debe tener como minimo 8 caracteres y maximo 20" required)
+                    input#inputError.form-control(type="text", name="password_confirmation", value=pwc,pattern="^([a-zA-Z0-9]{8,20})$", title="La contraseña debe tener como minimo 8 caracteres y maximo 20" required)
                   if usuario.permisos == 2
                     .form-group
                       link(href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css', rel='stylesheet')
