@@ -7,40 +7,94 @@ block contenido
           .panel-heading
             h3.panel-title Registrar
           .panel-body
-            form(action="/users/new",method="POST",role='form')
-              fieldset
-                .form-group
-                  input.form-control(type="text", name="username", placeholder="Usuario",pattern="^([a-zA-Z0-9]{4,20})$", title="El usuario debe tener unicamente letras y numeros, minimo 4 caracteres y 20 como maximo" required)
-                .form-group
-                  input.form-control(type="text", name="name", placeholder="Nombre",pattern="{1,40}$", title="El nombre debe tener un maximo de 40 caracteres" required)
-                .form-group
-                  input.form-control(type="text", name="last_name", placeholder="Apellido",pattern="{1,40}$", title="El apellido debe tener un maximo de 40 caracteres" required)
-                if AlertContrasena
-                  .alert.alert-warning.alert-dismissable
-                    button.close(type='button', data-dismiss='alert', aria-hidden='true') ×
-                    | Las contraseñas no coinciden
-                  .form-group.has-error
-                    input#inputError.form-control(type="password", name="password", placeholder="Contraseña",pattern="^([a-zA-Z0-9]{8,20})$", title="La contraseña debe tener como minimo 8 caracteres y maximo 20" required)
-                  .form-group.has-error
-                    input#inputError.form-control(type="password", name="password_confirmation", placeholder="Confirmar contraseña",pattern="^([a-zA-Z0-9]{8,20})$", title="La contraseña debe tener como minimo 8 caracteres y maximo 20" required)
+            if !AlertContrasena && !AlertUsername
 
-                else
-
+              form(action="/users/new",method="POST",role='form')
+                fieldset
+                  .form-group
+                    input.form-control(type="text", name="username", placeholder="Usuario",pattern="^([a-zA-Z0-9]{4,20})$", title="El usuario debe tener unicamente letras y numeros, minimo 4 caracteres y 20 como maximo" required)
+                  .form-group
+                    input.form-control(type="text", name="name", placeholder="Nombre",pattern="{1,40}$", title="El nombre debe tener un maximo de 40 caracteres" required)
+                  .form-group
+                    input.form-control(type="text", name="last_name", placeholder="Apellido",pattern="{1,40}$", title="El apellido debe tener un maximo de 40 caracteres" required)
                   .form-group
                     input.form-control(type="password", name="password", placeholder="Contraseña",pattern="^([a-zA-Z0-9]{8,20})$", title="La contraseña debe tener como minimo 8 caracteres y maximo 20" required)
                   .form-group
                     input.form-control(type="password", name="password_confirmation", placeholder="Confirmar contraseña",pattern="^([a-zA-Z0-9]{8,20})$", title="La contraseña debe tener como minimo 8 caracteres y maximo 20" required)
+                  if usuario.permisos == 2
+                    .form-group
+                      link(href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css', rel='stylesheet')
+                      select.form-control.selectpicker(name="plaza", data-live-search="true")
+                        for sucursal in sucursales
+                          option(name="1") #{sucursal.plaza}
 
-                if usuario.permisos == 2
+                  // boton para registrar
                   .form-group
-                    link(href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css', rel='stylesheet')
-                    select.form-control.selectpicker(name="plaza", data-live-search="true")
-                      for sucursal in sucursales
-                        option(name="1") #{sucursal.plaza}
+                  input(type="submit" value="Registrar" class="btn btn-lg btn-primary btn-block")
 
-                // boton para registrar
-                .form-group
-                input(type="submit" value="Registrar" class="btn btn-lg btn-primary btn-block")
+            else if AlertUsername
+
+              form(action="/users/new",method="POST",role='form')
+                fieldset
+                  .alert.alert-warning.alert-dismissable
+                    button.close(type='button', data-dismiss='alert', aria-hidden='true') ×
+                    | El nombre de usuario ya exite
+                  .form-group.has-error
+                    h5  Usuario:
+                    input#inputError.form-control(type="text", name="username", value=un,pattern="^([a-zA-Z0-9]{4,20})$", title="El usuario debe tener unicamente letras y numeros, minimo 4 caracteres y 20 como maximo" required)
+                  .form-group
+                    h5  Nombres:
+                    input.form-control(type="text", name="name", value=nm,pattern="{1,40}$", title="El nombre debe tener un maximo de 40 caracteres" required)
+                  .form-group
+                    h5  Apellidos:
+                    input.form-control(type="text", name="last_name", value=ln,pattern="{1,40}$", title="El apellido debe tener un maximo de 40 caracteres" required)
+                  .form-group
+                    h5  Contraseña:
+                    input.form-control(type="password", name="password", value=pw,pattern="^([a-zA-Z0-9]{8,20})$", title="La contraseña debe tener como minimo 8 caracteres y maximo 20" required)
+                  .form-group
+                    h5  Confirmación de contraseña:
+                    input.form-control(type="password", name="password_confirmation", value=pwc,pattern="^([a-zA-Z0-9]{8,20})$", title="La contraseña debe tener como minimo 8 caracteres y maximo 20" required)
+                  if usuario.permisos == 2
+                    .form-group
+                      link(href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css', rel='stylesheet')
+                      select.form-control.selectpicker(name="plaza", data-live-search="true")
+                        for sucursal in sucursales
+                          option(name="1") #{sucursal.plaza}
+                  // boton para registrar
+                  .form-group
+                  input(type="submit" value="Registrar" class="btn btn-lg btn-primary btn-block")
+
+            else if AlertContrasena
+
+              form(action="/users/new",method="POST",role='form')
+                fieldset
+                  .form-group
+                    h5  Usuario:
+                    input.form-control(type="text", name="username", value=un,pattern="^([a-zA-Z0-9]{4,20})$", title="El usuario debe tener unicamente letras y numeros, minimo 4 caracteres y 20 como maximo" required)
+                  .form-group
+                    h5  Nombres:
+                    input.form-control(type="text", name="name", value=nm,pattern="{1,40}$", title="El nombre debe tener un maximo de 40 caracteres" required)
+                  .form-group
+                    h5  Apellidos:
+                    input.form-control(type="text", name="last_name", value=ln,pattern="{1,40}$", title="El apellido debe tener un maximo de 40 caracteres" required)
+                  .alert.alert-warning.alert-dismissable
+                    button.close(type='button', data-dismiss='alert', aria-hidden='true') ×
+                    | Las contraseñas no coinciden
+                  .form-group.has-error
+                    h5  Contraseña:
+                    input#inputError.form-control(type="password", name="password", value=pw,pattern="^([a-zA-Z0-9]{8,20})$", title="La contraseña debe tener como minimo 8 caracteres y maximo 20" required)
+                  .form-group.has-error
+                    h5  Confirmación de contraseña:
+                    input#inputError.form-control(type="password", name="password_confirmation", value=pwc,pattern="^([a-zA-Z0-9]{8,20})$", title="La contraseña debe tener como minimo 8 caracteres y maximo 20" required)
+                  if usuario.permisos == 2
+                    .form-group
+                      link(href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css', rel='stylesheet')
+                      select.form-control.selectpicker(name="plaza", data-live-search="true")
+                        for sucursal in sucursales
+                          option(name="1") #{sucursal.plaza}
+                  // boton para registrar
+                  .form-group
+                  input(type="submit" value="Registrar" class="btn btn-lg btn-primary btn-block")
   // jQuery
   script(src='/src/vendor/jquery/jquery.min.js')
   // Bootstrap Core JavaScript
