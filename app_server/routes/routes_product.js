@@ -47,6 +47,7 @@ router.route("/new")
                 nombre: req.body.nombre,
                 codigo: req.body.codigo,
                 descripcion: req.body.descripcion,
+                minimo: parseInt(req.body.minimo),
                 categoria: categoria._id
               });
               // guarda al producto en la base de datos
@@ -93,6 +94,7 @@ router.route("/:idProducto")
                 res.locals.productoUpdate.nombre = req.body.nombre;
                 res.locals.productoUpdate.codigo = req.body.codigo;
                 res.locals.productoUpdate.descripcion = req.body.descripcion;
+                res.locals.productoUpdate.minimo = parseInt(req.body.minimo);
                 res.locals.productoUpdate.categoria = categoria._id;
                 res.locals.productoUpdate.save(function(err){
                   if(err) console.log(err);

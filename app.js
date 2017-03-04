@@ -19,10 +19,13 @@ var session_general_admin = require("./app_server/middleware/session_general_adm
 var mongoose = require("mongoose");
 // conectar a la base de datos
 mongoose.Promise = require("bluebird");
-mongoose.connect("mongodb://localhost/gelishtime");
+var uristring =
+  process.env.MONGODB_URI ||
+  'mongodb://localhost/gelishtime';
+mongoose.connect(uristring);
 // si se conecto
 mongoose.connection.on('connected', function () {
- console.log('Mongoose connected to ' + "mongodb://localhost/gelishtime");
+ console.log('Mongoose connected to ' + uristring);
 });
 // si hubo un error
 mongoose.connection.on('error',function (err) {
@@ -56,6 +59,7 @@ process.on('SIGTERM', function() {
  process.exit(0);
  });
 });
+app.set('port', (process.env.PORT || 8080));
 // servir archivos publicos
 app.use("/src",express.static("src"));
 // parsers
@@ -173,5 +177,7 @@ app.use("/consumos",session_active);
 app.use("/consumos",router_consumo);
 // -------------------------------------------------------------------------
 // inicia el servidor en el puerto 8080
-app.listen(8080);
+app.listen(app.get('port'), function() {
+  console.log('Node app is running on port', app.get('port'));
+});
 // FIN

@@ -18,6 +18,7 @@ block contenido
                   th Descripcion
                   th Categoria
                   th Codigo
+                  th Minimo
                   th Acción
               tbody
                 for producto in productos
@@ -26,6 +27,7 @@ block contenido
                     td #{producto.descripcion}
                     td #{producto.categoria.nombre}
                     td #{producto.codigo}
+                    td #{producto.minimo}
                     td
                       a(class="btn btn btn-primary btn-circle" href="/products/"+producto._id)
                         i.fa.fa-list(title="Editar")

@@ -19,6 +19,8 @@ block contenido
                   h5  Descripcion:
                   input.form-control(type="text",name="descripcion",required="required",value=productoUpdate.descripcion, pattern="{3,70}$",title="El nombre de la plaza debe tener un minimo 3 caracteres y 70 como maximo")
                 .form-group
+                  input.form-control(type="number", value=productoUpdate.minimo ,name="minimo", min="0", max="10000", title="Cantidad minima del producto en el almacen" required)
+                .form-group
                   h5  Categoria:
                   link(href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css', rel='stylesheet')
                   select.form-control.selectpicker(name="categoria", data-live-search="true")
