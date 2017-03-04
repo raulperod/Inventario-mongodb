@@ -20,7 +20,7 @@ var mongoose = require("mongoose");
 // conectar a la base de datos
 mongoose.Promise = require("bluebird");
 var uristring =
-  process.env.MONGODB_URI ||
+  process.env.PROD_MONGODB ||
   'mongodb://localhost/gelishtime';
 mongoose.connect(uristring);
 // si se conecto
