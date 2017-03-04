@@ -26,7 +26,7 @@ block contenido
                   for consumo in consumos
                     tr.odd.gradeX
                       td #{consumo.producto.nombre}
-                      if consumo.cantidad < consumo.producto.cantidad
+                      if consumo.cantidad > consumo.producto.minimo
                         td #{consumo.cantidad}
                       else
 
@@ -42,7 +42,7 @@ block contenido
                   for consumo in consumos
                     tr.odd.gradeX
                       td #{consumo.producto.nombre}
-                      if consumo.cantidad < consumo.producto.cantidad
+                      if consumo.cantidad > consumo.producto.minimo
                         td #{consumo.cantidad}
                       else
 

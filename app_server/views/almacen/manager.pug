@@ -27,7 +27,7 @@ block contenido
                   for alm in almacen
                     tr.odd.gradeX
                       td #{alm.producto.nombre}
-                      if alm.cantidad < alm.producto.minimo
+                      if alm.cantidad > alm.producto.minimo
                         td #{alm.cantidad}
                       else
 
@@ -48,7 +48,7 @@ block contenido
                   for alm in almacen
                     tr.odd.gradeX
                       td #{alm.producto.nombre}
-                      if alm.cantidad < alm.producto.minimo
+                      if alm.cantidad > alm.producto.minimo
                         td #{alm.cantidad}
                       else
 
