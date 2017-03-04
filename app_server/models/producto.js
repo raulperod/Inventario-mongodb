@@ -21,6 +21,11 @@ var producto_schema = new Schema({
     type: String,
     require: true,
     maxlength: [20,"codigo de producto muy largo"]
+  },
+  minimo:{
+    type:Number,
+    require:true,
+    min:[0,"El minimo no puede ser cero"]
   }
 });
 
