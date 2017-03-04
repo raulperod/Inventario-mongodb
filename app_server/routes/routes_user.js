@@ -238,8 +238,8 @@ router.route("/:username")
           }
         }else{ // si no hubo error en el password
           // verifica que el nuevo username no este repetido
-          Usuario.findOne({username:req.body.username}).exec(function(err,usuario){
-            if(!err && usuario.username == req.params.username || !err && !usuario){ // si no hubo error y el username no esta repetido
+          Usuario.findOne({username:req.body.username}).exec(function(err,usuarioC){
+            if(!err && usuarioC.username == req.params.username || !err && !usuarioC){ // si no hubo error y el username no esta repetido
               if(res.locals.usuario.permisos == 2){ // si es administrador general
                 Sucursal.findOne({plaza:req.body.plaza},function(err,sucursal){ // busco la sucursal
                   if(!err && sucursal){ // si no hubo error y la sucursal existe
@@ -310,11 +310,11 @@ router.route("/:username")
 
               }
             }else{ // si hubo un error
-              if(usuario){ // si el username esta repetido
+              if(usuarioC){ // si el username esta repetido
                 if(res.locals.usuario.permisos == 2){ // si es administrador general
                   Sucursal.find({},function(err,sucursales){ // busca todas las sucursales
                     if(!err && sucursales){ // si no hubo error y existen sucursales
-                      res.render("./users/update",{sucursales:sucursales,usuarioUpdate:usuario,AlertContrasena:false,AlertUsername:true,un:req.body.username,nm:req.body.name,ln:req.body.last_name,pw:req.body.password,pwc:req.body.password_confirmation});
+                      res.render("./users/update",{sucursales:sucursales,username:req.params.username,AlertContrasena:false,AlertUsername:true,un:req.body.username,nm:req.body.name,ln:req.body.last_name,pw:req.body.password,pwc:req.body.password_confirmation});
                     }else{ // si hubo un error
                       if(!sucursales){ // si no hay sucursales
                         res.redirect("/sucursales");
@@ -325,7 +325,7 @@ router.route("/:username")
                     }
                   });
                 }else{ // si es administrador de sucursal
-                  res.render("./users/update",{usuarioUpdate:usuario,AlertContrasena:false,AlertUsername:true,un:req.body.username,nm:req.body.name,ln:req.body.last_name,pw:req.body.password,pwc:req.body.password_confirmation})
+                  res.render("./users/update",{username:req.params.username,AlertContrasena:false,AlertUsername:true,un:req.body.username,nm:req.body.name,ln:req.body.last_name,pw:req.body.password,pwc:req.body.password_confirmation})
                 }
               }else{ // si hubo un error
                 console.log(err);
