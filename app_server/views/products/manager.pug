@@ -32,7 +32,7 @@ block contenido
                       a(class="btn btn btn-primary btn-circle" href="/products/"+producto._id)
                         i.fa.fa-list(title="Editar")
                       b &nbsp &nbsp &nbsp
-                      form(id="eliminar"  style="display:inline" action="/products/"+producto._id+"/delete?_method=DELETE",method="POST",  onsubmit="return confirm('¿Continuar con la eliminación?')")
+                      form(id="eliminar"  style="display:inline" action="/products/"+producto._id+"?_method=DELETE",method="POST",  onsubmit="return confirm('¿Continuar con la eliminación?')")
                         button(type="submit/image" alt="text" value="" class="btn btn-danger btn-circle")
                           i.fa.fa-times(title="Eliminar")
             // /.panel-body
