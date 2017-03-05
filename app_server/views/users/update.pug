@@ -9,7 +9,7 @@ block contenido
           .panel-body
             if !AlertContrasena && !AlertUsername
 
-              form(action="/users/"+usuarioUpdate.username+"?_method=PUT",method="POST")
+              form(action="/users/"+usuarioUpdate._id+"?_method=PUT",method="POST")
                 fieldset
                   .form-group
                     h5  Usuario:

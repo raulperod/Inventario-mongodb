@@ -214,7 +214,7 @@ router.route("/:idUsuario")
                 res.redirect("/users");
               }
             });
-          }else{ // si no hubo error en la confirmacion del password
+          }else{ // si es administrador general
             Sucursal.find({}).exec(function(err,sucursales){ // busco todas las sucursales
               if(!err && sucursales){ // si no hubo error y existen sucursales
                 Usuario.findById(req.params.idUsuario).exec(function(err,usuario){
