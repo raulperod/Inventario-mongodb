@@ -62,15 +62,15 @@ block contenido
 
               form(action="/products/new",method="POST",role='form')
                 fieldset
-                  .form-group.has-error
+                  .form-group
                     h5  Nombre:
-                    input#inputError.form-control(type="text", name="nombre", value=nombre, pattern="{3,40}$",title="El nombre del producto debe tener un minimo 3 caracteres y 40 como maximo" required)
+                    input.form-control(type="text", name="nombre", value=nombre, pattern="{3,40}$",title="El nombre del producto debe tener un minimo 3 caracteres y 40 como maximo" required)
                   .alert.alert-warning.alert-dismissable
                     button.close(type='button', data-dismiss='alert', aria-hidden='true') ×
                     | Ya existe un producto con ese codigo
-                  .form-group
+                  .form-group.has-error
                     h5  Codigo:
-                    input.form-control(type="text", name="codigo", value=codigo, pattern="{3,30}$",title="El nombre de la plaza debe tener un minimo 3 caracteres y 30 como maximo" required)
+                    input#inputError.form-control(type="text", name="codigo", value=codigo, pattern="{3,30}$",title="El nombre de la plaza debe tener un minimo 3 caracteres y 30 como maximo" required)
                   .form-group
                     h5  Descripcion:
                     input.form-control(type="text", name="descripcion", value=descripcion, pattern="{3,70}$",title="El nombre de la plaza debe tener un minimo 3 caracteres y 70 como maximo" required)
