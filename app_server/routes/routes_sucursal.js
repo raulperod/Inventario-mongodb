@@ -11,7 +11,7 @@ var router = express.Router();
 // Metodo GET
 router.get("/",function(req,res){
     // busca todas las sucursales de la base de datos
-    Sucursal.find({},function(err,sucursales){
+    Sucursal.find({}).exec(function(err,sucursales){
       if(!err){ // si no hubo error
         res.render("./sucursales/manager",{sucursales:sucursales});
       }else{ // si hubo error
@@ -29,7 +29,7 @@ router.route("/new")
       // Metodo POST
       .post(function(req,res){
         // validar que la sucursal no este repetida
-        Sucursal.findOne({plaza:req.body.plaza,ciudad:req.body.ciudad},function(err,sucursal){
+        Sucursal.findOne({plaza:req.body.plaza,ciudad:req.body.ciudad}).exec(function(err,sucursal){
           if(!err && !sucursal){ // si no hay error y no hay sucursal repetida
             // crea una sucursal nueva con sus respectivos atributos
             var sucursal = new Sucursal({
@@ -52,7 +52,7 @@ router.route("/new")
           }
         });
       });
-// gelishtime/sucursales/:plaza
+// gelishtime/sucursales/:idSucursal
 router.route("/:idSucursal")
       .get(function(req,res){
         // busco la sucursal
@@ -97,22 +97,22 @@ router.route("/:idSucursal")
       })
       .delete(function(req,res){
 
-        Usuario.remove({sucursal:req.params.idSucursal},function(err){
+        Usuario.remove({sucursal:req.params.idSucursal}).exec(function(err){
           if(err) console.log(err);
         });
-        Baja.remove({sucursal:req.params.idSucursal},function(err){
+        Baja.remove({sucursal:req.params.idSucursal}).exec(function(err){
           if(err) console.log(err);
         });
-        RegistroDeMovimiento.remove({sucursal:req.params.idSucursal},function(err){
+        RegistroDeMovimiento.remove({sucursal:req.params.idSucursal}).exec(function(err){
           if(err) console.log(err);
         });
-        Consumo.remove({sucursal:req.params.idSucursal},function(err){
+        Consumo.remove({sucursal:req.params.idSucursal}).exec(function(err){
           if(err) console.log(err);
         });
-        Almacen.remove({sucursal:req.params.idSucursal},function(err){
+        Almacen.remove({sucursal:req.params.idSucursal}).exec(function(err){
           if(err) console.log(err);
         });
-        Sucursal.findOneAndRemove({_id: req.params.idSucursal},function(err){
+        Sucursal.findOneAndRemove({_id: req.params.idSucursal}).exec(function(err){
             if(err) console.log(err);
             res.redirect("/sucursales");
         });
