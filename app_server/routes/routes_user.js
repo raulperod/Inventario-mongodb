@@ -41,7 +41,7 @@ router.route("/new")
         // si es administrador general
         if(res.locals.usuario.permisos == 2){
           // busca todas las sucursales
-          Sucursal.find({},function(err,sucursales){
+          Sucursal.find({}).exec(function(err,sucursales){
             if(!err && sucursales ){ // si no hubo un error
               res.render("./users/new",{AlertContrasena:false,AlertUsername:false,sucursales:sucursales});
             }else{  // si hubo un error
@@ -65,7 +65,7 @@ router.route("/new")
             res.render("./users/new",{AlertContrasena:true,AlertUsername:false,un:req.body.username,nm:req.body.name,ln:req.body.last_name,pw:req.body.password,pwc:req.body.password_confirmation});
           }else{ // si es administrador general
             // busca todas las sucursales
-            Sucursal.find({},function(err,sucursales){
+            Sucursal.find({}).exec(function(err,sucursales){
               if(!err && sucursales){ // si no hubo error
                 res.render("./users/new",{AlertContrasena:true,AlertUsername:false,sucursales:sucursales,un:req.body.username,nm:req.body.name,ln:req.body.last_name,pw:req.body.password,pwc:req.body.password_confirmation});
               }else{ // si hubo error
@@ -80,7 +80,7 @@ router.route("/new")
           }
         }else{ // si no hubo error en la contrasena
           // validar que el username no este repetido
-          Usuario.findOne({username:req.body.username},function(err,usuario){
+          Usuario.findOne({username:req.body.username}).exec(function(err,usuario){
             // si no hay error y no hay username repetido, entonces lo crea
             if(!err && !usuario){
               // si es administrador de sucursal
@@ -104,7 +104,7 @@ router.route("/new")
                 });
               }else{ // si es administrador general
                 // busca la sucursal con el nombre de la plaza
-                Sucursal.findOne({plaza:req.body.plaza},function(err,sucursal){
+                Sucursal.findOne({plaza:req.body.plaza}).exec(function(err,sucursal){
                   if(!err && sucursal){
                     // crea un nuevo administrador de sucural con sus respectivos atributos
                     var usuario = new Usuario({
@@ -140,7 +140,7 @@ router.route("/new")
                 res.render("./users/new",{AlertContrasena:false,AlertUsername:true,un:req.body.username,nm:req.body.name,ln:req.body.last_name,pw:req.body.password,pwc:req.body.password_confirmation});
               }else{ // si es Administrador general
                 // busca todas las sucursales
-                Sucursal.find({},function(err,sucursales){
+                Sucursal.find({}).exec(function(err,sucursales){
                   if(!err && sucursales){ // si no hubo error
                     res.render("./users/new",{AlertContrasena:false,AlertUsername:true,sucursales:sucursales,un:req.body.username,nm:req.body.name,ln:req.body.last_name,pw:req.body.password,pwc:req.body.password_confirmation});
                   }else{ // si hubo error
@@ -161,14 +161,14 @@ router.route("/new")
         }
       });
 // gelishtime/users/:username
-router.route("/:username")
+router.route("/:idUsuario")
       // Metodo GET
       .get(function(req,res){
         if(res.locals.usuario.permisos == 2){ // si es administador general
-          Sucursal.find({},function(err,sucursales){ // busca todas las sucursales
+          Sucursal.find({}).exec(function(err,sucursales){ // busca todas las sucursales
             if(!err && sucursales){ // si no hubo error y existen sucursales
               // busco al usuario a editar
-              Usuario.findOne({ username: req.params.username },function(err,usuario){
+              Usuario.findById(req.params.idUsuario).exec(function(err,usuario){
                 if(!err && usuario){ // si no hubo error y el usuario existe
                   res.render("./users/update",{sucursales:sucursales,usuarioUpdate:usuario,AlertContrasena:false,AlertUsername:false});
                 }else{ // si hubo error o el usuario no existe
@@ -188,7 +188,7 @@ router.route("/:username")
           });
         }else{ // si es administrador de sucursal
           // busco al usuario a editar
-          Usuario.findOne({ username: req.params.username },function(err,usuario){
+          Usuario.findById(req.params.idUsuario).exec(function(err,usuario){
             if(!err && usuario){ // si no hubo error y el usuario existe
               res.render("./users/update",{usuarioUpdate:usuario,AlertContrasena:false,AlertUsername:false});
             }else{ // si hubo error o el usuario no existe
@@ -205,7 +205,7 @@ router.route("/:username")
         if(req.body.password != req.body.password_confirmation ){
           if(res.locals.usuario.permisos==1){ // si es administrador de sucursal
             // busco el usuario a editar
-            Usuario.findOne({ username: req.params.username },function(err,usuario){
+            Usuario.findById(req.params.idUsuario).exec(function(err,usuario){
               if(!err && usuario){ // si no hubo error y el usuario existe
                 res.render("./users/update",{usuarioUpdate:usuario,AlertContrasena:true,AlertUsername:false,un:req.body.username,nm:req.body.name,ln:req.body.last_name,pw:req.body.password,pwc:req.body.password_confirmation});
               }else{ // si hubo error o el usuario no existe
@@ -215,9 +215,9 @@ router.route("/:username")
               }
             });
           }else{ // si no hubo error en la confirmacion del password
-            Sucursal.find({},function(err,sucursales){ // busco todas las sucursales
+            Sucursal.find({}).exec(function(err,sucursales){ // busco todas las sucursales
               if(!err && sucursales){ // si no hubo error y existen sucursales
-                Usuario.findOne({ username: req.params.username },function(err,usuario){
+                Usuario.findById(req.params.idUsuario).exec(function(err,usuario){
                   if(!err && usuario){ // si no hay error y el usuario existe
                     res.render("./users/update",{sucursales:sucursales,usuarioUpdate:usuario,AlertContrasena:true,AlertUsername:false,un:req.body.username,nm:req.body.name,ln:req.body.last_name,pw:req.body.password,pwc:req.body.password_confirmation});
                   }else{
@@ -241,10 +241,10 @@ router.route("/:username")
           Usuario.findOne({username:req.body.username}).exec(function(err,usuarioC){
             if(!err && !usuarioC || !err && req.body.username == req.params.username){ // si no hubo error y el username no esta repetido
               if(res.locals.usuario.permisos == 2){ // si es administrador general
-                Sucursal.findOne({plaza:req.body.plaza},function(err,sucursal){ // busco la sucursal
+                Sucursal.findOne({plaza:req.body.plaza}).exec(function(err,sucursal){ // busco la sucursal
                   if(!err && sucursal){ // si no hubo error y la sucursal existe
                     // busco al usuario
-                    Usuario.findOne({ username: req.params.username },function(err,usuario){
+                    Usuario.findById(req.params.idUsuario).exec(function(err,usuario){
                       if(!err && usuario){ // si no hubo error y el usuario existe
                         res.locals.usuarioUpdate = usuario;
                         res.locals.usuarioUpdate.username = req.body.username;
@@ -285,7 +285,7 @@ router.route("/:username")
               }else{
 
                 // busco al usuario
-                Usuario.findOne({ username: req.params.username },function(err,usuario){
+                Usuario.findById(req.params.idUsuario).exec(function(err,usuario){
                   if(!err && usuario){ // si no hubo error y el usuario existe
                     res.locals.usuarioUpdate = usuario;
                     res.locals.usuarioUpdate.username = req.body.username;
@@ -312,7 +312,7 @@ router.route("/:username")
             }else{ // si hubo un error
               if(usuarioC){ // si el username esta repetido
                 if(res.locals.usuario.permisos == 2){ // si es administrador general
-                  Sucursal.find({},function(err,sucursales){ // busca todas las sucursales
+                  Sucursal.find({}).exec(function(err,sucursales){ // busca todas las sucursales
                     if(!err && sucursales){ // si no hubo error y existen sucursales
                       res.render("./users/update",{sucursales:sucursales,username:req.params.username,AlertContrasena:false,AlertUsername:true,un:req.body.username,nm:req.body.name,ln:req.body.last_name,pw:req.body.password,pwc:req.body.password_confirmation});
                     }else{ // si hubo un error

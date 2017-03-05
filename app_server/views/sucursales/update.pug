@@ -7,8 +7,27 @@ block contenido
           .panel-heading
             h3.panel-title Actualizar
           .panel-body
-            form(action="/sucursales/"+sucursalUpdate.plaza+"?_method=PUT",method="POST")
-              fieldset
+            if alertSucursal
+              form(action="/sucursales/"+id+"?_method=PUT",method="POST")
+                fieldset
+                  .alert.alert-warning.alert-dismissable
+                    button.close(type='button', data-dismiss='alert', aria-hidden='true') ×
+                    | La sucursal ya existe
+                  .form-group.has-error
+                    h5  Plaza:
+                    input#inputError.form-control(type="text", name="plaza", value=plaza ,pattern="{3,40}$", title="El nombre de la plaza debe un minimo 3 caracteres y 40 como maximo" required)
+                  .form-group.has-error
+                    h5  Ciudad:
+                    input#inputError.form-control(type="text", name="ciudad", value=ciudad ,pattern="{3,40}$", title="La ciudad debe tener un minimo 3 caracteres y 40 como maximo" required)
+                  .form-group
+                  // boton para registrar
+                  .form-group
+                  input(type="submit" value="Actualizar" class="btn btn-lg btn-primary btn-block")
+
+            else
+
+              form(action="/sucursales/"+sucursalUpdate.id+"?_method=PUT",method="POST")
+                fieldset
                 .form-group
                   h5  Plaza:
                   input.form-control(type="text",name="plaza",required="required",value=sucursalUpdate.plaza, pattern="{3,40}$",title="El nombre de la plaza debe tener un minimo 3 caracteres y 40 como maximo")

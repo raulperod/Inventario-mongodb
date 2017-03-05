@@ -7,6 +7,8 @@ var RegistroDeMovimiento = require("../models/registroDeMovimiento").RegistroDeM
 var Baja = require("../models/baja").Baja;
 var router = express.Router();
 
+// gelishtime/sucursales
+// Metodo GET
 router.get("/",function(req,res){
     // busca todas las sucursales de la base de datos
     Sucursal.find({},function(err,sucursales){
@@ -18,16 +20,17 @@ router.get("/",function(req,res){
       }
     });
 });
-// para registrar una sucursal
+// gelishtime/sucursales/new
 router.route("/new")
+      // Metodo GET
       .get(function(req,res){
-          res.render("./sucursales/new");
+          res.render("./sucursales/new",{alertSucursal:false});
       })
+      // Metodo POST
       .post(function(req,res){
-        // validar que la plaza no este repetida
+        // validar que la sucursal no este repetida
         Sucursal.findOne({plaza:req.body.plaza,ciudad:req.body.ciudad},function(err,sucursal){
-          if(!err && !sucursal){
-            // si no hay sucursal repetida, entonces la crea
+          if(!err && !sucursal){ // si no hay error y no hay sucursal repetida
             // crea una sucursal nueva con sus respectivos atributos
             var sucursal = new Sucursal({
               plaza: req.body.plaza,
@@ -39,18 +42,23 @@ router.route("/new")
             }, function(err){ // si ocurre un error lo imprime
               console.log(err);
             });
-          }else{
-            res.redirect("/sucursales/new");
+          }else{ // si hubo un error
+            if(sucursal){ // si la sucursal ya existe
+              res.render("./sucursales/new",{alertSucursal:true,plaza:req.body.plaza,ciudad:req.body.ciudad});
+            }else{ // si hubo un error
+              console.log(err);
+              res.redirect("/sucursales/new");
+            }
           }
         });
       });
-// para editar una sucursal
-router.route("/:plaza")
+// gelishtime/sucursales/:plaza
+router.route("/:idSucursal")
       .get(function(req,res){
         // busco la sucursal
-        Sucursal.findOne({ plaza: req.params.plaza },function(err,sucursal){
-          if(!err && sucursal){
-            res.render("./sucursales/update",{sucursalUpdate:sucursal});
+        Sucursal.findById(req.params.idSucursal).exec(function(err,sucursal){
+          if(!err && sucursal){ // si no hubo error y la sucursal existe
+            res.render("./sucursales/update",{sucursalUpdate:sucursal,alertSucursal:false});
           }else{
             // imprimo el error y lo redirecciono al administrador de sucursales
             if(err) console.log(err);
@@ -60,15 +68,26 @@ router.route("/:plaza")
       })
       .put(function(req,res){
         // busco la sucursal
-        Sucursal.findOne({ plaza: req.params.plaza },function(err,sucursal){
-          // si no hay error
-          if(!err && sucursal){
-            res.locals.sucursalUpdate = sucursal;
-            res.locals.sucursalUpdate.plaza = req.body.plaza;
-            res.locals.sucursalUpdate.ciudad = req.body.ciudad;
-            res.locals.sucursalUpdate.save(function(err){
-              if(err) console.log(err);
-              res.redirect("/sucursales");
+        Sucursal.findById(req.params.idSucursal).exec(function(err,sucursal){
+          if(!err && sucursal){ // si no hay error y la sucursal a editar existe
+            Sucursal.findOne({plaza:req.body.plaza,ciudad:req.body.ciudad}).exec(function(err,sucursalC){
+              if(!err && !sucursalC){ // si no hay error y no existe una sucursal con los mismos campos
+                // edito la sucursal
+                res.locals.sucursalUpdate = sucursal;
+                res.locals.sucursalUpdate.plaza = req.body.plaza;
+                res.locals.sucursalUpdate.ciudad = req.body.ciudad;
+                res.locals.sucursalUpdate.save(function(err){
+                  if(err) console.log(err);
+                  res.redirect("/sucursales");
+                });
+              }else{
+                if(sucursalC){
+                  res.render("./sucursales/update",{id:req.params.idSucursal,alertSucursal:true,plaza:req.body.plaza,ciudad:req.body.ciudad});
+                }else{
+                  console.log(err);
+                  res.redirect("/sucursales");
+                }
+              }
             });
           }else{
             if(err) console.log(err);
@@ -76,7 +95,6 @@ router.route("/:plaza")
           }
         });
       })
-router.route("/:idSucursal/delete")       
       .delete(function(req,res){
 
         Usuario.remove({sucursal:req.params.idSucursal},function(err){

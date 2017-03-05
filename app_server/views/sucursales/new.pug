@@ -9,14 +9,31 @@ block contenido
           .panel-body
             form(action="/sucursales/new",method="POST",role='form')
               fieldset
-                .form-group
-                  input.form-control(type="text" name="plaza" required="required" placeholder="Plaza" pattern="{3,40}$", title="El nombre de la plaza debe un minimo 3 caracteres y 40 como maximo")
-                .form-group
-                  input.form-control(type="text" name="ciudad" required="required" placeholder="Ciudad" pattern="{3,40}$", title="La ciudad debe tener un minimo 3 caracteres y 40 como maximo")
-                .form-group
-                // boton para registrar
-                .form-group
-                input(type="submit" value="Registrar sucursal" class="btn btn-lg btn-primary btn-block")
+                if alertSucursal
+                  .alert.alert-warning.alert-dismissable
+                    button.close(type='button', data-dismiss='alert', aria-hidden='true') ×
+                    | La sucursal ya existe
+                  .form-group.has-error
+                    h5  Plaza:
+                    input#inputError.form-control(type="text", name="plaza", value=plaza ,pattern="{3,40}$", title="El nombre de la plaza debe un minimo 3 caracteres y 40 como maximo" required)
+                  .form-group.has-error
+                    h5  Ciudad:
+                    input#inputError.form-control(type="text", name="ciudad", value=ciudad ,pattern="{3,40}$", title="La ciudad debe tener un minimo 3 caracteres y 40 como maximo" required)
+                  .form-group
+                  // boton para registrar
+                  .form-group
+                  input(type="submit" value="Registrar sucursal" class="btn btn-lg btn-primary btn-block")
+
+                else
+
+                  .form-group
+                    input.form-control(type="text" name="plaza" placeholder="Plaza" pattern="{3,40}$", title="El nombre de la plaza debe un minimo 3 caracteres y 40 como maximo" required)
+                  .form-group
+                    input.form-control(type="text" name="ciudad" placeholder="Ciudad" pattern="{3,40}$", title="La ciudad debe tener un minimo 3 caracteres y 40 como maximo" required)
+                  .form-group
+                  // boton para registrar
+                  .form-group
+                  input(type="submit" value="Registrar sucursal" class="btn btn-lg btn-primary btn-block")
   // jQuery
   script(src='/src/vendor/jquery/jquery.min.js')
   // Bootstrap Core JavaScript
