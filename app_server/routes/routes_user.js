@@ -239,7 +239,7 @@ router.route("/:idUsuario")
         }else{ // si no hubo error en el password
           // verifica que el nuevo username no este repetido
           Usuario.findOne({username:req.body.username}).exec(function(err,usuarioC){
-            if(!err && !usuarioC || !err && req.body.username == req.params.username){ // si no hubo error y el username no esta repetido
+            if(!err && !usuarioC || !err && req.params.idUsuario == usuarioC._id){ // si no hubo error y el username no esta repetido
               if(res.locals.usuario.permisos == 2){ // si es administrador general
                 Sucursal.findOne({plaza:req.body.plaza}).exec(function(err,sucursal){ // busco la sucursal
                   if(!err && sucursal){ // si no hubo error y la sucursal existe
