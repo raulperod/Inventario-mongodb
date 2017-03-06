@@ -133,14 +133,14 @@ app.post("/login",function(req,res){
             res.locals.usuario = usuario;
             res.redirect("/almacen"); // redirecciona al almacen
           }else{ // si el password no coincide, manda una alerta del password
-            res.render("login",{alertPassword:true,alertUsername:false,usuario:false,alertStatus:false,username:req.body.username,password:req.body.password});
+            res.render("login",{alertPassword:true,alertUsername:false,usuario:false,alertStatus:false,username:req.body.username});
           }
         }else{ // si el usuario esta inactivo entonces manda una alerta
-          res.render("login",{alertStatus:true,alertUsername:false,alertPassword:false,usuario:false,username:req.body.username,password:req.body.password});
+          res.render("login",{alertStatus:true,alertUsername:false,alertPassword:false,usuario:false});
         }
       }else if(!usuario){
         // si no existe el usuario entonces, manda una alerta
-        res.render("login",{alertUsername:true,alertPassword:false,usuario:false,alertStatus:false,username:req.body.username,password:req.body.password});
+        res.render("login",{alertUsername:true,alertPassword:false,usuario:false,alertStatus:false,username:req.body.username});
       }else if(err){ // si hubo un error
         console.log(String(err));
         res.redirect("/login");
