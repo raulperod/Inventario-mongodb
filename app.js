@@ -136,7 +136,7 @@ app.post("/login",function(req,res){
             res.render("login",{alertPassword:true,alertUsername:false,usuario:false,alertStatus:false,username:req.body.username});
           }
         }else{ // si el usuario esta inactivo entonces manda una alerta
-          res.render("login",{alertStatus:true,alertUsername:false,alertPassword:false,usuario:false});
+          res.render("login",{alertStatus:true,alertUsername:false,alertPassword:false,usuario:false,username:req.body.username});
         }
       }else if(!usuario){
         // si no existe el usuario entonces, manda una alerta
