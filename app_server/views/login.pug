@@ -38,42 +38,68 @@ html(lang="es")
               .panel-heading
                 h3.panel-title Iniciar Sesion
               .panel-body
-                form(action="/login",method="POST",role='form')
-                  fieldset
+                    if !alertStatus && !alertUsername && !alertPassword
 
-                    if alertStatus
-                      .alert.alert-warning.alert-dismissable
-                        button.close(type='button', data-dismiss='alert', aria-hidden='true') ×
-                        | Usuario Inactivo
-                    if alertUsername
-                      // input con error
-                      .form-group.has-error
-                        .alert.alert-warning.alert-dismissable
-                          button.close(type='button', data-dismiss='alert', aria-hidden='true') ×
-                          | Usuario no encontrado
-                        input#inputError.form-control(placeholder='Nombre de usuario',name='username',type='text',pattern="^([a-zA-Z0-9]{4,20})$", title="El nombre de usuario debe tener unicamente letras y numeros, minimo 4 caracteres y 20 como maximo" required)
-                        //span.error Usuario no existente
+                      form(action="/login",method="POST",role='form')
+                        fieldset
+                          // input normal
+                          .form-group
+                            input.form-control(placeholder='Nombre de usuario',name='username',type='text',pattern="^([a-zA-Z0-9]{4,20})$", title="El nombre de usuario debe tener unicamente letras y numeros, minimo 4 caracteres y 20 como maximo" required)
+                          .form-group
+                            input.form-control(placeholder='Contraseña',name='password',type='password',pattern="^([a-zA-Z0-9]{8,20})$", title="La contraseña debe tener como minimo 8 caracteres y maximo 20" required)
+                          // boton para logearte
+                          .form-group
+                            input(type="submit" value="Iniciar Sesion" class="btn btn-lg btn-primary btn-block")
+
+                    else if alertPassword
+
+                      form(action="/login",method="POST",role='form')
+                        fieldset
+                          // input normal
+                          .form-group
+                            input.form-control(value=username,name='username',type='text',pattern="^([a-zA-Z0-9]{4,20})$", title="El nombre de usuario debe tener unicamente letras y numeros, minimo 4 caracteres y 20 como maximo" required)
+                          // input con error
+                          .form-group.has-error
+                            .alert.alert-warning.alert-dismissable
+                              button.close(type='button', data-dismiss='alert', aria-hidden='true') ×
+                              | Contraseña incorrecta
+                            input#inputError.form-control(value=password, name='password',type='password',pattern="^([a-zA-Z0-9]{8,20})$", title="La contraseña debe tener como minimo 8 caracteres y maximo 20" required)
+                          // boton para logearte
+                          .form-group
+                            input(type="submit" value="Iniciar Sesion" class="btn btn-lg btn-primary btn-block")
+
+                    else if alertUsername
+
+                      form(action="/login",method="POST",role='form')
+                        fieldset
+                          // input con error
+                          .form-group.has-error
+                            .alert.alert-warning.alert-dismissable
+                              button.close(type='button', data-dismiss='alert', aria-hidden='true') ×
+                              | Usuario no encontrado
+                            input#inputError.form-control(value=username,name='username',type='text',pattern="^([a-zA-Z0-9]{4,20})$", title="El nombre de usuario debe tener unicamente letras y numeros, minimo 4 caracteres y 20 como maximo" required)
+                          .form-group
+                          input.form-control(value=password,name='password',type='password',pattern="^([a-zA-Z0-9]{8,20})$", title="La contraseña debe tener como minimo 8 caracteres y maximo 20" required)
+                          // boton para logearte
+                          .form-group
+                          input(type="submit" value="Iniciar Sesion" class="btn btn-lg btn-primary btn-block")
+
                     else
 
-                      // input normal
-                      .form-group
-                        input.form-control(placeholder='Nombre de usuario',name='username',type='text',pattern="^([a-zA-Z0-9]{4,20})$", title="El nombre de usuario debe tener unicamente letras y numeros, minimo 4 caracteres y 20 como maximo" required)
-                    if alertPassword
-                      // input con error
-                      .form-group.has-error
-                        .alert.alert-warning.alert-dismissable
-                          button.close(type='button', data-dismiss='alert', aria-hidden='true') ×
-                          | Contraseña incorrecta
-                        input#inputError.form-control(placeholder='Contraseña', name='password',type='password',pattern="^([a-zA-Z0-9]{8,20})$", title="La contraseña debe tener como minimo 8 caracteres y maximo 20" required)
-                        //span.error Contraseña incorrecta
-                    else
-
-                      // input normal
-                      .form-group
-                      input.form-control(placeholder='Contraseña',name='password',type='password',pattern="^([a-zA-Z0-9]{8,20})$", title="La contraseña debe tener como minimo 8 caracteres y maximo 20" required)
-                    // boton para logearte
-                    .form-group
-                    input(type="submit" value="Iniciar Sesion" class="btn btn-lg btn-primary btn-block")
+                      form(action="/login",method="POST",role='form')
+                        fieldset
+                          .alert.alert-warning.alert-dismissable
+                            button.close(type='button', data-dismiss='alert', aria-hidden='true') ×
+                            | Usuario Inactivo
+                          // input con error
+                          .form-group.has-error
+                            input#inputError.form-control(value=username,name='username',type='text',pattern="^([a-zA-Z0-9]{4,20})$", title="El nombre de usuario debe tener unicamente letras y numeros, minimo 4 caracteres y 20 como maximo" required)
+                          // input normal
+                          .form-group
+                          input.form-control(value=password,name='password',type='password',pattern="^([a-zA-Z0-9]{8,20})$", title="La contraseña debe tener como minimo 8 caracteres y maximo 20" required)
+                          // boton para logearte
+                          .form-group
+                          input(type="submit" value="Iniciar Sesion" class="btn btn-lg btn-primary btn-block")
   // jQuery
   script(src='/src/vendor/jquery/jquery.min.js')
   // Bootstrap Core JavaScript
