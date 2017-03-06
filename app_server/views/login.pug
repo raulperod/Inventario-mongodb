@@ -77,7 +77,7 @@ html(lang="es")
                             .alert.alert-warning.alert-dismissable
                               button.close(type='button', data-dismiss='alert', aria-hidden='true') ×
                               | Usuario no encontrado
-                            input#inputError.form-control(placeholder="Contraseña",name='username',type='text',pattern="^([a-zA-Z0-9]{4,20})$", title="El nombre de usuario debe tener unicamente letras y numeros, minimo 4 caracteres y 20 como maximo" required)
+                            input#inputError.form-control(value=username,name='username',type='text',pattern="^([a-zA-Z0-9]{4,20})$", title="El nombre de usuario debe tener unicamente letras y numeros, minimo 4 caracteres y 20 como maximo" required)
                           .form-group
                           input.form-control(placeholder="Contraseña",name='password',type='password',pattern="^([a-zA-Z0-9]{8,20})$", title="La contraseña debe tener como minimo 8 caracteres y maximo 20" required)
                           // boton para logearte
@@ -96,7 +96,7 @@ html(lang="es")
                             input#inputError.form-control(value=username,name='username',type='text',pattern="^([a-zA-Z0-9]{4,20})$", title="El nombre de usuario debe tener unicamente letras y numeros, minimo 4 caracteres y 20 como maximo" required)
                           // input normal
                           .form-group
-                          input.form-control(placeholder="Nombre de usuario",name='password',type='password',pattern="^([a-zA-Z0-9]{8,20})$", title="La contraseña debe tener como minimo 8 caracteres y maximo 20" required)
+                          input.form-control(placeholder="Contraseña",name='password',type='password',pattern="^([a-zA-Z0-9]{8,20})$", title="La contraseña debe tener como minimo 8 caracteres y maximo 20" required)
                           // boton para logearte
                           .form-group
                           input(type="submit" value="Iniciar Sesion" class="btn btn-lg btn-primary btn-block")
