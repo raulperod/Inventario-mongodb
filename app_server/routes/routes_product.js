@@ -131,12 +131,12 @@ router.route("/:idProducto")
       // Metodo PUT
       .put(function(req,res){
         // busco la categoria
-        Categoria.findOne({nombre:req.body.categoria},function(err,categoria){
+        Categoria.findOne({nombre:req.body.categoria}).exec(function(err,categoria){
           if(!err && categoria){ // si no hubo error y la categoria existe
             // busco el producto
             Producto.findOne( { or: [ {nombre:req.body.nombre} , {codigo:req.body.codigo} ] } ).exec(function(err,prod){
               if(!err && !prod || !err && prod._id == req.params.idProducto ){ // si no hubo error y el nombre o codigo no se repite
-                Producto.findById(req.params.idProducto,function(err,producto){
+                Producto.findById(req.params.idProducto).exec(function(err,producto){
                   if(!err && producto){ // si no hubo error y el producto existe
                     // edito el producto
                     res.locals.productoUpdate = producto;
