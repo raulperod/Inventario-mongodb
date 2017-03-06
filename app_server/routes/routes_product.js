@@ -134,7 +134,7 @@ router.route("/:idProducto")
           if(!err && categoria){
             //verificar que no se repita el nombre ni el codigo
             Producto.findById(req.params.idProducto).exec(function(err,producto){
-              if(!err && producto){
+              if(!err && producto){ // si no hay error y el producto existe
                 if(producto.nombre == req.body.nombre && producto.codigo == req.body.codigo){ // si no modifico el nombre ni el codigo
                   // edito el producto
                   res.locals.productoUpdate = producto;
@@ -149,7 +149,7 @@ router.route("/:idProducto")
                 }else if(producto.nombre != req.body.nombre && producto.codigo == req.body.codigo){ // si modifico el nombre y el codigo es el mismo
                   // verifico si el nombre esta repetido
                   Producto.findOne({nombre:req.body.nombre}).exec(function(err,p){
-                    if(!err && !p){
+                    if(!err && !p){ // si no hay error y el nombre no se repite
                       // edito el producto
                       res.locals.productoUpdate = producto;
                       res.locals.productoUpdate.nombre = req.body.nombre;
@@ -160,12 +160,12 @@ router.route("/:idProducto")
                         if(err) console.log(err);
                         res.redirect("/products");
                       });
-                    }else{
+                    }else{ // si paso algo
                       if(p){ //si se repite el nombre
                         Categoria.find({}).exec(function(err,categorias){
-                          if(!err && categorias){
+                          if(!err && categorias){ //si no hay error y hay categorias
                             res.render("./products/update",{categorias:categorias,AlertNombre:true,AlertCodigo:false,nombre:req.body.nombre,codigo:req.body.codigo,descripcion:req.body.descripcion,minimo:req.body.minimo,id:req.params.idProducto});
-                          }else{
+                          }else{ // si paso algo
                             if(!categorias){ // si no hay categorias
                               res.redirect("/categories/new");
                             }else{ // si hubo un error
@@ -174,7 +174,7 @@ router.route("/:idProducto")
                             }
                           }
                         });
-                      }else{
+                      }else{ // si hubo un error
                         console.log(err);
                         res.redirect("/products");
                       }
@@ -184,46 +184,9 @@ router.route("/:idProducto")
                 }else if(producto.nombre == req.body.nombre && producto.codigo != req.body.codigo){ // si modifico el codigo y el nombre es el mismo
                   // verifico si el codigo esta repetido
                   Producto.findOne({codigo:req.body.codigo}).exec(function(err,p){
-                    if(!err && !p){
+                    if(!err && !p){ // si hubo error y no se repite el codigo
                       // edito el producto
                       res.locals.productoUpdate = producto;
-                      res.locals.productoUpdate.nombre = req.body.nombre;
-                      res.locals.productoUpdate.descripcion = req.body.descripcion;
-                      res.locals.productoUpdate.minimo = parseInt(req.body.minimo);
-                      res.locals.productoUpdate.categoria = categoria._id;
-                      res.locals.productoUpdate.save(function(err){
-                        if(err) console.log(err);
-                        res.redirect("/products");
-                      });
-                    }else{
-                      if(p){ //si se repite el codigo
-                        Categoria.find({}).exec(function(err,categorias){
-                          if(!err && categorias){
-                            res.render("./products/update",{categorias:categorias,AlertNombre:false,AlertCodigo:true,nombre:req.body.nombre,codigo:req.body.codigo,descripcion:req.body.descripcion,minimo:req.body.minimo,id:req.params.idProducto});
-                          }else{
-                            if(!categorias){ // si no hay categorias
-                              res.redirect("/categories/new");
-                            }else{ // si hubo un error
-                              console.log(err);
-                              res.redirect("/products");
-                            }
-                          }
-                        });
-                      }else{
-                        console.log(err);
-                        res.redirect("/products");
-                      }
-                    }
-                  });
-
-                }else{ // si modifico ambos
-
-                  // verifico si el codigo  o el nombre esta repetido
-                  Producto.findOne({ $or: [ {nombre:req.body.nombre} , {codigo:req.body.codigo} ] }).exec(function(err,p){
-                    if(!err && !p){
-                      // edito el producto
-                      res.locals.productoUpdate = producto;
-                      res.locals.productoUpdate.nombre = req.body.nombre;
                       res.locals.productoUpdate.codigo = req.body.codigo;
                       res.locals.productoUpdate.descripcion = req.body.descripcion;
                       res.locals.productoUpdate.minimo = parseInt(req.body.minimo);
@@ -235,13 +198,9 @@ router.route("/:idProducto")
                     }else{
                       if(p){ //si se repite el codigo
                         Categoria.find({}).exec(function(err,categorias){
-                          if(!err && categorias){
-                            if(p.nombre == req.body.nombre ){ // si se repite el nombre
-                              res.render("./products/update",{categorias:categorias,AlertNombre:true,AlertCodigo:false,nombre:req.body.nombre,codigo:req.body.codigo,descripcion:req.body.descripcion,minimo:req.body.minimo,id:req.params.idProducto});
-                            }else{ // si se repite el codigo
-                              res.render("./products/update",{categorias:categorias,AlertNombre:false,AlertCodigo:true,nombre:req.body.nombre,codigo:req.body.codigo,descripcion:req.body.descripcion,minimo:req.body.minimo,id:req.params.idProducto});
-                            }
-                          }else{
+                          if(!err && categorias){ // si no hubo error
+                            res.render("./products/update",{categorias:categorias,AlertNombre:false,AlertCodigo:true,nombre:req.body.nombre,codigo:req.body.codigo,descripcion:req.body.descripcion,minimo:req.body.minimo,id:req.params.idProducto});
+                          }else{ // si paso algo
                             if(!categorias){ // si no hay categorias
                               res.redirect("/categories/new");
                             }else{ // si hubo un error
@@ -250,7 +209,48 @@ router.route("/:idProducto")
                             }
                           }
                         });
-                      }else{
+                      }else{ // si hubo un error
+                        console.log(err);
+                        res.redirect("/products");
+                      }
+                    }
+                  });
+
+                }else{ // si modifico ambos
+
+                  // verifico si el codigo  o el nombre esta repetido
+                  Producto.findOne({ $or: [ {nombre:req.body.nombre} , {codigo:req.body.codigo} ] }).exec(function(err,p){
+                    if(!err && !p){ // si no hubo error y no se repite el nombre o el codigo
+                      // edito el producto
+                      res.locals.productoUpdate = producto;
+                      res.locals.productoUpdate.nombre = req.body.nombre;
+                      res.locals.productoUpdate.codigo = req.body.codigo;
+                      res.locals.productoUpdate.descripcion = req.body.descripcion;
+                      res.locals.productoUpdate.minimo = parseInt(req.body.minimo);
+                      res.locals.productoUpdate.categoria = categoria._id;
+                      res.locals.productoUpdate.save(function(err){
+                        if(err) console.log(err);
+                        res.redirect("/products");
+                      });
+                    }else{ // si paso algo
+                      if(p){ //si se repite el codigo
+                        Categoria.find({}).exec(function(err,categorias){
+                          if(!err && categorias){ // si no hubo error
+                            if(p.nombre == req.body.nombre ){ // si se repite el nombre
+                              res.render("./products/update",{categorias:categorias,AlertNombre:true,AlertCodigo:false,nombre:req.body.nombre,codigo:req.body.codigo,descripcion:req.body.descripcion,minimo:req.body.minimo,id:req.params.idProducto});
+                            }else{ // si se repite el codigo
+                              res.render("./products/update",{categorias:categorias,AlertNombre:false,AlertCodigo:true,nombre:req.body.nombre,codigo:req.body.codigo,descripcion:req.body.descripcion,minimo:req.body.minimo,id:req.params.idProducto});
+                            }
+                          }else{ // si paso algo
+                            if(!categorias){ // si no hay categorias
+                              res.redirect("/categories/new");
+                            }else{ // si hubo un error
+                              console.log(err);
+                              res.redirect("/products");
+                            }
+                          }
+                        });
+                      }else{ // si hubo error
                         console.log(err);
                         res.redirect("/products");
                       }
@@ -258,12 +258,12 @@ router.route("/:idProducto")
                   });
 
                 }
-              }else{
+              }else{ // si hubo un error
                 if(err) console.log(err);
                 res.redirect("/products");
               }
             });
-          }else{
+          }else{ // si hubo un error
             if(err) console.log(err);
             res.redirect("/products");
           }
