@@ -134,8 +134,8 @@ router.route("/:idProducto")
         Categoria.findOne({nombre:req.body.categoria}).exec(function(err,categoria){
           if(!err && categoria){ // si no hubo error y la categoria existe
             // busco el producto
-            Producto.findOne( { or: [ {nombre:req.body.nombre} , {codigo:req.body.codigo} ] } ).exec(function(err,prod){
-              if(!err && !prod || !err && prod._id == req.params.idProducto ){ // si no hubo error y el nombre o codigo no se repite
+            Producto.findOne( { $or: [ {nombre:req.body.nombre} , {codigo:req.body.codigo} ] } ).exec(function(err,prod){
+              if(!err && !prod && prod._id == req.params.idProducto ){ // si no hubo error y el nombre o codigo no se repite
                 Producto.findById(req.params.idProducto).exec(function(err,producto){
                   if(!err && producto){ // si no hubo error y el producto existe
                     // edito el producto
