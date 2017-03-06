@@ -108,7 +108,7 @@ router.route("/:idProducto")
             // busco al producto
             Producto.findById(req.params.idProducto).exec(function(err,producto){
               if(!err && producto){ // si no hay error y el producto existe
-                res.render("./products/update",{categorias:categorias,productoUpdate:producto});
+                res.render("./products/update",{categorias:categorias,productoUpdate:producto,AlertNombre:false,AlertCodigo:false});
               }else{ // si hubo un error
                 if(!producto){ // si no hay producto
                   res.redirect("/products/new");
@@ -134,28 +134,44 @@ router.route("/:idProducto")
         Categoria.findOne({nombre:req.body.categoria},function(err,categoria){
           if(!err && categoria){ // si no hubo error y la categoria existe
             // busco el producto
-            Producto.findById(req.params.idProducto,function(err,producto){
-              if(!err && producto){ // si no hubo error y el producto existe
-                // edito el producto
-                res.locals.productoUpdate = producto;
-                res.locals.productoUpdate.nombre = req.body.nombre;
-                res.locals.productoUpdate.codigo = req.body.codigo;
-                res.locals.productoUpdate.descripcion = req.body.descripcion;
-                res.locals.productoUpdate.minimo = parseInt(req.body.minimo);
-                res.locals.productoUpdate.categoria = categoria._id;
-                res.locals.productoUpdate.save(function(err){
-                  if(err) console.log(err);
-                  res.redirect("/products");
+            Producto.findOne( { or: [ {nombre:req.body.nombre} , {codigo:req.body.codigo} ] } ).exec(function(err,prod){
+              if(!err && !prod || !err && prod._id == req.params.idProducto ){ // si no hubo error y el nombre o codigo no se repite
+                Producto.findById(req.params.idProducto,function(err,producto){
+                  if(!err && producto){ // si no hubo error y el producto existe
+                    // edito el producto
+                    res.locals.productoUpdate = producto;
+                    res.locals.productoUpdate.nombre = req.body.nombre;
+                    res.locals.productoUpdate.codigo = req.body.codigo;
+                    res.locals.productoUpdate.descripcion = req.body.descripcion;
+                    res.locals.productoUpdate.minimo = parseInt(req.body.minimo);
+                    res.locals.productoUpdate.categoria = categoria._id;
+                    res.locals.productoUpdate.save(function(err){
+                      if(err) console.log(err);
+                      res.redirect("/products");
+                    });
+                  }else{ // si hubo un error
+                    if(!producto){ // si el producto no existe
+                      res.redirect("/products/new");
+                    }else{ // si hubo un error
+                      console.log(err);
+                      res.redirect("/products");
+                    }
+                  }
                 });
-              }else{ // si hubo un error
-                if(!producto){ // si el producto no existe
-                  res.redirect("/products/new");
-                }else{ // si hubo un error
+              }else{ // si hubo un error o se repite un campo
+                if(prod){ // si se repitio un campo
+                    if(prod.nombre == req.body.nombre){ // si se repite el nombre
+                      res.render("./products/update",{categorias:categorias,AlertNombre:true,AlertCodigo:false,nombre:req.body.nombre,codigo:req.body.codigo,descripcion:req.body.descripcion,minimo:req.body.minimo,id:req.params.idProducto});
+                    }else{ // si se repite el codigo
+                      res.render("./products/update",{categorias:categorias,AlertNombre:false,AlertCodigo:true,nombre:req.body.nombre,codigo:req.body.codigo,descripcion:req.body.descripcion,minimo:req.body.minimo,id:req.params.idProducto});
+                    }
+                }else{ // si hubo error
                   console.log(err);
                   res.redirect("/products");
                 }
               }
             });
+
           }else{ // si hubo un error
             if(!categoria){ // si la categoria no existe
               res.redirect("/categories/new");

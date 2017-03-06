@@ -7,29 +7,89 @@ block contenido
           .panel-heading
             h3.panel-title Editar producto
           .panel-body
-            form(action="/products/"+productoUpdate._id+"?_method=PUT",method="POST")
-              fieldset
-                .form-group
-                  h5  Nombre:
-                  input.form-control(type="text",name="nombre",required="required",value=productoUpdate.nombre, pattern="{3,40}$",title="El nombre del producto debe tener un minimo 3 caracteres y 40 como maximo")
-                .form-group
-                  h5  Codigo de barras:
-                  input.form-control(type="text",name="codigo",required="required",value=productoUpdate.codigo, pattern="{3,30}$",title="El nombre de la plaza debe tener un minimo 3 caracteres y 30 como maximo")
-                .form-group
-                  h5  Descripcion:
-                  input.form-control(type="text",name="descripcion",required="required",value=productoUpdate.descripcion, pattern="{3,70}$",title="El nombre de la plaza debe tener un minimo 3 caracteres y 70 como maximo")
-                .form-group
-                  input.form-control(type="number", value=productoUpdate.minimo ,name="minimo", min="0", max="10000", title="Cantidad minima del producto en el almacen" required)
-                .form-group
-                  h5  Categoria:
-                  link(href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css', rel='stylesheet')
-                  select.form-control.selectpicker(name="categoria", data-live-search="true")
-                    for categoria in categorias
-                      option(name="1") #{categoria.nombre}
-                //esto todavia hay que ver los estilos para poner un select en vez de un input
-                // boton para registrar
-                .form-group
-                input(type="submit" value="Actualizar" class="btn btn-lg btn-primary btn-block")
+            if !AlertNombre && !AlertCodigo
+
+              form(action="/products/"+productoUpdate._id+"?_method=PUT",method="POST")
+                fieldset
+                  .form-group
+                    h5  Nombre:
+                    input.form-control(type="text",name="nombre",required="required",value=productoUpdate.nombre, pattern="{3,40}$",title="El nombre del producto debe tener un minimo 3 caracteres y 40 como maximo")
+                  .form-group
+                    h5  Codigo de barras:
+                    input.form-control(type="text",name="codigo",required="required",value=productoUpdate.codigo, pattern="{3,30}$",title="El nombre de la plaza debe tener un minimo 3 caracteres y 30 como maximo")
+                  .form-group
+                    h5  Descripcion:
+                    input.form-control(type="text",name="descripcion",required="required",value=productoUpdate.descripcion, pattern="{3,70}$",title="El nombre de la plaza debe tener un minimo 3 caracteres y 70 como maximo")
+                  .form-group
+                    input.form-control(type="number", value=productoUpdate.minimo ,name="minimo", min="0", max="10000", title="Cantidad minima del producto en el almacen" required)
+                  .form-group
+                    h5  Categoria:
+                    link(href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css', rel='stylesheet')
+                    select.form-control.selectpicker(name="categoria", data-live-search="true")
+                      for categoria in categorias
+                        option(name="1") #{categoria.nombre}
+                  //esto todavia hay que ver los estilos para poner un select en vez de un input
+                  // boton para registrar
+                  .form-group
+                  input(type="submit" value="Actualizar" class="btn btn-lg btn-primary btn-block")
+
+            else if AlertNombre
+
+              form(action="/products/"+id+"?_method=PUT",method="POST")
+                fieldset
+                  .alert.alert-warning.alert-dismissable
+                    button.close(type='button', data-dismiss='alert', aria-hidden='true') ×
+                    | Ya existe un producto con ese nombre
+                  .form-group.has-error
+                    h5  Nombre:
+                    input#inputError.form-control(type="text", name="nombre", value=nombre, pattern="{3,40}$",title="El nombre del producto debe tener un minimo 3 caracteres y 40 como maximo" required)
+                  .form-group
+                    h5  Codigo:
+                    input.form-control(type="text", name="codigo", value=codigo, pattern="{3,30}$",title="El nombre de la plaza debe tener un minimo 3 caracteres y 30 como maximo" required)
+                  .form-group
+                    h5  Descripcion:
+                    input.form-control(type="text", name="descripcion", value=descripcion, pattern="{3,70}$",title="El nombre de la plaza debe tener un minimo 3 caracteres y 70 como maximo" required)
+                  .form-group
+                    h5  Cantidad minima:
+                    input.form-control(type="number", value=minimo ,name="minimo", min="0", max="10000", title="Cantidad minima del producto en el almacen" required)
+                  .form-group
+                    link(href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css', rel='stylesheet')
+                    select.form-control.selectpicker(name="categoria", data-live-search="true")
+                      for categoria in categorias
+                        option(name="1") #{categoria.nombre}
+                  //esto todavia hay que ver los estilos para poner un select en vez de un input
+                  // boton para registrar
+                  .form-group
+                  input(type="submit" value="Agregar Producto" class="btn btn-lg btn-primary btn-block")
+
+            else if AlertCodigo
+
+              form(action="/products/"+id+"?_method=PUT",method="POST")
+                fieldset
+                  .form-group
+                    h5  Nombre:
+                    input.form-control(type="text", name="nombre", value=nombre, pattern="{3,40}$",title="El nombre del producto debe tener un minimo 3 caracteres y 40 como maximo" required)
+                  .alert.alert-warning.alert-dismissable
+                    button.close(type='button', data-dismiss='alert', aria-hidden='true') ×
+                    | Ya existe un producto con ese codigo
+                  .form-group.has-error
+                    h5  Codigo:
+                    input#inputError.form-control(type="text", name="codigo", value=codigo, pattern="{3,30}$",title="El nombre de la plaza debe tener un minimo 3 caracteres y 30 como maximo" required)
+                  .form-group
+                    h5  Descripcion:
+                    input.form-control(type="text", name="descripcion", value=descripcion, pattern="{3,70}$",title="El nombre de la plaza debe tener un minimo 3 caracteres y 70 como maximo" required)
+                  .form-group
+                    h5  Cantidad minima:
+                    input.form-control(type="number", value=minimo  ,name="minimo", min="0", max="10000", title="Cantidad minima del producto en el almacen" required)
+                  .form-group
+                    link(href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css', rel='stylesheet')
+                    select.form-control.selectpicker(name="categoria", data-live-search="true")
+                      for categoria in categorias
+                        option(name="1") #{categoria.nombre}
+                  //esto todavia hay que ver los estilos para poner un select en vez de un input
+                  // boton para registrar
+                  .form-group
+                  input(type="submit" value="Agregar Producto" class="btn btn-lg btn-primary btn-block")
   // jQuery
   script(src='/src/vendor/jquery/jquery.min.js')
   // Bootstrap Core JavaScript
