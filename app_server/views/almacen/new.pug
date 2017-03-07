@@ -14,10 +14,8 @@ block contenido
                   .form-group
                     link(href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css', rel='stylesheet')
                     select.form-control.selectpicker(name="producto", data-live-search="true")
-                      option(name="1") #{nombre}
                       for producto in productos
-                        if producto.nombre != nombre
-                          option(name="1") #{producto.nombre}
+                        option(name="1") #{producto.nombre}
                   .form-group
                     input.form-control(type="number" placeholder="Cantidad" name="cantidad" min="0" max="10000", title="Cantidad a agregar al almacen" required)
                   .form-group
@@ -33,8 +31,10 @@ block contenido
                   .form-group.has-error
                     link(href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css', rel='stylesheet')
                     select.form-control.selectpicker(name="producto", data-live-search="true")
+                      option(name="1") #{nombre}
                       for producto in productos
-                        option(name="1") #{producto.nombre}
+                        if producto.nombre != nombre
+                          option(name="1") #{producto.nombre}
                   .form-group
                     input.form-control(type="number", value=cantidad, name="cantidad", min="0" ,max="10000", title="Cantidad a agregar al almacen" required)
                   .form-group
