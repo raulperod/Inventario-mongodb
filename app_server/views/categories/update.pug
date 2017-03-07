@@ -7,17 +7,37 @@ block contenido
           .panel-heading
             h3.panel-title Actualizar
           .panel-body
-            form(action="/categories/"+categoryUpdate.nombre+"?_method=PUT",method="POST")
-              fieldset
-                .form-group
-                  h5  Nombre:
-                  input.form-control(type="text",name="nombre",value=categoryUpdate.nombre required)
-                .form-group
-                  h5  Descripcion:
-                  input.form-control(type="text",name="descripcion",value=categoryUpdate.descripcion required)
-                // boton para registrar
-                .form-group
-                input(type="submit" value="Actualizar" class="btn btn-lg btn-primary btn-block")
+            if !AlertNombre
+
+              form(action="/categories/"+categoryUpdate._id+"?_method=PUT",method="POST")
+                fieldset
+                  .form-group
+                    h5  Nombre:
+                    input.form-control(type="text",name="nombre",value=categoryUpdate.nombre required)
+                  .form-group
+                    h5  Descripcion:
+                    input.form-control(type="text",name="descripcion",value=categoryUpdate.descripcion required)
+                  // boton para registrar
+                  .form-group
+                  input(type="submit" value="Actualizar" class="btn btn-lg btn-primary btn-block")
+
+            else
+
+              form(action="/categories/"+id+"?_method=PUT",method="POST")
+                fieldset
+                  .alert.alert-warning.alert-dismissable
+                    button.close(type='button', data-dismiss='alert', aria-hidden='true') ×
+                    | Ya existe una categoria con ese nombre
+                  .form-group.has-error
+                    h5  Nombre:
+                    input#inputError.form-control(type="text", name="nombre",value=nombre ,required)
+                  .form-group
+                    h5  Descripcion:
+                    input.form-control(type="text", name="descripcion", value=descripcion, required)
+                  .form-group
+                  // boton para registrar
+                  .form-group
+                  input(type="submit" value="Agregar categoria" class="btn btn-lg btn-primary btn-block")
   // jQuery
   script(src='/src/vendor/jquery/jquery.min.js')
   // Bootstrap Core JavaScript
