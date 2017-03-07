@@ -21,7 +21,7 @@ var session_general_admin = require("./app_server/middleware/session_general_adm
 var mongoose = require("mongoose");
 // conectar a la base de datos
 mongoose.Promise = require("bluebird");
-var uristring = process.env.PROD_MONGODB || 'mongodb://localhost/gelishtime';
+var uristring = process.env.PROD_MONGODB;
 mongoose.connect(uristring);
 // ------- impresiones de log dependiendo de la situacion ---------------------------//
 // si se conecto
