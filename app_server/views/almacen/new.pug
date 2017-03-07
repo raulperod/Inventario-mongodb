@@ -7,18 +7,36 @@ block contenido
           .panel-heading
             h3.panel-title Agregar productos al almacen
           .panel-body
-            form(action="/almacen/new",method="POST",role='form')
-              fieldset
-                .form-group
-                  //select.form-control(name="producto", data-live-search="true")
-                  link(href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css', rel='stylesheet')
-                  select.form-control.selectpicker(name="producto", data-live-search="true")
-                    for producto in productos
-                      option(name="1") #{producto.nombre}
-                .form-group
-                  input.form-control(type="number" placeholder="Cantidad" name="cantidad" min="0" max="10000" required, title="Cantidad a agregar al almacen")
-                .form-group
-                input(type="submit" value="Agregar productos" class="btn btn-lg btn-primary btn-block")
+            if !AlertProducto
+
+              form(action="/almacen/new",method="POST",role='form')
+                fieldset
+                  .form-group
+                    link(href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css', rel='stylesheet')
+                    select.form-control.selectpicker(name="producto", data-live-search="true")
+                      for producto in productos
+                        option(name="1") #{producto.nombre}
+                  .form-group
+                    input.form-control(type="number" placeholder="Cantidad" name="cantidad" min="0" max="10000", title="Cantidad a agregar al almacen" required)
+                  .form-group
+                  input(type="submit" value="Agregar productos" class="btn btn-lg btn-primary btn-block")
+
+            else
+
+              form(action="/almacen/new",method="POST",role='form')
+                fieldset
+                  .alert.alert-warning.alert-dismissable
+                    button.close(type='button', data-dismiss='alert', aria-hidden='true') ×
+                    | El producto ya esta registrado en el almacen
+                  .form-group.has-error
+                    link(href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css', rel='stylesheet')
+                    select.form-control.selectpicker(name="producto", data-live-search="true")
+                      for producto in productos
+                        option(name="1") #{producto.nombre}
+                  .form-group
+                    input.form-control(type="number", value=cantidad, name="cantidad", min="0" ,max="10000", title="Cantidad a agregar al almacen" required)
+                  .form-group
+                  input(type="submit" value="Agregar productos" class="btn btn-lg btn-primary btn-block")
   // jQuery
   script(src='/src/vendor/jquery/jquery.min.js')
   // Bootstrap Core JavaScript

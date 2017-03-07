@@ -53,20 +53,19 @@ router.route("/new")
           }
         });
       })
-      //
+      // Metodo POST
       .post(function(req,res){
-        // busca al usuario logeado
-        // si no hay producto repetido, entonces crea uno nuevo
-        Producto.findOne({nombre:req.body.producto},function(err,producto){
-          if(!err && producto){
+        Producto.findOne({nombre:req.body.producto},function(err,producto){ // busca el producto
+          if(!err && producto){ // si no hubo error y el producto existe
             Almacen.findOne( {producto:producto._id,"sucursal":res.locals.usuario.sucursal },function(err,productoSucursal){
               if(!err && !productoSucursal){ // si no esta repetido
+                // creo el nuevo producto en el almacen
                 var almacen = new Almacen({
                   cantidad:parseInt(req.body.cantidad),
                   producto:producto._id,
                   sucursal:res.locals.usuario.sucursal
                 });
-                // guarda al usuario en la base de datos
+                // guarda el almacen en la base de datos
                 almacen.save().then(function(us){
                   res.redirect("/almacen");
                 }, function(err){ // si ocurre un error lo imprime
@@ -89,19 +88,28 @@ router.route("/new")
                   console.log(err);
                 });
 
-              }else{
-                console.log(err);
-                res.redirect("/almacen");
+              }else{ // si paso algo
+                if(productoSucursal){ // si el producto ya esta en el almacen
+                  Producto.find({},function(err,productos){ // busca todos los productos
+                    if(!err){ // si no hubo error
+                      res.render("./almacen/new",{AlertProducto:true,productos:productos,cantidad:req.body.cantidad});
+                    }else{ // si hubo un error
+                      console.log(err);
+                      res.redirect("/almacen");
+                    }
+                  });
+                }else{ // si hubo un error
+                  console.log(err);
+                  res.redirect("/almacen");
+                }
               }
             });
 
-          }else{
+          }else{ // si paso un error
             console.log(err);
             res.redirect("/almacen");
           }
         });
-
-
 });
 // para editar un producto en el almacen
 router.route("/:idAlmacen")
