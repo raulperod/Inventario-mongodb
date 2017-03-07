@@ -111,17 +111,16 @@ router.route("/new")
           }
         });
 });
-// para editar un producto en el almacen
+// gelishtime/almacen/:idAlmacen
 router.route("/:idAlmacen")
+      // Metodo GET
       .put(function(req,res){
         // si no mandaron cambios
         if(parseInt(req.body.cantidad) == 0) res.redirect("/almacen");
-
-        Almacen.findById(req.params.idAlmacen,function(err,productoAlm){
-          if(!err && productoAlm){
+        Almacen.findById(req.params.idAlmacen,function(err,productoAlm){ // busco el almacen
+          if(!err && productoAlm){ // si no hay error y el almacen existe
             res.locals.productoAlmUpdate = productoAlm;
-            // se restan al producto
-            if(typeof req.body.botton1 == "undefined"){
+            if(typeof req.body.botton1 == "undefined"){// se restan al producto
               // si el numero que pusieron es mayor que el que tenian, entonces quedan 0 productos
               if( parseInt(req.body.cantidad) > res.locals.productoAlmUpdate.cantidad ){
                 // genera el registro
@@ -132,10 +131,10 @@ router.route("/:idAlmacen")
                   producto:productoAlm.producto,
                   tipo: 0
                 });
-                Consumo.findOne({producto:productoAlm.producto,sucursal:res.locals.usuario.sucursal},function(err,consumo){
-                  if(!err){
-                    if(!consumo){
-                      // si habia consumo, entonces lo crea
+                Consumo.findOne({producto:productoAlm.producto,sucursal:res.locals.usuario.sucursal},function(err,consumo){ // verifico si hay un consumo
+                  if(!err){// si no hay error
+                    if(!consumo){ // si no hay consumo de ese producto
+                      // entonces lo crea
                       var consumo = new Consumo({
                         sucursal:res.locals.usuario.sucursal,
                         cantidad:res.locals.productoAlmUpdate.cantidad,
@@ -165,7 +164,7 @@ router.route("/:idAlmacen")
                     }, function(err){ // si ocurre un error lo imprime
                       console.log(err);
                     });
-                  }else{
+                  }else{ // si hubo un error
                     console.log(err);
                     res.redirect("/almacen");
                   }
@@ -181,11 +180,12 @@ router.route("/:idAlmacen")
                   producto:productoAlm.producto,
                   tipo: 0
                 });
+                // resta la cantidad
                 res.locals.productoAlmUpdate.cantidad -= parseInt(req.body.cantidad);
                 Consumo.findOne({producto:productoAlm.producto,sucursal:res.locals.usuario.sucursal},function(err,consumo){
-                  if(!err){
-                    if(!consumo){
-                      // si habia consumo, entonces lo crea
+                  if(!err){ // si no hubo error
+                    if(!consumo){ // si no habia consumo
+                      // entonces lo crea
                       var consumo = new Consumo({
                         sucursal:res.locals.usuario.sucursal,
                         cantidad:parseInt(req.body.cantidad),
@@ -195,7 +195,6 @@ router.route("/:idAlmacen")
                       }, function(err){ // si ocurre un error lo imprime
                         console.log(err);
                       });
-
                     }else{ // si ya habia uno, aumenta su cantidad
                       res.locals.consumo = consumo;
                       res.locals.consumo.cantidad += parseInt(req.body.cantidad);
@@ -203,8 +202,7 @@ router.route("/:idAlmacen")
                         if(err) console.log(err);
                       });
                     }
-
-                  }else{
+                  }else{ // si hubo un error
                     console.log(err);
                     res.redirect("/almacen");
                   }
@@ -219,9 +217,7 @@ router.route("/:idAlmacen")
                 }, function(err){ // si ocurre un error lo imprime
                   console.log(err);
                 });
-
               }
-
             }else{ // se agregan al producto
               res.locals.productoAlmUpdate.cantidad += parseInt(req.body.cantidad);
               // genera el registro
@@ -243,9 +239,7 @@ router.route("/:idAlmacen")
                 console.log(err);
               });
             }
-
-
-          }else{
+          }else{ // si hubo un error
             console.log(err);
             res.redirect("/almacen");
           }
