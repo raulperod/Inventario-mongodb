@@ -91,7 +91,7 @@ router.route("/:idCategoria")
                 }else{ // si paso algo
                   if(categoriaNew){ // si hay una categoria con el nuevo nombre
                     // mando una alerta
-                    res.render("./categories/update",{AlertNombre:true,nombre:req.body.nombre,descripcion:req.body.descripcion,id:req.params.idCategoria}});
+                    res.render("./categories/update",{AlertNombre:true,nombre:req.body.nombre,descripcion:req.body.descripcion,id:req.params.idCategoria});
                   }else{ // si hay error
                     console.log(err);
                     res.redirect("/categoria");
