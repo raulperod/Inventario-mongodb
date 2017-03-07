@@ -129,7 +129,7 @@ router.route("/:idCategoria")
                 });
               }
             }else{ // si paso un error
-              if(err) console.log(err);
+              if(err) console.log(err); // imprimo el error
               res.redirect("/categories");
             }
         });
