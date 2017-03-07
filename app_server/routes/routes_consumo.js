@@ -13,7 +13,7 @@ router.get("/",function(req,res){
           .populate("producto sucursal")
           .exec(function(err,consumos){
 
-      if(!err && consumo){ // si no hay error
+      if(!err && consumos){ // si no hay error
         // le mandas los productos del almacen
         res.render("./consumos/manager",{consumos:consumos});
       }else{ // si hubo error
