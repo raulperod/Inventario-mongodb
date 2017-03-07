@@ -6,53 +6,54 @@ var Producto = require("../models/producto").Producto;
 var Sucursal = require("../models/sucursal").Sucursal;
 var RegistroDeMovimiento = require("../models/registroDeMovimiento").RegistroDeMovimiento;
 var router = express.Router();
-// mostrar lista de productos de la sucursal del usuario
+// gelishtime/almacen
 router.get("/",function(req,res){
-  // busca al usuario logeado
-  if(res.locals.usuario.permisos == 2){
-    // busca los pruductos del almacen donde sean de la sucursal del usuario
+  if(res.locals.usuario.permisos == 2){ // si es administrador general
+    // busca todos pruductos del almacen de todas las sucursales
     Almacen.find({ })
           .populate("producto sucursal")
           .exec(function(err,almacen){
 
-      if(!err){
+      if(!err){ // si no hubo error
         // le mandas los productos del almacen
         res.render("./almacen/manager",{almacen:almacen});
-      }else{
+      }else{ // si hubo error
         console.log(err);
         res.redirect("/almacen");
       }
     });
-  }else{
-    // busca los pruductos del almacen donde sean de la sucursal del usuario
+  }else{ // si es administrador de sucursal o recepcionista
+    // busca los pruductos del almacen donde sea de la sucursal del usuario
     Almacen.find({ sucursal:res.locals.usuario.sucursal })
             .populate("producto sucursal")
             .exec(function(err,almacen){
 
-      if(!err){
+      if(!err){ // si no hubo error
         // le mandas los productos del almacen
         res.render("./almacen/manager",{almacen:almacen});
-      }else{
+      }else{ // si hubo error
         console.log(err);
         res.redirect("/almacen");
       }
     });
   }
 });
-// Para agregar un producto al almacen
-router.route("/add")
+// gelishtime/new
+router.route("/new")
+      // Metodo GET
       .get(function(req,res){
         // si entra el admin general lo redirecciona, no debe estar aqui
         if(res.locals.usuario.permisos == 2) res.redirect("/almacen")
-        Producto.find({},function(err,productos){
-          if(!err){
-            res.render("./almacen/add",{productos:productos});
-          }else{
+        Producto.find({},function(err,productos){ // busca todos los productos
+          if(!err){ // si no hubo error
+            res.render("./almacen/new",{AlertProducto:false,productos:productos});
+          }else{ // si hubo un error
             console.log(err);
             res.redirect("/almacen");
           }
         });
       })
+      //
       .post(function(req,res){
         // busca al usuario logeado
         // si no hay producto repetido, entonces crea uno nuevo

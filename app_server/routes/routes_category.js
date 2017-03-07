@@ -108,23 +108,23 @@ router.route("/:idCategoria")
       // Metodo DELETE
       .delete(function(req,res){
         // busco todos los productos que tengan la catedoria
-        Producto.find({categoria:req.params.idCategoria},function(err,productos){
+        Producto.find({categoria:req.params.idCategoria}).exec(function(err,productos){
             if(!err && productos){
               // borro todos los productos de la categoria a eliminar
               for(let producto of productos){
-                Baja.remove({producto:producto._id},function(err){
+                Baja.remove({producto:producto._id}).exec(function(err){
                   if(err) console.log(err);
                 });
-                RegistroDeMovimiento.remove({producto:producto._id},function(err){
+                RegistroDeMovimiento.remove({producto:producto._id}).exec(function(err){
                   if(err) console.log(err);
                 });
-                Consumo.remove({producto:producto._id},function(err){
+                Consumo.remove({producto:producto._id}).exec(function(err){
                   if(err) console.log(err);
                 });
-                Almacen.remove({producto:producto._id},function(err){
+                Almacen.remove({producto:producto._id}).exec(function(err){
                   if(err) console.log(err);
                 });
-                Producto.findOneAndRemove({_id:producto._id},function(err){
+                Producto.findOneAndRemove({_id:producto._id}).exec(function(err){
                     if(err) console.log(err);
                 });
               }
@@ -134,7 +134,7 @@ router.route("/:idCategoria")
             }
         });
         // por ultimo borro la categoria
-        Categoria.findOneAndRemove({_id: req.params.idCategoria},function(err){
+        Categoria.findOneAndRemove({_id: req.params.idCategoria}).exec(function(err){
             if(err) console.log(err);
             res.redirect("/categories");
         });
