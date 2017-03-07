@@ -92,7 +92,7 @@ router.route("/new")
                 if(productoSucursal){ // si el producto ya esta en el almacen
                   Producto.find({},function(err,productos){ // busca todos los productos
                     if(!err){ // si no hubo error
-                      res.render("./almacen/new",{AlertProducto:true,productos:productos,cantidad:req.body.cantidad});
+                      res.render("./almacen/new",{AlertProducto:true,productos:productos,nombre:req.body.nombre,cantidad:req.body.cantidad});
                     }else{ // si hubo un error
                       console.log(err);
                       res.redirect("/almacen");
