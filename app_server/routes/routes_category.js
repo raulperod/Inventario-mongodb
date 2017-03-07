@@ -104,7 +104,7 @@ router.route("/:idCategoria")
             res.redirect("/categories");
           }
         });
-      });
+      })
       // Metodo DELETE
       .delete(function(req,res){
         // busco todos los productos que tengan la catedoria
@@ -138,7 +138,6 @@ router.route("/:idCategoria")
             if(err) console.log(err);
             res.redirect("/categories");
         });
-
   });
 
 module.exports = router;
