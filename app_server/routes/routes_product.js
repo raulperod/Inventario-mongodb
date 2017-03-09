@@ -312,7 +312,7 @@ router.route("/:idProducto")
         });
   });
 // gelishtime/products/new-excel
-router.route("/new-excel")
+router.route("/newexcel")
       // Metodo GET
       .get(function(req,res){
         res.render("./products/newexcel");
