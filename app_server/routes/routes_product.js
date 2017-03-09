@@ -394,7 +394,6 @@ router.route("/new/excel")
                                   });
                                   // guarda al producto en la base de datos
                                   productoNuevo.save().then(function(pdt){
-                                    res.redirect("/products");
                                   }, function(err){ // si ocurre un error lo imprime
                                     console.log(err);
                                   });
@@ -415,6 +414,7 @@ router.route("/new/excel")
                       });
                     }
                   }
+                  res.redirect("/products/new/excel");
                   //----------------------
                 }else{
                   if(err) console.log(err);
