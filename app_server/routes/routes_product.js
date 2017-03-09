@@ -320,30 +320,31 @@ router.route("/new/excel")
       // Metodo POST
       .post(function(req,res){
         var exceltojson;
-        upload(reqq,ress,function(err){
+        upload(req,res,function(err){
           if(err){
            res.redirect("/products");
           }
           /** Multer gives us file info in req.file object */
-          if(!reqq.file){
+          if(!req.file){
+            console.log("req"+req);
             res.redirect("/products");
           }
 
-          if(reqq.file.originalname.split('.')[reqq.file.originalname.split('.').length-1] === 'xlsx'){
+          if(req.file.originalname.split('.')[req.file.originalname.split('.').length-1] === 'xlsx'){
             exceltojson = xlsxtojson;
           }else{
             exceltojson = xlstojson;
           }
           try{
             exceltojson({
-              input: reqq.file.path,
+              input: req.file.path,
               output: null, //since we don't need output.json
               lowerCaseHeaders:true
             },function(err,productosExcel){
                 if(!err && productosExcel){
                   // borrar el archivo
                   try{
-                   fs.unlinkSync(reqq.file.path);
+                   fs.unlinkSync(req.file.path);
                   }catch(e) {
                     console.log(e);
                     res.redirect("/products");
