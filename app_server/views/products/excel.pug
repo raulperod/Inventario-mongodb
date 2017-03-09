@@ -42,9 +42,12 @@ block contenido
               .well
                 h4 Subir productos con excel
                 form#uploadForm(enctype='multipart/form-data', action='/products/new/excel', method='POST')
-                  input(type='file', name='file')
-                  | Upload
-                  input(type='submit', value='Upload', name='submit')
+                  fieldset
+                    // input normal
+                    .form-group
+                      input(type='file', name='file' class="btn btn-lg btn-primary btn-block")
+                    .form-group
+                      input(type='submit', value='Upload', name='submit' class="btn btn-lg btn-primary btn-block")
   // jQuery
   script(src='/src/vendor/jquery/jquery.min.js')
   // Bootstrap Core JavaScript
