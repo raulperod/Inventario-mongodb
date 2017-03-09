@@ -322,13 +322,11 @@ router.route("/new/excel")
         var exceltojson;
         upload(req,res,function(err){
           if(err){
-           res.json({error_code:1,err_desc:err});
-           return;
+           res.redirect("/products");
           }
           /** Multer gives us file info in req.file object */
           if(!req.file){
-            res.json({error_code:1,err_desc:"No file passed"});
-            return;
+            res.redirect("/products");
           }
 
           if(req.file.originalname.split('.')[req.file.originalname.split('.').length-1] === 'xlsx'){
@@ -425,7 +423,7 @@ router.route("/new/excel")
             });
 
           }catch(e){
-            console.log("e2"+e);
+            console.log(e);
             res.redirect("/products");
           }
 
