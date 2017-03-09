@@ -320,14 +320,14 @@ router.route("/new/excel")
       // Metodo POST
       .post(function(req,res){
         var exceltojson;
+        console.log("req " + req);
         upload(req,res,function(err){
           if(err){
-           res.redirect("/products");
+           return;
           }
           /** Multer gives us file info in req.file object */
           if(!req.file){
-            console.log("req"+req);
-            res.redirect("/products");
+            return;
           }
 
           if(req.file.originalname.split('.')[req.file.originalname.split('.').length-1] === 'xlsx'){
