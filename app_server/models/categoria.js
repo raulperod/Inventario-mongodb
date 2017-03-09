@@ -10,7 +10,8 @@ var categoria_schema = new Schema({
   descripcion:{
     type: String,
     require: true,
-    maxlength: [50,"descripcion de categoria muy grande"]
+    maxlength: [50,"descripción de categoria muy grande"],
+    default: "Sin descripción"
   }
 });
 // at

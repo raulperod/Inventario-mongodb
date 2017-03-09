@@ -6,6 +6,23 @@ var Consumo = require("../models/consumo").Consumo;
 var RegistroDeMovimiento = require("../models/registroDeMovimiento").RegistroDeMovimiento;
 var Baja = require("../models/baja").Baja;
 var router = express.Router();
+// para el excel
+var multer = require('multer');
+var xlstojson = require("xls-to-json-lc");
+var xlsxtojson = require("xlsx-to-json-lc");
+var fs = require('fs');
+var storage = multer.diskStorage(
+        {
+          destination:function(req,file,cb){
+                        cb(null, './uploads/')
+        },
+        filename: function (req, file, cb) {
+            var datetimestamp = Date.now();
+            cb(null,file.fieldname+'-'+datetimestamp+'.'+file.originalname.split('.')[file.originalname.split('.').length-1])
+        }
+      });
+var upload = multer({storage:storage}).single('file');
+// ------------
 // gelishtime/products
 router.get("/",function(req,res){
     // busca todos los productos de la base de datos
@@ -294,5 +311,58 @@ router.route("/:idProducto")
             res.redirect("/products");
         });
   });
+// gelishtime/products/new-excel
+router.route("/new-excel")
+      // Metodo GET
+      .get(function(req,res){
+        res.render("./products/new-excel");
+      })
+      // Metodo POST
+      .post(function(req,res){
+        var exceltojson;
+        upload(req,res,function(err){
+          if(!err & req.file){
+            if(req.file.originalname.split('.')[req.file.originalname.split('.').length-1] === 'xlsx'){
+              exceltojson = xlsxtojson;
+            }else{
+              exceltojson = xlstojson;
+            }
+            try{
+              exceltojson({
+                input: req.file.path,
+                output: null, //since we don't need output.json
+                lowerCaseHeaders:true
+              },function(err,result){
+                  if(!err && result){
+                    // borrar el archivo
+                    try{
+                     fs.unlinkSync(req.file.path);
+                    }catch(e) {
+                      res.redirect("/almacen");
+                    }
+                    // crear los productos
+
+                    //----------------------
+                  }else{
+                    if(err) console.log(err);
+                    res.redirect("/almacen");
+                  }
+              });
+
+            }catch(e){
+              res.redirect("/almacen");
+            }
+
+          }else if(!req.file){ // si no selecciono archivo
+            // mandar alerta que no se mando archivo
+            res.redirect("/products/new-excel");
+
+          }else{ // paso un error
+            res.redirect("/almacen");
+          }
+        });
+
+      });
+
 
 module.exports = router;
