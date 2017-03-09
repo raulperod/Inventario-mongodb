@@ -332,8 +332,8 @@ router.route("/new/excel")
                 input: req.file.path,
                 output: null, //since we don't need output.json
                 lowerCaseHeaders:true
-              },function(err,result){
-                  if(!err && result){
+              },function(err,productosExcel){
+                  if(!err && productosExcel){
                     // borrar el archivo
                     try{
                      fs.unlinkSync(req.file.path);
@@ -341,7 +341,71 @@ router.route("/new/excel")
                       res.redirect("/almacen");
                     }
                     // crear los productos
+                    for(let productoExcel of productosExcel){
+                      // registo cada producto que se haya pasado
+                      if(productoExcel.categoria){
+                        Categoria.findOne({nombre:productoExcel.categoria},{_id:1}).exec(function(err,categoria){
+                          if(!err && categoria){
+                            Producto.findOne({nombre:productoExcel.nombre},{_id:1}).exec(function(err,prod){
+                              if(!err && !prod){
+                                var productoNuevo = new Producto({
+                                  nombre: productoExcel.nombre,
+                                  codigo: productoExcel.codigo,
+                                  descripcion: productoExcel.descripcion,
+                                  minimo: parseInt(productoExcel.minimo),
+                                  categoria: categoria._id
+                                });
+                                // guarda al producto en la base de datos
+                                productoNuevo.save().then(function(pdt){
+                                }, function(err){ // si ocurre un error lo imprime
+                                  console.log(err);
+                                });
 
+                              }else{ // si paso algo
+                                if(err) console.log(err);
+                                if(prod) console.log("El producto "+productoExcel.nombre+" existe");
+                              }
+                            });
+                          }else{ // si paso algo
+                            if(!categoria){ // si la categoria no existe
+                              // crea una categoria nueva con sus respectivos atributos
+                              var categoriaNueva = new Categoria({
+                                nombre:productoExcel.categoria,
+                              });
+                              // guarda la categoria en la base de datos
+                              categoriaNueva.save().then(function(cat){
+                                // ya con la categoria creada creo al producto
+                                Producto.findOne({nombre:productoExcel.nombre},{_id:1}).exec(function(err,prod){
+                                  if(!err && !prod){
+                                    var productoNuevo = new Producto({
+                                      nombre: productoExcel.nombre,
+                                      codigo: productoExcel.codigo,
+                                      descripcion: productoExcel.descripcion,
+                                      minimo: parseInt(productoExcel.minimo),
+                                      categoria: cat._id
+                                    });
+                                    // guarda al producto en la base de datos
+                                    productoNuevo.save().then(function(pdt){
+                                    }, function(err){ // si ocurre un error lo imprime
+                                      console.log(err);
+                                    });
+                                  }else{ // si paso algo
+                                    if(err) console.log(err);
+                                    if(prod) console.log("El producto "+productoExcel.nombre+" existe");
+                                  }
+                                });
+                              }, function(err){ // si ocurre un error lo imprime
+                                console.log(err);
+                              });
+
+                            }else{ // si paso un error
+                              console.log(err);
+                              res.redirect("/products");
+                            }
+                          }
+                        });
+                      }
+                    }
                     //----------------------
                   }else{
                     if(err) console.log(err);
