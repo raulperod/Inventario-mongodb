@@ -39,6 +39,12 @@ block contenido
                     td Nioxin
                     td 301
                     td 25
+              .well
+                h4 Subir productos con excel
+                form#uploadForm(enctype='multipart/form-data', action='/products/new/excel', method='POST')
+                  input(type='file', name='file')
+                  | Upload
+                  input(type='submit', value='Upload', name='submit')
   // jQuery
   script(src='/src/vendor/jquery/jquery.min.js')
   // Bootstrap Core JavaScript
