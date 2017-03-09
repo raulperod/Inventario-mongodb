@@ -419,7 +419,7 @@ router.route("/new/excel")
 
           }else if(!req.file){ // si no selecciono archivo
             // mandar alerta que no se mando archivo
-            res.redirect("/products/new-excel");
+            res.redirect("/products/new/excel");
 
           }else{ // paso un error
             res.redirect("/almacen");
