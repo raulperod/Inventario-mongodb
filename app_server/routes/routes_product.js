@@ -315,7 +315,7 @@ router.route("/:idProducto")
 router.route("/new-excel")
       // Metodo GET
       .get(function(req,res){
-        res.render("./products/new-excel");
+        res.render("./products/new_excel");
       })
       // Metodo POST
       .post(function(req,res){
