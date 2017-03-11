@@ -12,7 +12,6 @@ block contenido
               form(action="/almacen/new",method="POST",role='form')
                 fieldset
                   .form-group
-                    link(href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css', rel='stylesheet')
                     select.form-control.selectpicker(name="producto", data-live-search="true")
                       for producto in productos
                         option(name="1") #{producto.nombre}
@@ -45,4 +44,4 @@ block contenido
   script(src='/src/vendor/metisMenu/metisMenu.min.js')
   // Custom Theme JavaScript
   script(src='/src/dist/js/sb-admin-2.js')
-  script(src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js')
+  script(src='/src/dist/js/bootstrap-select.min.js')

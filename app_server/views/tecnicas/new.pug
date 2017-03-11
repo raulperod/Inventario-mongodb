@@ -15,7 +15,6 @@ block contenido
                   input.form-control(type="text", name="last_name", placeholder="Apellido",pattern="{1,40}$", title="El apellido debe tener un maximo de 40 caracteres" required)
                 if usuario.permisos == 2
                   .form-group
-                    link(href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css', rel='stylesheet')
                     select.form-control.selectpicker(name="plaza", data-live-search="true")
                       for sucursal in sucursales
                         option(name="1") #{sucursal.plaza}
@@ -31,4 +30,4 @@ block contenido
   script(src='/src/vendor/metisMenu/metisMenu.min.js')
   // Custom Theme JavaScript
   script(src='/src/dist/js/sb-admin-2.js')
-  script(src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js')
+  script(src='/src/dist/js/bootstrap-select.min.js')

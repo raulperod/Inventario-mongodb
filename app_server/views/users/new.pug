@@ -23,7 +23,6 @@ block contenido
                     input.form-control(type="password", name="password_confirmation", placeholder="Confirmar contraseña",pattern="^([a-zA-Z0-9]{8,20})$", title="La contraseña debe tener como minimo 8 caracteres y maximo 20" required)
                   if usuario.permisos == 2
                     .form-group
-                      link(href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css', rel='stylesheet')
                       select.form-control.selectpicker(name="plaza", data-live-search="true")
                         for sucursal in sucursales
                           option(name="1") #{sucursal.plaza}

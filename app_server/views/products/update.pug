@@ -82,7 +82,6 @@ block contenido
                     h5  Cantidad minima:
                     input.form-control(type="number", value=minimo  ,name="minimo", min="0", max="10000", title="Cantidad minima del producto en el almacen" required)
                   .form-group
-                    link(href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css', rel='stylesheet')
                     select.form-control.selectpicker(name="categoria", data-live-search="true")
                       for categoria in categorias
                         option(name="1") #{categoria.nombre}
@@ -98,4 +97,4 @@ block contenido
   script(src='/src/vendor/metisMenu/metisMenu.min.js')
   // Custom Theme JavaScript
   script(src='/src/dist/js/sb-admin-2.js')
-  script(src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js')
+  script(src='/src/dist/js/bootstrap-select.min.js')
