@@ -26,6 +26,9 @@ var producto_schema = new Schema({
     type:Number,
     require:true,
     min:[0,"El minimo no puede ser cero"]
+  },
+  esBasico:{
+    type: Boolean
   }
 });
 
