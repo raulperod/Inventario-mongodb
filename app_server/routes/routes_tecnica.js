@@ -54,7 +54,7 @@ router.route("/new")
             }
           });
         }else{ // si es administador de sucursal
-          res.render("./tecnicas/new"});
+          res.render("./tecnicas/new");
         }
       })
       // Metodo POST
