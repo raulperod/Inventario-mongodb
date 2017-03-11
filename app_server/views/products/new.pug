@@ -12,14 +12,19 @@ block contenido
               form(action="/products/new",method="POST",role='form')
                 fieldset
                   .form-group
+                    h5  Nombre:
                     input.form-control(type="text", name="nombre", placeholder="Nombre", pattern="{3,40}$",title="El nombre del producto debe tener un minimo 3 caracteres y 40 como maximo")
                   .form-group
+                    h5  Codigo de barras:
                     input.form-control(type="text", name="codigo", placeholder="Codigo de barra" required, pattern="{3,30}$",title="El nombre de la plaza debe tener un minimo 3 caracteres y 30 como maximo")
                   .form-group
+                    h5  Descripcion:
                     input.form-control(type="text", name="descripcion", placeholder="Descripcion" required, pattern="{3,70}$",title="El nombre de la plaza debe tener un minimo 3 caracteres y 70 como maximo")
                   .form-group
+                    h5  Cantidad minima:
                     input.form-control(type="number" placeholder="Cantidad minima" name="minimo" min="0" max="10000", title="Cantidad minima del producto en el almacen" required)
                   .form-group
+                    h5  Categoria:
                     select.form-control.selectpicker(name="categoria", data-live-search="true")
                       for categoria in categorias
                         option(name="1") #{categoria.nombre}
@@ -48,7 +53,7 @@ block contenido
                     h5  Cantidad minima:
                     input.form-control(type="number", value=minimo ,name="minimo", min="0", max="10000", title="Cantidad minima del producto en el almacen" required)
                   .form-group
-                    link(href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css', rel='stylesheet')
+                    h5  Categoria:
                     select.form-control.selectpicker(name="categoria", data-live-search="true")
                       for categoria in categorias
                         option(name="1") #{categoria.nombre}
@@ -77,7 +82,7 @@ block contenido
                     h5  Cantidad minima:
                     input.form-control(type="number", value=minimo  ,name="minimo", min="0", max="10000", title="Cantidad minima del producto en el almacen" required)
                   .form-group
-                    link(href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css', rel='stylesheet')
+                    h5  Categoria:  
                     select.form-control.selectpicker(name="categoria", data-live-search="true")
                       for categoria in categorias
                         option(name="1") #{categoria.nombre}

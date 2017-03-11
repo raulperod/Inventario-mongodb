@@ -12,10 +12,12 @@ block contenido
               form(action="/almacen/new",method="POST",role='form')
                 fieldset
                   .form-group
+                    h5  Producto:
                     select.form-control.selectpicker(name="producto", data-live-search="true")
                       for producto in productos
                         option(name="1") #{producto.nombre}
                   .form-group
+                    h5  Cantidad:
                     input.form-control(type="number" placeholder="Cantidad" name="cantidad" min="0" max="10000", title="Cantidad a agregar al almacen" required)
                   .form-group
                   input(type="submit" value="Agregar productos" class="btn btn-lg btn-primary btn-block")
@@ -28,11 +30,12 @@ block contenido
                     button.close(type='button', data-dismiss='alert', aria-hidden='true') ×
                     | El producto ya esta registrado en el almacen
                   .form-group.has-error
-                    link(href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css', rel='stylesheet')
+                    h5  Producto:
                     select.form-control.selectpicker(name="producto", data-live-search="true")
                       for producto in productos
                         option(name="1") #{producto.nombre}
                   .form-group
+                    h5  Cantidad:
                     input.form-control(type="number", value=cantidad, name="cantidad", min="0" ,max="10000", title="Cantidad a agregar al almacen" required)
                   .form-group
                   input(type="submit" value="Agregar productos" class="btn btn-lg btn-primary btn-block")

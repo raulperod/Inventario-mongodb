@@ -12,17 +12,23 @@ block contenido
               form(action="/users/new",method="POST",role='form')
                 fieldset
                   .form-group
+                    h5  Usuario:
                     input.form-control(type="text", name="username", placeholder="Usuario",pattern="^([a-zA-Z0-9]{4,20})$", title="El usuario debe tener unicamente letras y numeros, minimo 4 caracteres y 20 como maximo" required)
                   .form-group
+                    h5  Nombres:
                     input.form-control(type="text", name="name", placeholder="Nombre",pattern="{1,40}$", title="El nombre debe tener un maximo de 40 caracteres" required)
                   .form-group
+                    h5  Apellidos:
                     input.form-control(type="text", name="last_name", placeholder="Apellido",pattern="{1,40}$", title="El apellido debe tener un maximo de 40 caracteres" required)
                   .form-group
+                    h5  Contraseña:
                     input.form-control(type="password", name="password", placeholder="Contraseña",pattern="^([a-zA-Z0-9]{8,20})$", title="La contraseña debe tener como minimo 8 caracteres y maximo 20" required)
                   .form-group
+                    h5  Confirmación de contraseña:
                     input.form-control(type="password", name="password_confirmation", placeholder="Confirmar contraseña",pattern="^([a-zA-Z0-9]{8,20})$", title="La contraseña debe tener como minimo 8 caracteres y maximo 20" required)
                   if usuario.permisos == 2
                     .form-group
+                      h5  Sucursal:
                       select.form-control.selectpicker(name="plaza", data-live-search="true")
                         for sucursal in sucursales
                           option(name="1") #{sucursal.plaza}
@@ -55,7 +61,7 @@ block contenido
                     input.form-control(type="password", name="password_confirmation", value=pwc,pattern="^([a-zA-Z0-9]{8,20})$", title="La contraseña debe tener como minimo 8 caracteres y maximo 20" required)
                   if usuario.permisos == 2
                     .form-group
-                      link(href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css', rel='stylesheet')
+                      h5  Sucursal:  
                       select.form-control.selectpicker(name="plaza", data-live-search="true")
                         for sucursal in sucursales
                           option(name="1") #{sucursal.plaza}
@@ -87,7 +93,7 @@ block contenido
                     input#inputError.form-control(type="password", name="password_confirmation", value=pwc,pattern="^([a-zA-Z0-9]{8,20})$", title="La contraseña debe tener como minimo 8 caracteres y maximo 20" required)
                   if usuario.permisos == 2
                     .form-group
-                      link(href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css', rel='stylesheet')
+                      h5  Sucursal:
                       select.form-control.selectpicker(name="plaza", data-live-search="true")
                         for sucursal in sucursales
                           option(name="1") #{sucursal.plaza}
@@ -102,4 +108,4 @@ block contenido
   script(src='/src/vendor/metisMenu/metisMenu.min.js')
   // Custom Theme JavaScript
   script(src='/src/dist/js/sb-admin-2.js')
-  script(src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js')
+  script(src='/src/dist/js/bootstrap-select.min.js')

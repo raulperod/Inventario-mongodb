@@ -17,6 +17,7 @@ block contenido
                   input.form-control(type="text" ,name="last_name", value=tecnicaUpdate.apellido, pattern="{3,40}$", title="El apellido debe tener un minimo 3 caracteres y 40 como maximo" required)
                 if usuario.permisos == 2
                   .form-group
+                    h5  Sucursal:
                     select.form-control.selectpicker(name="plaza", data-live-search="true")
                       for sucursal in sucursales
                         option(name="1") #{sucursal.plaza}

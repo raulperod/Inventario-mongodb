@@ -20,18 +20,16 @@ block contenido
                     h5  Ciudad:
                     input#inputError.form-control(type="text", name="ciudad", value=ciudad ,pattern="{3,40}$", title="La ciudad debe tener un minimo 3 caracteres y 40 como maximo" required)
                   .form-group
-                  // boton para registrar
-                  .form-group
                   input(type="submit" value="Registrar sucursal" class="btn btn-lg btn-primary btn-block")
 
                 else
 
                   .form-group
+                    h5  Plaza:
                     input.form-control(type="text" name="plaza" placeholder="Plaza" pattern="{3,40}$", title="El nombre de la plaza debe un minimo 3 caracteres y 40 como maximo" required)
                   .form-group
+                    h5  Ciudad:
                     input.form-control(type="text" name="ciudad" placeholder="Ciudad" pattern="{3,40}$", title="La ciudad debe tener un minimo 3 caracteres y 40 como maximo" required)
-                  .form-group
-                  // boton para registrar
                   .form-group
                   input(type="submit" value="Registrar sucursal" class="btn btn-lg btn-primary btn-block")
   // jQuery
