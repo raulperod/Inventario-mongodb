@@ -11,12 +11,12 @@ router.get("/",function(req,res){
       // busca todas las tecnicas de la sucursal del administrador
       Tecnica.find({sucursal:res.locals.usuario.sucursal})
               .exec(function(err,tecnicas){
-        if(!err){ // si no hubo error
+        if(!err && tecnicas){ // si no hubo error
           // paso a las tecnicas a la vista
           res.render("./tecnicas/manager",{tecnicas:tecnicas});
         }else{ // si hubo error
           console.log(err); // imprimo el error
-          res.redirect("/almacen"); // redirecciono al almacen
+          res.redirect("/tecnicas/new"); // redirecciono al almacen
         }
       });
     }else{ // si es administador general
@@ -24,12 +24,12 @@ router.get("/",function(req,res){
       Tecnica.find({})
               .populate("sucursal")
               .exec(function(err,tecnicas){
-        if(!err){ // si no hubo error
+        if(!err && tecnicas){ // si no hubo error
           // paso a las tecnicas a la vista
-          res.render("./users/manager",{tecnicas:tecnicas});
+          res.render("./tecnicas/manager",{tecnicas:tecnicas});
         }else{ // si hubo error
           console.log(err); // imprimo el error
-          res.redirect("/almacen"); // redirecciono al inicio
+          res.redirect("/tecnicas"); // redirecciono al inicio
         }
       });
     }
