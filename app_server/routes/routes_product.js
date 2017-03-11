@@ -67,6 +67,7 @@ router.route("/new")
             Categoria.findOne({nombre:req.body.categoria}).exec(function(err,categoria){
               if(!err && categoria){
                 // crea un producto nuevo con sus respectivos atributos
+                console.log("es Basico:" + req.body.esBasico);
                 var producto = new Producto({
                   nombre: req.body.nombre,
                   codigo: req.body.codigo,
