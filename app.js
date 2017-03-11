@@ -11,6 +11,7 @@ var router_product = require("./app_server/routes/routes_product");
 var router_almacen = require("./app_server/routes/routes_almacen");
 var router_historial = require("./app_server/routes/routes_historial");
 var router_consumo = require("./app_server/routes/routes_consumo");
+var router_tecnica = require("./app_server/routes/routes_tecnica");
 // para utilizar los metodos PUT y DELETE
 var methodOverride = require("method-override");
 // importacion de middleware para verificar el tipo de usuario
@@ -148,9 +149,21 @@ app.post("/login",function(req,res){
     });
 });
 // ----------------------------- Rutas -----------------------------------------//
+// gelishtime/almacen
+app.use("/almacen",session_active);
+app.use("/almacen",router_almacen);
+// gelishtime/consumos
+app.use("/consumos",session_active);
+app.use("/consumos",router_consumo);
 // gelishtime/users
 app.use("/users",session_admin);
 app.use("/users",router_user);
+// gelishtime/tecnicas
+app.use("/tecnicas",session_admin);
+app.use("/tecnicas",router_tecnica);
+// gelishtime/almacen
+app.use("/historial",session_admin);
+app.use("/historial",router_historial);
 // gelishtime/sucursales
 app.use("/sucursales",session_general_admin);
 app.use("/sucursales",router_sucursal);
@@ -160,15 +173,6 @@ app.use("/categories",router_category);
 // gelishtime/products
 app.use("/products",session_general_admin);
 app.use("/products",router_product);
-// gelishtime/almacen
-app.use("/almacen",session_active);
-app.use("/almacen",router_almacen);
-// gelishtime/almacen
-app.use("/historial",session_admin);
-app.use("/historial",router_historial);
-// gelishtime/consumos
-app.use("/consumos",session_active);
-app.use("/consumos",router_consumo);
 // inicia el servidor en el puerto 8080
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));

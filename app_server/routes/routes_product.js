@@ -14,7 +14,7 @@ var fs = require('fs');
 var storage = multer.diskStorage(
         {
           destination:function(req,file,cb){
-                        cb(null, '../../src/uploads/')
+                        cb(null, './src/uploads/')
         },
         filename: function (req, file, cb) {
             var datetimestamp = Date.now();
@@ -320,7 +320,6 @@ router.route("/new/excel")
       // Metodo POST
       .post(function(req,res){
         var exceltojson;
-        console.log("req " + req);
         upload(req,res,function(err){
           if(err){
            return;
