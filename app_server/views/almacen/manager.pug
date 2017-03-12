@@ -38,9 +38,10 @@ block contenido
                           b &nbsp &nbsp &nbsp
                           button(type="submit/image" alt="text" name="botton1" class="btn btn-primary btn-circle")
                             i.fa.fa-plus(title="Agregar")
-                          b &nbsp &nbsp &nbsp
-                          button(type="submit/image" alt="text" name="botton2" class="btn btn-danger btn-circle")
-                            i.fa.fa-minus(title="Pasar a consumo")
+                          if !alm.producto.esBasico    
+                            b &nbsp &nbsp &nbsp
+                            button(type="submit/image" alt="text" name="botton2" class="btn btn-danger btn-circle")
+                              i.fa.fa-minus(title="Pasar a consumo")
 
 
                 else
