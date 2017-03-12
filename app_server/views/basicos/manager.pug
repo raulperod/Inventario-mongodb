@@ -6,13 +6,13 @@ block contenido
       .col-lg-12
         h3.page-header Asignacion y baja de producto basico
     .row
-      .col-md-10.col-md-offset-1
+      .col-md-12
         .panel.panel-primary
           .panel-heading
             | Eleccion
           .panel-body
             .row
-              .col-md-6
+              .col-md-5
                 h4
                   | Asignacion de basico
                 
@@ -29,12 +29,12 @@ block contenido
                         option(name="1") #{tecnica.nombre}      
                   .form-group
                     input(type="submit" value="Iniciar Sesion" class="btn btn-lg btn-primary btn-block")
-                  
-            .row
-              .col-md-6      
+              .col-md-1   
+              
+              .col-md-5      
                 h4
                   | Baja de basico
-                
+                  
                 form(action="/basicos?_method=DELETE",method="POST",role='form')
                   .form-group
                     h5  Producto:
