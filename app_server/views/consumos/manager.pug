@@ -32,11 +32,12 @@ block contenido
 
                         td(style="color:red" title="Pocos productos") #{consumo.cantidad}
                       td
-                        form(style="display:inline" action="/consumos/"+consumo._id+"?_method=PUT",method="POST",  onsubmit="return confirm('¿Esta seguro que desea realizar esas bajas?')")
-                          input.form-control(type="number" name="cantidad" min="0" max="10000" value="0" required)
-                          b &nbsp &nbsp &nbsp
-                          button(type="submit/image" alt="text" class="btn btn-danger btn-circle")
-                            i.fa.fa-times(title="Pasar a bajas")
+                        if !consumo.producto.esBasico
+                          form(style="display:inline" action="/consumos/"+consumo._id+"?_method=PUT",method="POST",  onsubmit="return confirm('¿Esta seguro que desea realizar esas bajas?')")
+                            input.form-control(type="number" name="cantidad" min="0" max="10000" value="0" required)
+                            b &nbsp &nbsp &nbsp
+                            button(type="submit/image" alt="text" class="btn btn-danger btn-circle")
+                              i.fa.fa-times(title="Pasar a bajas")
                 else
 
                   for consumo in consumos
