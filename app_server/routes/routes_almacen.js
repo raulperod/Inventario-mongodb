@@ -120,7 +120,28 @@ router.route("/:idAlmacen")
         Almacen.findById(req.params.idAlmacen,function(err,productoAlm){ // busco el almacen
           if(!err && productoAlm){ // si no hay error y el almacen existe
             res.locals.productoAlmUpdate = productoAlm;
-            if(typeof req.body.botton1 == "undefined"){// se restan al producto
+            if( req.body.botton1 == ''){// se restan al producto
+              res.locals.productoAlmUpdate.cantidad += parseInt(req.body.cantidad);
+              // genera el registro
+              var registro = new RegistroDeMovimiento({
+                sucursal:res.locals.usuario.sucursal,
+                usuario:req.session.user_id,
+                cantidad:parseInt(req.body.cantidad),
+                producto:productoAlm.producto,
+                tipo: 1
+              });
+              // guarda al producto en la base de datos
+              res.locals.productoAlmUpdate.save(function(err){
+                if(err) console.log(err);
+              });
+              // guarda el registro
+              registro.save().then(function(us){
+                res.redirect("/almacen");
+              }, function(err){ // si ocurre un error lo imprime
+                console.log(err);
+              });
+
+            }else{ // se agregan al producto
               // si el numero que pusieron es mayor que el que tenian, entonces quedan 0 productos
               if( parseInt(req.body.cantidad) > res.locals.productoAlmUpdate.cantidad ){
                 // genera el registro
@@ -218,26 +239,6 @@ router.route("/:idAlmacen")
                   console.log(err);
                 });
               }
-            }else{ // se agregan al producto
-              res.locals.productoAlmUpdate.cantidad += parseInt(req.body.cantidad);
-              // genera el registro
-              var registro = new RegistroDeMovimiento({
-                sucursal:res.locals.usuario.sucursal,
-                usuario:req.session.user_id,
-                cantidad:parseInt(req.body.cantidad),
-                producto:productoAlm.producto,
-                tipo: 1
-              });
-              // guarda al producto en la base de datos
-              res.locals.productoAlmUpdate.save(function(err){
-                if(err) console.log(err);
-              });
-              // guarda el registro
-              registro.save().then(function(us){
-                res.redirect("/almacen");
-              }, function(err){ // si ocurre un error lo imprime
-                console.log(err);
-              });
             }
           }else{ // si hubo un error
             console.log(err);
