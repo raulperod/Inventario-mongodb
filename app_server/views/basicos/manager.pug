@@ -56,4 +56,9 @@ block contenido
   script(src='/src/vendor/metisMenu/metisMenu.min.js')
   // Custom Theme JavaScript
   script(src='/src/dist/js/sb-admin-2.js')
-  script(src='/src/dist/js/bootstrap-select.min.js')                  
+  script(src='/src/dist/js/bootstrap-select.min.js')
+  script
+    for(var i = 0 ; #{almacen[i]} ; i++ ){
+      console.log(#{almacen[i]});
+    }
+                         

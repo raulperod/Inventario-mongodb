@@ -29,11 +29,61 @@ router.route("/")
         });
       })
       .put(function(req,res){
+        // pasar a consumo un producto basico
+        // busco el producto a asignar
+        Producto.findOne({nombre:req.body.producto},{_id:1}).exec(function(err,producto){
+          if(!err && producto){ // si no hubo error y el producto existe
+            // verifico si almenos hay un producto en el almacen
+            Almacen.findOne({producto:producto._id,sucursal:res.locals.usuario.sucursal}).exec(function(err,productoAlm){
+              if(!err && productoAlm){ // si no hubo error y el producto existe
+                if(productoAlm.cantidad > 1){ // si hay mas de un producto en el almacen
+                  // busco a la tecnica para asignarle el producto
+                  Tecnica.findOne({nombreCompleto:nombre:req.body.tecnica}).exec(function(err,tecnica){
+                    if(!err && tecnica){ // si no hubo error y la tecnica existe
+                      // le resto un producto al almacen
+                      //--------------------------------
+                      // le sumo uno al consumo del producto
+                      //------------------------------------
+                      // creo un registro del movimiento
+                      //--------------------------------
+                    }else{ // si hubo un error
+                      if(err) console.log(err);
+                      res.redirect("/tecnicas/new");
+                    }
+                  });
+                }else{ // si no hay producto en el almacen
+                  res.redirect("/almacen");
+                }
+              }else{ // si hubo error o el producto no existe
+                if(err) console.log(err);
+                res.redirect("/almacen/new");
+              }
+            });
+
+          }else{ // si hubo error
+            if(err) console.log(err);
+            res.redirect("/products/new");
+          }
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
       })
       // Metodo DELETE
       .delete(function(req,res){
-
+        // dar de baja un producto basico
   });
 
 module.exports = router;
