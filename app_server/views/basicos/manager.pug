@@ -11,39 +11,43 @@ block contenido
           .panel-heading
             | Eleccion
           .panel-body
-            h4
-              | Asignacion de basico
-            
-            form(style="display:inline", action="/basicos?_method=PUT",method="POST",role='form')
-              .form-group
-                h5  Producto:
-                select.form-control.selectpicker(name="producto", data-live-search="true")
-                  for producto in productos
-                    option(name="1") #{producto.nombre}
-              .form-group
-                h5  Tecnica:
-                select.form-control.selectpicker(name="tecnica", data-live-search="true")
-                  for tecnica in tecnicas
-                    option(name="1") #{tecnica.nombre}      
-              button(type="submit/image" alt="text" class="btn btn-primary btn-circle")
-                i.fa.fa-plus(title="Agregar")
+            .row
+              .col-lg-4
+                h4
+                  | Asignacion de basico
+                
+                form(action="/basicos?_method=PUT",method="POST",role='form')
+                  .form-group
+                    h5  Producto:
+                    select.form-control.selectpicker(name="producto", data-live-search="true")
+                      for producto in productos
+                        option(name="1") #{producto.nombre}
+                  .form-group
+                    h5  Tecnica:
+                    select.form-control.selectpicker(name="tecnica", data-live-search="true")
+                      for tecnica in tecnicas
+                        option(name="1") #{tecnica.nombre}      
+                  .form-group
+                    input(type="submit" value="Iniciar Sesion" class="btn btn-lg btn-primary btn-block")
                   
-            h4
-              | Baja de basico
-            
-            form(style="display:inline", action="/basicos?_method=DELETE",method="POST",role='form')
-              .form-group
-                h5  Producto:
-                select.form-control.selectpicker(name="producto", data-live-search="true")
-                  for producto in productos
-                    option(name="1") #{producto.nombre}
-              .form-group
-                h5  Tecnica:
-                select.form-control.selectpicker(name="tecnica", data-live-search="true")
-                  for tecnica in tecnicas
-                    option(name="1") #{tecnica.nombre}      
-              button(type="submit/image" alt="text" class="btn btn-danger btn-circle")
-                i.fa.fa-minus(title="Pasar a consumo")
+            .row
+              .col-lg-4      
+                h4
+                  | Baja de basico
+                
+                form(action="/basicos?_method=DELETE",method="POST",role='form')
+                  .form-group
+                    h5  Producto:
+                    select.form-control.selectpicker(name="producto", data-live-search="true")
+                      for producto in productos
+                        option(name="1") #{producto.nombre}
+                  .form-group
+                    h5  Tecnica:
+                    select.form-control.selectpicker(name="tecnica", data-live-search="true")
+                      for tecnica in tecnicas
+                        option(name="1") #{tecnica.nombre}      
+                  .form-group
+                    input(type="submit" value="Iniciar Sesion" class="btn btn-lg btn-primary btn-block")
   // jQuery
   script(src='/src/vendor/jquery/jquery.min.js')
   // Bootstrap Core JavaScript
