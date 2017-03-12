@@ -27,7 +27,8 @@ block contenido
                       td #{baja.producto.nombre}
                       td #{baja.cantidad}
                       td #{baja.usuario.nombre} #{baja.usuario.apellido}
-                      td #{baja.fecha.getHours() - 7}:#{baja.fecha.getMinutes()}:#{baja.fecha.getSeconds()} #{baja.fecha.getDate()}/#{baja.fecha.getMonth()}/#{baja.fecha.getFullYear()} 
+                      td #{baja.fecha.getDate()}/#{baja.fecha.getMonth()}/#{baja.fecha.getFullYear()} 
+                      //td #{baja.fecha.getHours() - 7}:#{baja.fecha.getMinutes()}:#{baja.fecha.getSeconds()} #{baja.fecha.getDate()}/#{baja.fecha.getMonth()}/#{baja.fecha.getFullYear()} 
                 else
 
                   for baja in bajas
@@ -36,7 +37,8 @@ block contenido
                       td #{baja.cantidad}
                       td #{baja.usuario.nombre} #{baja.usuario.apellido}
                       td #{baja.sucursal.plaza}
-                      td #{baja.fecha.getHours() - 7}:#{baja.fecha.getMinutes()}:#{baja.fecha.getSeconds()} #{baja.fecha.getDate()}/#{baja.fecha.getMonth()}/#{baja.fecha.getFullYear()}
+                      td #{baja.fecha.getDate()}/#{baja.fecha.getMonth()}/#{baja.fecha.getFullYear()} 
+                      //td #{baja.fecha.getHours() - 7}:#{baja.fecha.getMinutes()}:#{baja.fecha.getSeconds()} #{baja.fecha.getDate()}/#{baja.fecha.getMonth()}/#{baja.fecha.getFullYear()}
             // /.panel-body
         // /.panel
       // /.col-lg-12
