@@ -65,7 +65,7 @@ router.route("/new")
           var tecnica = new Tecnica({
             nombre: req.body.name,
             apellido: req.body.last_name,
-            nombreCompleto:req.body.name+" "req.body.last_name,
+            nombreCompleto:req.body.name+" "+req.body.last_name,
             sucursal: res.locals.usuario.sucursal
           });
           // guarda la tecnica en la base de datos
@@ -83,7 +83,7 @@ router.route("/new")
               var tecnica = new Tecnica({
                 nombre: req.body.name,
                 apellido: req.body.last_name,
-                nombreCompleto:req.body.name+" "req.body.last_name,
+                nombreCompleto:req.body.name+" "+req.body.last_name,
                 sucursal: sucursal._id
               });
               // guarda la tecnica en la base de datos
@@ -155,7 +155,7 @@ router.route("/:idTecnica")
                   res.locals.tecnicaUpdate = tecnica;
                   res.locals.tecnicaUpdate.nombre = req.body.name;
                   res.locals.tecnicaUpdate.apellido = req.body.last_name;
-                  res.locals.tecnicaUpdate.nombreCompleto = req.body.name+" "req.body.last_name;
+                  res.locals.tecnicaUpdate.nombreCompleto = req.body.name+" "+req.body.last_name;
                   res.locals.tecnicaUpdate.sucursal = sucursal._id;
                   res.locals.tecnicaUpdate.save(function(err){
                     if(err) console.log(err);
@@ -184,7 +184,7 @@ router.route("/:idTecnica")
               res.locals.tecnicaUpdate = tecnica;
               res.locals.tecnicaUpdate.nombre = req.body.name;
               res.locals.tecnicaUpdate.apellido = req.body.last_name;
-              res.locals.tecnicaUpdate.nombreCompleto = req.body.name+" "req.body.last_name;
+              res.locals.tecnicaUpdate.nombreCompleto = req.body.name+" "+req.body.last_name;
               res.locals.tecnicaUpdate.save(function(err){
                 if(err) console.log(err);
                 res.redirect("/tecnicas");
