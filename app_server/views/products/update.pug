@@ -30,16 +30,30 @@ block contenido
                         option(name="1") #{categoria.nombre}
                   //esto todavia hay que ver los estilos para poner un select en vez de un input
                   // boton para registrar
-                  .form-group
-                    label Basico
-                    .radio
-                      label
-                        input#optionsRadios1(type='radio', name='optionsRadios', value='option1', checked='')
-                        | No
-                    .radio
-                      label
-                        input#optionsRadios2(type='radio', name='optionsRadios', value='option2')
-                        | Si
+                  if productoUpdate.esBasico == "Si"
+                    .form-group
+                      label Basico
+                      .radio
+                        label
+                          input#optionsRadios1(type='radio', name='esBasico', value='Si', checked='')
+                          | Si
+                      .radio
+                        label
+                          input#optionsRadios2(type='radio', name='esBasico', value='No')
+                          | No
+                  
+                  else
+                    
+                    .form-group
+                      label Basico
+                      .radio
+                        label
+                          input#optionsRadios1(type='radio', name='esBasico', value='Si')
+                          | Si
+                      .radio
+                        label
+                          input#optionsRadios2(type='radio', name='esBasico', value='No', checked='')
+                          | No
                   .form-group
                   input(type="submit" value="Actualizar" class="btn btn-lg btn-primary btn-block")
 
@@ -69,16 +83,30 @@ block contenido
                         option(name="1") #{categoria.nombre}
                   //esto todavia hay que ver los estilos para poner un select en vez de un input
                   // boton para registrar
-                  .form-group
-                    label Basico
-                    .radio
-                      label
-                        input#optionsRadios1(type='radio', name='optionsRadios', value='option1', checked='')
-                        | No
-                    .radio
-                      label
-                        input#optionsRadios2(type='radio', name='optionsRadios', value='option2')
-                        | Si
+                  if esBasico == "Si"
+                    .form-group
+                      label Basico
+                      .radio
+                        label
+                          input#optionsRadios1(type='radio', name='esBasico', value='Si', checked='')
+                          | Si
+                      .radio
+                        label
+                          input#optionsRadios2(type='radio', name='esBasico', value='No')
+                          | No
+                  
+                  else
+                    
+                    .form-group
+                      label Basico
+                      .radio
+                        label
+                          input#optionsRadios1(type='radio', name='esBasico', value='Si')
+                          | Si
+                      .radio
+                        label
+                          input#optionsRadios2(type='radio', name='esBasico', value='No', checked='')
+                          | No
                   .form-group
                   input(type="submit" value="Agregar Producto" class="btn btn-lg btn-primary btn-block")
 
@@ -106,18 +134,31 @@ block contenido
                     select.form-control.selectpicker(name="categoria", data-live-search="true")
                       for categoria in categorias
                         option(name="1") #{categoria.nombre}
-                  //esto todavia hay que ver los estilos para poner un select en vez de un input
                   // boton para registrar
-                  .form-group
-                    label Basico
-                    .radio
-                      label
-                        input#optionsRadios1(type='radio', name='optionsRadios', value='option1', checked='')
-                        | No
-                    .radio
-                      label
-                        input#optionsRadios2(type='radio', name='optionsRadios', value='option2')
-                        | Si
+                  if esBasico == "Si"
+                    .form-group
+                      label Basico
+                      .radio
+                        label
+                          input#optionsRadios1(type='radio', name='esBasico', value='Si', checked='')
+                          | Si
+                      .radio
+                        label
+                          input#optionsRadios2(type='radio', name='esBasico', value='No')
+                          | No
+                  
+                  else
+                    
+                    .form-group
+                      label Basico
+                      .radio
+                        label
+                          input#optionsRadios1(type='radio', name='esBasico', value='Si')
+                          | Si
+                      .radio
+                        label
+                          input#optionsRadios2(type='radio', name='esBasico', value='No', checked='')
+                          | No
                   .form-group
                   input(type="submit" value="Agregar Producto" class="btn btn-lg btn-primary btn-block")
   // jQuery

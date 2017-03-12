@@ -67,14 +67,22 @@ router.route("/new")
             Categoria.findOne({nombre:req.body.categoria}).exec(function(err,categoria){
               if(!err && categoria){
                 // crea un producto nuevo con sus respectivos atributos
-                console.log("es Basico:" + req.body.esBasico);
+                // verifica si es basico
+                var esBasico;
+                if(req.body.esBasico == "No"){
+                  esBasico = false;
+                }else{
+                  esBasico = true;
+                }
                 var producto = new Producto({
                   nombre: req.body.nombre,
                   codigo: req.body.codigo,
                   descripcion: req.body.descripcion,
                   minimo: parseInt(req.body.minimo),
-                  categoria: categoria._id
+                  categoria: categoria._id,
+                  esBasico:esBasico
                 });
+                esBasico = null;
                 // guarda al producto en la base de datos
                 producto.save().then(function(us){
                   res.redirect("/products");
@@ -96,9 +104,9 @@ router.route("/new")
               Categoria.find({}).exec(function(err,categorias){
                 if(!err && categorias){ // si no hay error y hay categorias
                   if(producto.nombre == req.body.nombre){ // si lo que se repitio fue el nombre
-                    res.render("./products/new",{categorias:categorias,AlertNombre:true,AlertCodigo:false,nombre:req.body.nombre,codigo:req.body.codigo,descripcion:req.body.descripcion,minimo:req.body.minimo});
+                    res.render("./products/new",{categorias:categorias,AlertNombre:true,AlertCodigo:false,nombre:req.body.nombre,codigo:req.body.codigo,descripcion:req.body.descripcion,minimo:req.body.minimo,esBasico:req.body.esBasico});
                   }else{// si lo que se repitio fue el codigo
-                    res.render("./products/new",{categorias:categorias,AlertNombre:false,AlertCodigo:true,nombre:req.body.nombre,codigo:req.body.codigo,descripcion:req.body.descripcion,minimo:req.body.minimo});
+                    res.render("./products/new",{categorias:categorias,AlertNombre:false,AlertCodigo:true,nombre:req.body.nombre,codigo:req.body.codigo,descripcion:req.body.descripcion,minimo:req.body.minimo,esBasico:req.body.esBasico});
                   }
                 }else{ // si hubo un error
                   if(!categorias){ // si no hay categorias
@@ -159,6 +167,11 @@ router.route("/:idProducto")
                   res.locals.productoUpdate.descripcion = req.body.descripcion;
                   res.locals.productoUpdate.minimo = parseInt(req.body.minimo);
                   res.locals.productoUpdate.categoria = categoria._id;
+                  if(req.body.esBasico == "No"){
+                    res.locals.productoUpdate.esBasico = false;
+                  }else{
+                    res.locals.productoUpdate.esBasico = true;
+                  }
                   res.locals.productoUpdate.save(function(err){
                     if(err) console.log(err);
                     res.redirect("/products");
@@ -174,6 +187,11 @@ router.route("/:idProducto")
                       res.locals.productoUpdate.descripcion = req.body.descripcion;
                       res.locals.productoUpdate.minimo = parseInt(req.body.minimo);
                       res.locals.productoUpdate.categoria = categoria._id;
+                      if(req.body.esBasico == "No"){
+                        res.locals.productoUpdate.esBasico = false;
+                      }else{
+                        res.locals.productoUpdate.esBasico = true;
+                      }
                       res.locals.productoUpdate.save(function(err){
                         if(err) console.log(err);
                         res.redirect("/products");
@@ -182,7 +200,7 @@ router.route("/:idProducto")
                       if(p){ //si se repite el nombre
                         Categoria.find({}).exec(function(err,categorias){
                           if(!err && categorias){ //si no hay error y hay categorias
-                            res.render("./products/update",{categorias:categorias,AlertNombre:true,AlertCodigo:false,nombre:req.body.nombre,codigo:req.body.codigo,descripcion:req.body.descripcion,minimo:req.body.minimo,id:req.params.idProducto});
+                            res.render("./products/update",{categorias:categorias,AlertNombre:true,AlertCodigo:false,nombre:req.body.nombre,codigo:req.body.codigo,descripcion:req.body.descripcion,minimo:req.body.minimo,id:req.params.idProducto,esBasico:req.body.esBasico});
                           }else{ // si paso algo
                             if(!categorias){ // si no hay categorias
                               res.redirect("/categories/new");
@@ -209,6 +227,11 @@ router.route("/:idProducto")
                       res.locals.productoUpdate.descripcion = req.body.descripcion;
                       res.locals.productoUpdate.minimo = parseInt(req.body.minimo);
                       res.locals.productoUpdate.categoria = categoria._id;
+                      if(req.body.esBasico == "No"){
+                        res.locals.productoUpdate.esBasico = false;
+                      }else{
+                        res.locals.productoUpdate.esBasico = true;
+                      }
                       res.locals.productoUpdate.save(function(err){
                         if(err) console.log(err);
                         res.redirect("/products");
@@ -217,7 +240,7 @@ router.route("/:idProducto")
                       if(p){ //si se repite el codigo
                         Categoria.find({}).exec(function(err,categorias){
                           if(!err && categorias){ // si no hubo error
-                            res.render("./products/update",{categorias:categorias,AlertNombre:false,AlertCodigo:true,nombre:req.body.nombre,codigo:req.body.codigo,descripcion:req.body.descripcion,minimo:req.body.minimo,id:req.params.idProducto});
+                            res.render("./products/update",{categorias:categorias,AlertNombre:false,AlertCodigo:true,nombre:req.body.nombre,codigo:req.body.codigo,descripcion:req.body.descripcion,minimo:req.body.minimo,id:req.params.idProducto,esBasico:req.body.esBasico});
                           }else{ // si paso algo
                             if(!categorias){ // si no hay categorias
                               res.redirect("/categories/new");
@@ -246,6 +269,11 @@ router.route("/:idProducto")
                       res.locals.productoUpdate.descripcion = req.body.descripcion;
                       res.locals.productoUpdate.minimo = parseInt(req.body.minimo);
                       res.locals.productoUpdate.categoria = categoria._id;
+                      if(req.body.esBasico == "No"){
+                        res.locals.productoUpdate.esBasico = false;
+                      }else{
+                        res.locals.productoUpdate.esBasico = true;
+                      }
                       res.locals.productoUpdate.save(function(err){
                         if(err) console.log(err);
                         res.redirect("/products");
@@ -255,9 +283,9 @@ router.route("/:idProducto")
                         Categoria.find({}).exec(function(err,categorias){
                           if(!err && categorias){ // si no hubo error
                             if(p.nombre == req.body.nombre ){ // si se repite el nombre
-                              res.render("./products/update",{categorias:categorias,AlertNombre:true,AlertCodigo:false,nombre:req.body.nombre,codigo:req.body.codigo,descripcion:req.body.descripcion,minimo:req.body.minimo,id:req.params.idProducto});
+                              res.render("./products/update",{categorias:categorias,AlertNombre:true,AlertCodigo:false,nombre:req.body.nombre,codigo:req.body.codigo,descripcion:req.body.descripcion,minimo:req.body.minimo,id:req.params.idProducto,esBasico:req.body.esBasico});
                             }else{ // si se repite el codigo
-                              res.render("./products/update",{categorias:categorias,AlertNombre:false,AlertCodigo:true,nombre:req.body.nombre,codigo:req.body.codigo,descripcion:req.body.descripcion,minimo:req.body.minimo,id:req.params.idProducto});
+                              res.render("./products/update",{categorias:categorias,AlertNombre:false,AlertCodigo:true,nombre:req.body.nombre,codigo:req.body.codigo,descripcion:req.body.descripcion,minimo:req.body.minimo,id:req.params.idProducto,esBasico:req.body.esBasico});
                             }
                           }else{ // si paso algo
                             if(!categorias){ // si no hay categorias
