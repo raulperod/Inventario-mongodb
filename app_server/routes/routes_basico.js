@@ -87,7 +87,7 @@ router.route("/")
                       });
                       // guarda el registro
                       registro.save().then(function(us){
-                        res.redirect("/consumos");
+                        res.redirect("/basicos");
                       }, function(err){ // si ocurre un error lo imprime
                         console.log(err);
                       });
@@ -143,7 +143,7 @@ router.route("/")
                       });
                       // guarda la baja
                       baja.save().then(function(us){
-                        res.redirect("/consumos");
+                        res.redirect("/basicos");
                       }, function(err){ // si ocurre un error lo imprime
                         console.log(err);
                       });

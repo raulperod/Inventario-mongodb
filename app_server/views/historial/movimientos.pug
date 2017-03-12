@@ -33,7 +33,7 @@ block contenido
 
                         td Agrego producto
                       td #{movimiento.usuario.nombre} #{movimiento.usuario.apellido}
-                      td #{movimiento.fecha.toString().replace("(Hora estándar Montañas, EE.UU.)", "")}
+                      td #{movimiento.fecha.getDate()}/#{movimiento.fecha.getMonth()}/#{movimiento.fecha.getFullYear()} #{movimiento.fecha.getHours()}:#{movimiento.fecha.getMinutes()}:#{movimiento.fecha.getSeconds()} 
 
                 else
 
@@ -48,7 +48,7 @@ block contenido
                         td Agrego producto
                       td #{movimiento.usuario.nombre} #{movimiento.usuario.apellido}
                       td #{movimiento.sucursal.plaza}
-                      td #{movimiento.fecha.toString().replace("(Hora estándar Montañas, EE.UU.)", "")}
+                      td #{movimiento.fecha.getDate()}/#{movimiento.fecha.getMonth()}/#{movimiento.fecha.getFullYear()} #{movimiento.fecha.getHours()}:#{movimiento.fecha.getMinutes()}:#{movimiento.fecha.getSeconds()}
             // /.panel-body
         // /.panel
       // /.col-lg-12

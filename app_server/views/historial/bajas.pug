@@ -27,7 +27,7 @@ block contenido
                       td #{baja.producto.nombre}
                       td #{baja.cantidad}
                       td #{baja.usuario.nombre} #{baja.usuario.apellido}
-                      td #{baja.fecha.toString().replace("(Hora estándar Montañas, EE.UU.)", "")}
+                      td #{movimiento.fecha.getDate()}/#{movimiento.fecha.getMonth()}/#{movimiento.fecha.getFullYear()} #{movimiento.fecha.getHours()}:#{movimiento.fecha.getMinutes()}:#{movimiento.fecha.getSeconds()} 
                 else
 
                   for baja in bajas
@@ -36,7 +36,7 @@ block contenido
                       td #{baja.cantidad}
                       td #{baja.usuario.nombre} #{baja.usuario.apellido}
                       td #{baja.sucursal.plaza}
-                      td #{baja.fecha.toString().replace("(Hora estándar Montañas, EE.UU.)", "")}
+                      td #{movimiento.fecha.getDate()}/#{movimiento.fecha.getMonth()}/#{movimiento.fecha.getFullYear()} #{movimiento.fecha.getHours()}:#{movimiento.fecha.getMinutes()}:#{movimiento.fecha.getSeconds()}
             // /.panel-body
         // /.panel
       // /.col-lg-12
