@@ -38,7 +38,7 @@ router.route("/")
               if(!err && productoAlm){ // si no hubo error y el producto existe
                 if(productoAlm.cantidad > 1){ // si hay mas de un producto en el almacen
                   // busco a la tecnica para asignarle el producto
-                  Tecnica.findOne({nombreCompleto:nombre:req.body.tecnica}).exec(function(err,tecnica){
+                  Tecnica.findOne({nombreCompleto:req.body.tecnica}).exec(function(err,tecnica){
                     if(!err && tecnica){ // si no hubo error y la tecnica existe
                       // le resto un producto al almacen
                       //--------------------------------
