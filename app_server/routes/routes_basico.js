@@ -4,6 +4,7 @@ var Almacen = require("../models/almacen").Almacen;
 var Consumo = require("../models/consumo").Consumo;
 var RegistroDeMovimiento = require("../models/registroDeMovimiento").RegistroDeMovimiento;
 var Baja = require("../models/baja").Baja;
+var Tecnica = require("../models/tecnica").Tecnica;
 var router = express.Router();
 
 // gelishtime/basicos
