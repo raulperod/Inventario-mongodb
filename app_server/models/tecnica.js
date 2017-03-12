@@ -17,6 +17,11 @@ var tecnica_schema = new Schema({
     type: String,
     require: true,
     maxlength: [20,"Apellido muy largo"]
+  },
+  nombreCompleto:{
+    type: String,
+    require: true,
+    maxlength: [45,"nombre completo muy largo"]
   }
 });
 
