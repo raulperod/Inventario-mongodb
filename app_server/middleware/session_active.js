@@ -14,7 +14,7 @@ module.exports = function(req,res,next){
           next();
         }else{
           if(err) console.log(err);
-          res.redirect("/");
+          res.redirect("/almacen");
         }
       });
     }

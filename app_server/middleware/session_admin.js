@@ -14,11 +14,11 @@ module.exports = function(req,res,next){
             res.locals.usuario = usuario;
             next();
           }else{
-            res.redirect("/");
+            res.redirect("/almacen");
           }
         }else{
           if(err) console.log(err);
-          res.redirect("/");
+          res.redirect("/almacen");
         }
       });
 

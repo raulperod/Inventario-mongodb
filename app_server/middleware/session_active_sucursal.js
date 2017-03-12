@@ -5,12 +5,12 @@ module.exports = function(req,res,next){
     res.redirect("/login");
   }else{
 
-    if(res.locals.usuario && res.locals.usuario.permisos == 2){
+    if(res.locals.usuario && res.locals.usuario.permisos < 2){
       next();
     }else{
       Usuario.findById(req.session.user_id).populate("sucursal").exec(function(err,usuario){
         if(!err){
-          if(usuario.permisos == 2 ){
+          if(usuario.permisos < 2 ){
             res.locals.usuario = usuario;
             next();
           }else{

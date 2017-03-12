@@ -12,12 +12,14 @@ var router_almacen = require("./app_server/routes/routes_almacen");
 var router_historial = require("./app_server/routes/routes_historial");
 var router_consumo = require("./app_server/routes/routes_consumo");
 var router_tecnica = require("./app_server/routes/routes_tecnica");
+var router_basico = require("./app_server/routes/routes_basico");
 // para utilizar los metodos PUT y DELETE
 var methodOverride = require("method-override");
 // importacion de middleware para verificar el tipo de usuario
 var session_admin = require("./app_server/middleware/session_admin");
 var session_active = require("./app_server/middleware/session_active");
 var session_general_admin = require("./app_server/middleware/session_general_admin");
+var session_active_sucursal = require("./app_server/middleware/session_active_sucursal");
 // -------------------- configuracion de mongo ------------------------------------- //
 var mongoose = require("mongoose");
 // conectar a la base de datos
@@ -155,6 +157,9 @@ app.use("/almacen",router_almacen);
 // gelishtime/consumos
 app.use("/consumos",session_active);
 app.use("/consumos",router_consumo);
+// gelishtime/basicos
+app.use("/basicos",session_active_sucursal);
+app.use("/basicos",router_basico);
 // gelishtime/users
 app.use("/users",session_admin);
 app.use("/users",router_user);
