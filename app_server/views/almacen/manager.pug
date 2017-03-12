@@ -38,12 +38,18 @@ block contenido
                           b &nbsp &nbsp &nbsp
                           button(type="submit/image" alt="text" name="botton1" class="btn btn-primary btn-circle")
                             i.fa.fa-plus(title="Agregar")
-                          if !alm.producto.esBasico    
+                          if !alm.producto.esBasico                            
                             b &nbsp &nbsp &nbsp
                             button(type="submit/image" alt="text" name="botton2" class="btn btn-danger btn-circle")
                               i.fa.fa-minus(title="Pasar a consumo")
-
-
+                          
+                          else      
+                            
+                            b &nbsp &nbsp &nbsp
+                            fieldset(disabled='')
+                              button(type="submit/image" alt="text" name="botton2" class="btn btn-danger btn-circle")
+                                i.fa.fa-minus(title="Pasar a consumo")
+                
                 else
 
                   for alm in almacen
