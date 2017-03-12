@@ -48,11 +48,11 @@ block contenido
                         option(name="1") #{tecnica.nombreCompleto}     
                   .form-group
                     input(type="submit" value="Baja" class="btn btn-lg btn-primary btn-block")
-                  script(type='text/javascript')
-                    - var arreglo = [];
-                    - for(let tecnica of #{tecnicas} ) 
-                      - arreglo = tecnica
-                    - console.log(arreglo)    
+                  script
+                    var arreglo = [];
+                    for tecnica in tecnicas 
+                      arreglo = tecnica
+                    console.log(arreglo)    
   // jQuery
   script(src='/src/vendor/jquery/jquery.min.js')
   // Bootstrap Core JavaScript
