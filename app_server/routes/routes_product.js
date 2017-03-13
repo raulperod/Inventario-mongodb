@@ -11,15 +11,15 @@ var multer = require('multer');
 var xlstojson = require("xls-to-json-lc");
 var xlsxtojson = require("xlsx-to-json-lc");
 var fs = require('fs');
-var storage = multer.diskStorage({
-          destination:  function(req,file,cb){
-                          cb(null, '/app/src/uploads/')
-          },
-          filename: function (req, file, cb) {
-                      var datetimestamp = Date.now();
-                      cb(null,file.fieldname+'-'+datetimestamp+'.'+file.originalname.split('.')[file.originalname.split('.').length-1])
-          }
-});
+var storage = multer.diskStorage({ //multers disk storage settings
+        destination: function (req, file, cb) {
+            cb(null, './uploads/')
+        },
+        filename: function (req, file, cb) {
+            var datetimestamp = Date.now();
+            cb(null, file.fieldname + '-' + datetimestamp + '.' + file.originalname.split('.')[file.originalname.split('.').length -1])
+        }
+    });
 var upload = multer({ //multer settings
     storage: storage,
     fileFilter : function(req, file, callback) { //file filter
