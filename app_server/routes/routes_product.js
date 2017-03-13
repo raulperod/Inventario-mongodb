@@ -11,16 +11,15 @@ var multer = require('multer');
 var xlstojson = require("xls-to-json-lc");
 var xlsxtojson = require("xlsx-to-json-lc");
 var fs = require('fs');
-var storage = multer.diskStorage(
-        {
-          destination:function(req,file,cb){
-                        cb(null, './src/uploads/')
-        },
-        filename: function (req, file, cb) {
-            var datetimestamp = Date.now();
-            cb(null,file.fieldname+'-'+datetimestamp+'.'+file.originalname.split('.')[file.originalname.split('.').length-1])
-        }
-      });
+var storage = multer.diskStorage({
+          destination:  function(req,file,cb){
+                          cb(null, './src/uploads/')
+          },
+          filename: function (req, file, cb) {
+                      var datetimestamp = Date.now();
+                      cb(null,file.fieldname+'-'+datetimestamp+'.'+file.originalname.split('.')[file.originalname.split('.').length-1])
+          }
+});
 var upload = multer({storage:storage}).single('file');
 // ------------
 // gelishtime/products
@@ -344,10 +343,12 @@ router.route("/:idProducto")
 router.route("/new/excel")
       // Metodo GET
       .get(function(req,res){
+        console.log(req);
         res.render("./products/excel");
       })
       // Metodo POST
       .post(function(req,res){
+        console.log(req);
         var exceltojson;
         upload(req,res,function(err){
           if(err){
