@@ -108,7 +108,7 @@ var upload = multer({ //multer settings
     }
 }).single('file');
 /** API path that will upload the files */
-app.get(('/uploads', function(req, res){
+app.get('/uploads', function(req, res){
   res.render("./products/excel");
 });
 app.post('/uploads', function(req, res) {
