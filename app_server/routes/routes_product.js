@@ -108,7 +108,7 @@ router.route("/new")
         });
       });
 // gelishtime/products/table
-router.route("/table")
+router.route("/new/table")
       // Metodo GET
       .get(function(req,res){
         res.render("./products/table");
