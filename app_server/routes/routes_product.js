@@ -6,6 +6,27 @@ var Consumo = require("../models/consumo").Consumo;
 var RegistroDeMovimiento = require("../models/registroDeMovimiento").RegistroDeMovimiento;
 var Baja = require("../models/baja").Baja;
 var router = express.Router();
+var multer = require('multer');
+var xlstojson = require("xls-to-json-lc");
+var xlsxtojson = require("xlsx-to-json-lc");
+var storage = multer.diskStorage({ //multers disk storage settings
+  destination: function (req, file, cb) {
+    cb(null, './uploads/')
+  },
+  filename: function (req, file, cb) {
+    var datetimestamp = Date.now();
+    cb(null, file.fieldname + '-' + datetimestamp + '.' + file.originalname.split('.')[file.originalname.split('.').length -1])
+  }
+});
+var upload = multer({ //multer settings
+  storage: storage,
+  fileFilter : function(req, file, callback) { //file filter
+   if (['xls', 'xlsx'].indexOf(file.originalname.split('.')[file.originalname.split('.').length-1]) === -1) {
+    return callback(new Error('Wrong extension type'));
+   }
+   callback(null, true);
+}
+ }).single('file');
 // gelishtime/products
 router.get("/",function(req,res){
     // busca todos los productos de la base de datos
@@ -107,15 +128,6 @@ router.route("/new")
           }
         });
       });
-// gelishtime/products/table
-router.route("/table/new")
-      // Metodo GET
-      .get(function(req,res){
-        res.render("./products/table");
-      })
-      // Metodo POST
-      .post(function(req,res){
-});
 // gelishtime/products/:idProducto
 router.route("/:idProducto")
       // Metodo GET
@@ -332,7 +344,6 @@ router.route("/:idProducto")
             res.redirect("/products");
         });
   });
-/*
 // gelishtime/products/new-excel
 router.route("/new/excel")
       // Metodo GET
@@ -341,7 +352,6 @@ router.route("/new/excel")
       })
       // Metodo POST
       .post(function(req,res){
-
         var exceltojson;
         upload(req,res,function(err){
           if(err){
@@ -456,6 +466,5 @@ router.route("/new/excel")
         });
 
       });
-*/
 
 module.exports = router;
