@@ -6,30 +6,6 @@ var Consumo = require("../models/consumo").Consumo;
 var RegistroDeMovimiento = require("../models/registroDeMovimiento").RegistroDeMovimiento;
 var Baja = require("../models/baja").Baja;
 var router = express.Router();
-// para el excel
-var multer = require('multer');
-var xlstojson = require("xls-to-json-lc");
-var xlsxtojson = require("xlsx-to-json-lc");
-var fs = require('fs');
-var storage = multer.diskStorage({ //multers disk storage settings
-        destination: function (req, file, cb) {
-            cb(null, './uploads/')
-        },
-        filename: function (req, file, cb) {
-            var datetimestamp = Date.now();
-            cb(null, file.fieldname + '-' + datetimestamp + '.' + file.originalname.split('.')[file.originalname.split('.').length -1])
-        }
-    });
-var upload = multer({ //multer settings
-    storage: storage,
-    fileFilter : function(req, file, callback) { //file filter
-        if (['xls', 'xlsx'].indexOf(file.originalname.split('.')[file.originalname.split('.').length-1]) === -1) {
-            return callback(new Error('Wrong extension type'));
-        }
-        callback(null, true);
-    }
-}).single('file');
-// ------------
 // gelishtime/products
 router.get("/",function(req,res){
     // busca todos los productos de la base de datos
