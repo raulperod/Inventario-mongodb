@@ -22,49 +22,7 @@ var session_general_admin = require("./app_server/middleware/session_general_adm
 var session_active_sucursal = require("./app_server/middleware/session_active_sucursal");
 // -------------------- configuracion de mongo ------------------------------------- //
 var mongoose = require("mongoose");
-// conectar a la base de datos
-mongoose.Promise = require("bluebird");
-var uristring = process.env.PROD_MONGODB;
-mongoose.connect(uristring);
-// ------- impresiones de log dependiendo de la situacion ---------------------------//
-// si se conecto
-mongoose.connection.on('connected', function () {
- console.log('Mongoose connected to ' + uristring);
-});
-// si hubo un error
-mongoose.connection.on('error',function (err) {
- console.log('Mongoose connection error: ' + err);
-});
-// si se desconecto
-mongoose.connection.on('disconnected', function () {
- console.log('Mongoose disconnected');
-});
-// si se desconecto, el porque se desconecto
-gracefulShutdown = function (msg, callback) {
- mongoose.connection.close(function () {
- console.log('Mongoose disconnected through ' + msg);
- callback();
- });
-};
-// For nodemon restarts
-process.once('SIGUSR2', function () {
- gracefulShutdown('nodemon restart', function () {
- process.kill(process.pid, 'SIGUSR2');
- });
-});
-// For app termination
-process.on('SIGINT', function() {
- gracefulShutdown('app termination', function () {
- process.exit(0);
- });
-});
-// For Heroku app termination
-process.on('SIGTERM', function() {
- gracefulShutdown('Heroku app shutdown', function () {
- process.exit(0);
- });
-});
-// ------------------------------------------------------------------------------//
+//----------------------------------------
 app.set('port', (process.env.PORT || 8080)); // definir el puerto
 // servir archivos publicos
 app.use("/src",express.static("src"));
@@ -83,73 +41,23 @@ app.use(cookieSession({
 // configura el motor de vistas con pug
 app.set("view engine","pug");
 app.set('views', './app_server/views'); // define la ruta de las vistas
-//---------------------------------------------------------------------------
-// para el excel
-var multer = require('multer');
-var xlstojson = require("xls-to-json-lc");
-var xlsxtojson = require("xlsx-to-json-lc");
-var fs = require('fs');
-var storage = multer.diskStorage({ //multers disk storage settings
-        destination: function (req, file, cb) {
-            cb(null, './uploads/')
-        },
-        filename: function (req, file, cb) {
-            var datetimestamp = Date.now();
-            cb(null, file.fieldname + '-' + datetimestamp + '.' + file.originalname.split('.')[file.originalname.split('.').length -1])
-        }
-    });
-var upload = multer({ //multer settings
-    storage: storage,
-    fileFilter : function(req, file, callback) { //file filter
-        if (['xls', 'xlsx'].indexOf(file.originalname.split('.')[file.originalname.split('.').length-1]) === -1) {
-            return callback(new Error('Wrong extension type'));
-        }
-        callback(null, true);
-    }
-}).single('file');
-/** API path that will upload the files */
-app.get('/uploads', function(req, res){
-  res.render("./products/excel");
+// conectar a la base de datos
+mongoose.Promise = require("bluebird");
+var uristring = process.env.PROD_MONGODB;
+mongoose.connect(uristring);
+// ------- impresiones de log dependiendo de la situacion ---------------------------//
+// si se conecto
+mongoose.connection.on('connected', function () {
+ console.log('Mongoose connected to ' + uristring);
 });
-app.post('/uploads', function(req, res) {
-    var exceltojson;
-    upload(req,res,function(err){
-        if(err){
-             res.json({error_code:1,err_desc:err});
-             return;
-        }
-        /** Multer gives us file info in req.file object */
-        if(!req.file){
-            res.json({error_code:1,err_desc:"No file passed"});
-            return;
-        }
-        /** Check the extension of the incoming file and
-         *  use the appropriate module
-         */
-        if(req.file.originalname.split('.')[req.file.originalname.split('.').length-1] === 'xlsx'){
-            exceltojson = xlsxtojson;
-        } else {
-            exceltojson = xlstojson;
-        }
-        console.log(req.file.path);
-        try {
-            exceltojson({
-                input: req.file.path,
-                output: null, //since we don't need output.json
-                lowerCaseHeaders:true
-            }, function(err,result){
-                if(err) {
-                    return res.json({error_code:1,err_desc:err, data: null});
-                }
-                res.json({error_code:0,err_desc:null, data: result});
-            });
-        } catch (e){
-            res.json({error_code:1,err_desc:"Corupted excel file"});
-        }
-    })
-
+// si hubo un error
+mongoose.connection.on('error',function (err) {
+ console.log('Mongoose connection error: ' + err);
 });
-// ---------------------------------------------------------------------------
+// si se desconecto
+mongoose.connection.on('disconnected', function () {
+ console.log('Mongoose disconnected');
+});
 // -------------------------------------------------------------------------//
 // -------------------- Configuracion de las rutas -------------------------//
 // gelishtime/

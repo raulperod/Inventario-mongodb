@@ -366,7 +366,7 @@ router.route("/new/excel")
                 res.json({error_code:1,err_desc:"Corupted excel file"});
             }
         })
-        /*
+
         var exceltojson;
         upload(req,res,function(err){
           if(err){
@@ -478,7 +478,7 @@ router.route("/new/excel")
             res.redirect("/products");
           }
 
-        });*/
+        });
 
       });
 
