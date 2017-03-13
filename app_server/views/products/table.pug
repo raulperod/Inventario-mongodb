@@ -44,39 +44,44 @@ block contenido
                     td 25
                     td No
     .row
-      .col-lg-12
-        table#table
-          thead
-            tr
-              th(width='8', scope='col')  
-              th(width='131', scope='col') Roba/Usluga
-              th(width='144', scope='col') Jmj
-              th(width='144', scope='col') Qty
-              th(width='144', scope='col') Price
-              th(width='144', scope='col') Rabat
-              th(width='81', scope='col')  
-          tbody
-            tr
-              td
-              td
-                select#sif_roba1(name='sif_roba1')
-                  option(value='') Please select
-                  option(value='1') David Hasselhoff
-                  option(value='2') Michael Jackson
-                  option(value='3') Tina Turner
-              td
-                select#idjmj1(name='idjmj1')
-                  option(value='') Please select
-                  option(value='1') David Hasselhoff
-                  option(value='2') Michael Jackson
-                  option(value='3') Tina Turner
-              td
-                input#cijena1(name='cijena1')
-              td
-                input#track1(name='track1')
-              td
-                input#rabat1(name='rabat1')
-        button.add(type='button', onclick='clickMe();') Add
+      .panel.panel-default
+        .panel-heading
+          | Ejemplo de tabla para excel
+        // /.panel-heading
+        .panel-body
+          .table-responsive
+            table#table.table.table-striped.table-bordered.table-hover
+              thead
+                tr
+                  th(width='8', scope='col')  
+                  th(width='131', scope='col') Roba/Usluga
+                  th(width='144', scope='col') Jmj
+                  th(width='144', scope='col') Qty
+                  th(width='144', scope='col') Price
+                  th(width='144', scope='col') Rabat
+                  th(width='81', scope='col')  
+              tbody
+                tr
+                  td
+                  td
+                    select#sif_roba1(name='sif_roba1')
+                      option(value='') Please select
+                      option(value='1') David Hasselhoff
+                      option(value='2') Michael Jackson
+                      option(value='3') Tina Turner
+                  td
+                    select#idjmj1(name='idjmj1')
+                      option(value='') Please select
+                      option(value='1') David Hasselhoff
+                      option(value='2') Michael Jackson
+                      option(value='3') Tina Turner
+                  td
+                    input#cijena1(name='cijena1')
+                  td
+                    input#track1(name='track1')
+                  td
+                    input#rabat1(name='rabat1')
+            button.add(type='button', onclick='clickMe();') Add
   script(src='/src/dist/js/addRow.js')                     
   // jQuery
   script(src='/src/vendor/jquery/jquery.min.js')
