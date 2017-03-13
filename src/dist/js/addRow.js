@@ -1,4 +1,4 @@
-$(document).ready(function ($) {
+$(document).ready(function() {
   // trigger event when button is clicked
   $("button.add").click(function () {
       // add new row to table using addTableRow function
@@ -51,4 +51,4 @@ $(document).ready(function ($) {
       });
 
   };
-});     
+});
