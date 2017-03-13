@@ -348,7 +348,7 @@ router.route("/new/excel")
       })
       // Metodo POST
       .post(function(req,res){
-        console.log(req.body.file);
+        console.log(req.file);
         var exceltojson;
         upload(req,res,function(err){
           if(err){
