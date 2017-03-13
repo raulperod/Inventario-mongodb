@@ -13,7 +13,7 @@ var xlsxtojson = require("xlsx-to-json-lc");
 var fs = require('fs');
 var storage = multer.diskStorage({
           destination:  function(req,file,cb){
-                          cb(null, './src/uploads/')
+                          cb(null, '/app/src/uploads/')
           },
           filename: function (req, file, cb) {
                       var datetimestamp = Date.now();
@@ -343,12 +343,10 @@ router.route("/:idProducto")
 router.route("/new/excel")
       // Metodo GET
       .get(function(req,res){
-        console.log(req);
         res.render("./products/excel");
       })
       // Metodo POST
       .post(function(req,res){
-        console.log(req.file);
         var exceltojson;
         upload(req,res,function(err){
           if(err){
