@@ -6,6 +6,7 @@ var Consumo = require("../models/consumo").Consumo;
 var RegistroDeMovimiento = require("../models/registroDeMovimiento").RegistroDeMovimiento;
 var Baja = require("../models/baja").Baja;
 var router = express.Router();
+var fs = require('fs');
 var multer = require('multer');
 var xlstojson = require("xls-to-json-lc");
 var xlsxtojson = require("xlsx-to-json-lc");
@@ -348,20 +349,22 @@ router.route("/:idProducto")
 router.route("/new/excel")
       // Metodo GET
       .get(function(req,res){
-        res.render("./products/excel");
+        res.render("./products/excel",{Subido:false,AlertExcel:false});
       })
       // Metodo POST
       .post(function(req,res){
         var exceltojson;
+        console.log("libro: "+req.body.file);
         upload(req,res,function(err){
           if(err){
             console.log(err);
+            res.render("./products/excel",{Subido:false,AlertExcel:true});
             return;
           }
           // Multer gives us file info in req.file object
           if(!req.file){
             console.log("No hay archivo");
-            res.send("No hay archivo")
+            res.render("./products/excel",{Subido:false,AlertExcel:true});
             return;
           }
 
@@ -450,7 +453,8 @@ router.route("/new/excel")
                       });
                     }
                   }
-                  res.redirect("/products/new/excel");
+                  res.render("./products/excel",{Subido:true,AlertExcel:false});
+
                   //----------------------
                 }else{
                   if(err) console.log(err);

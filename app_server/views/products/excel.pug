@@ -45,15 +45,27 @@ block contenido
                     td No
               .well
                 h4 Subir productos con excel
-                form#uploadForm(enctype='multipart/form-data', action='/new/excel', method='POST')
+                form#uploadForm(enctype='multipart/form-data', action='/products/new/excel', method='POST')
                    fieldset
                      // input normal
                      .col-md-12
-                       .col-md-3
-                        .form-group
-                          input(type='file', name='file')
-                        .form-group
-                          input(type='submit', value='Registrar productos', name='submit')
+                       .col-md-4
+                         if Subido
+                          
+                           .alert.alert-success.alert-dismissable 
+                            button.close(type='button', data-dismiss='alert', aria-hidden='true') ×
+                            | Productos subidos correctamente
+                            
+                         else if AlertExcel
+                           
+                           .alert.alert-warning.alert-dismissable
+                             button.close(type='button', data-dismiss='alert', aria-hidden='true') ×
+                             | Error al subir productos
+                             
+                         .form-group
+                           input(type='file', name='file')
+                         .form-group
+                           input(type='submit', value='Registrar productos', name='submit')
   script(src='/src/dist/js/addRow.js')                     
   // jQuery
   script(src='/src/vendor/jquery/jquery.min.js')
