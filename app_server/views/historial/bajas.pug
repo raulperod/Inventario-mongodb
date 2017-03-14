@@ -17,6 +17,7 @@ block contenido
                   th Producto
                   th Cantidad
                   th Usuario
+                  th Tecnica
                   if usuario.permisos == 2
                     th Sucursal
                   th Fecha
@@ -27,6 +28,11 @@ block contenido
                       td #{baja.producto.nombre}
                       td #{baja.cantidad}
                       td #{baja.usuario.nombre} #{baja.usuario.apellido}
+                      if baja.tecnica
+                        td #{baja.tecnica.nombre}
+                      else
+                        
+                        td Producto no basico
                       td #{baja.fecha.getDate()}/#{baja.fecha.getMonth()}/#{baja.fecha.getFullYear()} 
                       //td #{baja.fecha.getHours() - 7}:#{baja.fecha.getMinutes()}:#{baja.fecha.getSeconds()} #{baja.fecha.getDate()}/#{baja.fecha.getMonth()}/#{baja.fecha.getFullYear()} 
                 else
@@ -36,6 +42,11 @@ block contenido
                       td #{baja.producto.nombre}
                       td #{baja.cantidad}
                       td #{baja.usuario.nombre} #{baja.usuario.apellido}
+                      if baja.tecnica
+                        td #{baja.tecnica.nombre}
+                      else
+                        
+                        td Producto no basico
                       td #{baja.sucursal.plaza}
                       td #{baja.fecha.getDate()}/#{baja.fecha.getMonth()}/#{baja.fecha.getFullYear()} 
                       //td #{baja.fecha.getHours() - 7}:#{baja.fecha.getMinutes()}:#{baja.fecha.getSeconds()} #{baja.fecha.getDate()}/#{baja.fecha.getMonth()}/#{baja.fecha.getFullYear()}
@@ -61,7 +72,7 @@ block contenido
         $(document).ready(function() {
           $('#dataTables-example').DataTable({
             responsive: true,
-            "order": [[ 4, "desc" ]]
+            "order": [[ 5, "asc" ]]
           });
         });
     else
@@ -70,6 +81,6 @@ block contenido
         $(document).ready(function() {
           $('#dataTables-example').DataTable({
             responsive: true,
-            "order": [[ 3, "desc" ]]
+            "order": [[ 4, "asc" ]]
           });
         });

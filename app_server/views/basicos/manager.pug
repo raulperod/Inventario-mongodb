@@ -17,6 +17,17 @@ block contenido
                   | Asignacion de basico
                 
                 form(action="/basicos?_method=PUT",method="POST",role='form')
+                  if Asignado
+                    .alert.alert-success.alert-dismissable 
+                     button.close(type='button', data-dismiss='alert', aria-hidden='true') ×
+                     | Producto asignado correctamente
+                     
+                  else if AlertAsignado
+                    
+                    .alert.alert-warning.alert-dismissable
+                      button.close(type='button', data-dismiss='alert', aria-hidden='true') ×
+                      | Error no hay producto en almacen
+                        
                   .form-group
                     h5  Producto:
                     select.form-control.selectpicker(name="producto", data-live-search="true")
@@ -36,6 +47,18 @@ block contenido
                   | Baja de basico
                   
                 form(action="/basicos?_method=DELETE",method="POST",role='form')
+                  if Baja
+                  
+                    .alert.alert-success.alert-dismissable 
+                     button.close(type='button', data-dismiss='alert', aria-hidden='true') ×
+                     | Baja realizada correctamente
+                     
+                  else if Alertbaja
+                    
+                    .alert.alert-warning.alert-dismissable
+                      button.close(type='button', data-dismiss='alert', aria-hidden='true') ×
+                      | Error no hay producto en consumo
+                      
                   .form-group
                     h5  Producto:
                     select.form-control.selectpicker(name="producto", data-live-search="true")
