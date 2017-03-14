@@ -8,7 +8,7 @@ router.get("/movimientos",function(req,res){
   if(res.locals.usuario.permisos == 1){ // si es administrador de sucursales
     // busca los movimientos de la sucursal del administrador
     RegistroDeMovimiento.find({sucursal:res.locals.usuario.sucursal})
-                        .populate("usuario producto")
+                        .populate("usuario producto tecnica")
                         .exec(function(err,movimientos){
       if(!err && movimientos){ // si no hay error y hay movimientos
         res.render("./historial/movimientos",{movimientos:movimientos});
@@ -20,7 +20,7 @@ router.get("/movimientos",function(req,res){
   }else{ // si es administrador general
     // busca los movimientos de todas las sucursales
     RegistroDeMovimiento.find({})
-                        .populate("usuario producto sucursal")
+                        .populate("usuario producto sucursal tecnica")
                         .exec(function(err,movimientos){
       if(!err && movimientos){ // si no hubo error y hay movimientos
         res.render("./historial/movimientos",{movimientos:movimientos});

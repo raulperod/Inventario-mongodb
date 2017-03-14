@@ -81,3 +81,13 @@ block contenido
           responsive: true
         });
       });
+    script(src="/src/excel/js/xlsx.core.min.js")
+    script(src="/src/excel/js/FileSaver.min.js")
+    script(src="/src/excel/js/tableexport.min.js")
+    script.
+      $("table").tableExport({
+          formats: ["xlsx"],
+          bootstrap: true,
+          ignoreCols: 2, 
+          fileName: "Consumo"
+      });

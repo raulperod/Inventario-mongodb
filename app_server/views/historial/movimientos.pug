@@ -1,6 +1,6 @@
 extends ../layout.pug
 block contenido
-
+  
   #page-wrapper
     .row
       .col-lg-12
@@ -96,3 +96,12 @@ block contenido
             "order": [[ 5, "asc" ]]
           });
         });
+    script(src="/src/excel/js/xlsx.core.min.js")
+    script(src="/src/excel/js/FileSaver.min.js")
+    script(src="/src/excel/js/tableexport.min.js")
+    script.
+      $("table").tableExport({
+          formats: ["xlsx"],
+          bootstrap: true,
+          fileName: "Movimientos"
+      });

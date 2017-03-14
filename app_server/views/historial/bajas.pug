@@ -1,6 +1,6 @@
 extends ../layout.pug
 block contenido
-
+  
   #page-wrapper
     .row
       .col-lg-12
@@ -67,6 +67,9 @@ block contenido
     // Custom Theme JavaScript
     script(src='/src/dist/js/sb-admin-2.js')
     // Page-Level Demo Scripts - Tables - Use for reference
+    script(src="/src/excel/js/xlsx.core.min.js")
+    script(src="/src/excel/js/FileSaver.min.js")
+    script(src="/src/excel/js/tableexport.min.js")
     if usuario.permisos == 2
       script.
         $(document).ready(function() {
@@ -84,3 +87,9 @@ block contenido
             "order": [[ 4, "asc" ]]
           });
         });
+    script.
+      $("table").tableExport({
+          formats: ["xlsx"],
+          bootstrap: true,
+          fileName: "Bajas"
+      });
