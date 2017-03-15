@@ -22,6 +22,10 @@ var baja_schema = new Schema({
   fecha:{
         type: Date,
         default: Date.now
+  },
+  tecnica:{
+    type: Schema.Types.ObjectId,
+    ref:"Tecnica"
   }
 });
 

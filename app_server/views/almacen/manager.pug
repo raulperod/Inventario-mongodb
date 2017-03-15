@@ -15,6 +15,7 @@ block contenido
               thead
                 tr
                   th Nombre
+                  th Codigo
                   th Cantidad
                   if usuario.permisos==2
                     th Sucursal
@@ -27,6 +28,7 @@ block contenido
                   for alm in almacen
                     tr.odd.gradeX
                       td #{alm.producto.nombre}
+                      td #{alm.producto.codigo}
                       if alm.cantidad > alm.producto.minimo
                         td #{alm.cantidad}
                       else
@@ -54,6 +56,7 @@ block contenido
                   for alm in almacen
                     tr.odd.gradeX
                       td #{alm.producto.nombre}
+                      td #{alm.producto.codigo}
                       if alm.cantidad > alm.producto.minimo
                         td #{alm.cantidad}
                       else
@@ -90,7 +93,7 @@ block contenido
       $("table").tableExport({
           formats: ["xlsx"],
           bootstrap: true,
-          ignoreCols: 2, 
+          ignoreCols: 3, 
           fileName: "Almacen"
       });/*
       $("table").tableExport({

@@ -15,6 +15,7 @@ block contenido
               thead
                 tr
                   th Nombre
+                  th Codigo
                   th Cantidad
                   if usuario.permisos==2
                     th Sucursal
@@ -26,11 +27,8 @@ block contenido
                   for consumo in consumos
                     tr.odd.gradeX
                       td #{consumo.producto.nombre}
-                      if consumo.cantidad > consumo.producto.minimo
-                        td #{consumo.cantidad}
-                      else
-
-                        td(style="color:red" title="Pocos productos") #{consumo.cantidad}
+                      td #{consumo.producto.codigo}
+                      td #{consumo.cantidad}
                       td
                         if !consumo.producto.esBasico
                           form(style="display:inline" action="/consumos/"+consumo._id+"?_method=PUT",method="POST",  onsubmit="return confirm('¿Esta seguro que desea realizar esas bajas?')")
@@ -52,11 +50,8 @@ block contenido
                   for consumo in consumos
                     tr.odd.gradeX
                       td #{consumo.producto.nombre}
-                      if consumo.cantidad > consumo.producto.minimo
-                        td #{consumo.cantidad}
-                      else
-
-                        td(style="color:red" title="Pocos productos") #{consumo.cantidad}
+                      td #{consumo.producto.codigo}
+                      td #{consumo.cantidad}
                       td #{consumo.sucursal.plaza}
               // /.panel-body
         // /.panel
@@ -88,6 +83,6 @@ block contenido
       $("table").tableExport({
           formats: ["xlsx"],
           bootstrap: true,
-          ignoreCols: 2, 
+          ignoreCols: 3, 
           fileName: "Consumo"
       });

@@ -77,14 +77,19 @@ router.route("/")
                       //------------------------------------
                       // creo un registro del movimiento
                       // genera el registro
+                      // creo la fecha
+                      var fecha = new Date();
+                      fecha.setHours(fecha.getHours()-7);
                       var registro = new RegistroDeMovimiento({
                         sucursal:res.locals.usuario.sucursal,
                         usuario:req.session.user_id,
                         cantidad:1,
                         producto:producto._id,
                         tipo: 0,
-                        tecnica:tecnica._id
+                        tecnica:tecnica._id,
+                        fecha:fecha
                       });
+                      fecha=null;
                       // guarda el registro
                       registro.save().then(function(us){
                         // busco las tecnicas de la sucursal del usuario
@@ -168,13 +173,18 @@ router.route("/")
                       });
                       //--------------------------------
                       // realizo la baja del producto
+                      // creo la fecha
+                      var fecha = new Date();
+                      fecha.setHours(fecha.getHours()-7);
                       var baja = new Baja({
                         sucursal:res.locals.usuario.sucursal,
                         usuario:req.session.user_id,
                         cantidad:1,
                         producto:producto._id,
-                        tecnica:tecnica._id
+                        tecnica:tecnica._id,
+                        fecha:fecha
                       });
+                      fecha=null;
                       // guarda la baja
                       baja.save().then(function(us){
                         // busco las tecnicas de la sucursal del usuario

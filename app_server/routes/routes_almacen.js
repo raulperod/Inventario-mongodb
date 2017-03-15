@@ -74,13 +74,19 @@ router.route("/new")
                 });
                 // guarda el movimiento
                 // genera el registro
+                // creo la fecha
+                var fecha = new Date();
+                fecha.setHours(fecha.getHours()-7);
+
                 var registro = new RegistroDeMovimiento({
                   sucursal:res.locals.usuario.sucursal,
                   usuario:req.session.user_id,
                   cantidad:parseInt(req.body.cantidad),
                   producto:producto._id,
-                  tipo: 1
+                  tipo: 1,
+                  fecha: fecha
                 });
+                fecha = null;
                 // guarda el registro
                 registro.save().then(function(us){
                   res.redirect("/almacen");
@@ -123,13 +129,19 @@ router.route("/:idAlmacen")
             if( req.body.botton1 == ''){// se restan al producto
               res.locals.productoAlmUpdate.cantidad += parseInt(req.body.cantidad);
               // genera el registro
+              // creo la fecha
+              var fecha = new Date();
+              fecha.setHours(fecha.getHours()-7);
+
               var registro = new RegistroDeMovimiento({
                 sucursal:res.locals.usuario.sucursal,
                 usuario:req.session.user_id,
                 cantidad:parseInt(req.body.cantidad),
                 producto:productoAlm.producto,
-                tipo: 1
+                tipo: 1,
+                fecha: fecha
               });
+              fecha = null;
               // guarda al producto en la base de datos
               res.locals.productoAlmUpdate.save(function(err){
                 if(err) console.log(err);
@@ -145,13 +157,18 @@ router.route("/:idAlmacen")
               // si el numero que pusieron es mayor que el que tenian, entonces quedan 0 productos
               if( parseInt(req.body.cantidad) > res.locals.productoAlmUpdate.cantidad ){
                 // genera el registro
+                // creo la fecha
+                var fecha = new Date();
+                fecha.setHours(fecha.getHours()-7);
                 var registro = new RegistroDeMovimiento({
                   sucursal:res.locals.usuario.sucursal,
                   usuario:req.session.user_id,
                   cantidad:res.locals.productoAlmUpdate.cantidad,
                   producto:productoAlm.producto,
-                  tipo: 0
+                  tipo: 0,
+                  fecha:fecha
                 });
+                fecha= null;
                 Consumo.findOne({producto:productoAlm.producto,sucursal:res.locals.usuario.sucursal},function(err,consumo){ // verifico si hay un consumo
                   if(!err){// si no hay error
                     if(!consumo){ // si no hay consumo de ese producto
@@ -194,13 +211,18 @@ router.route("/:idAlmacen")
               }else{ // si no, solamente se resta la cantidad que mando
 
                 // genera el registro
+                // creo la fecha
+                var fecha = new Date();
+                fecha.setHours(fecha.getHours()-7);
                 var registro = new RegistroDeMovimiento({
                   sucursal:res.locals.usuario.sucursal,
                   usuario:req.session.user_id,
                   cantidad:parseInt(req.body.cantidad),
                   producto:productoAlm.producto,
-                  tipo: 0
+                  tipo: 0,
+                  fecha:fecha
                 });
+                fecha = null;
                 // resta la cantidad
                 res.locals.productoAlmUpdate.cantidad -= parseInt(req.body.cantidad);
                 Consumo.findOne({producto:productoAlm.producto,sucursal:res.locals.usuario.sucursal},function(err,consumo){
