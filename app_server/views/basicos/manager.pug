@@ -27,6 +27,12 @@ block contenido
                     .alert.alert-warning.alert-dismissable
                       button.close(type='button', data-dismiss='alert', aria-hidden='true') ×
                       | Error no hay producto en almacen
+                      
+                  else if AlertYaAsignado    
+                    
+                    .alert.alert-warning.alert-dismissable
+                      button.close(type='button', data-dismiss='alert', aria-hidden='true') ×
+                      | La tecnica ya tiene asignado ese producto
                         
                   .form-group
                     h5  Producto:
@@ -58,6 +64,12 @@ block contenido
                     .alert.alert-warning.alert-dismissable
                       button.close(type='button', data-dismiss='alert', aria-hidden='true') ×
                       | Error no hay producto en consumo
+                  
+                  else if AlertNoAsignado
+                    
+                    .alert.alert-warning.alert-dismissable
+                      button.close(type='button', data-dismiss='alert', aria-hidden='true') ×
+                      | La tecnica no tiene asignado ese producto
                       
                   .form-group
                     h5  Producto:
