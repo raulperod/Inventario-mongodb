@@ -63,9 +63,9 @@ router.get("/bajas",function(req,res){
 router.get("/estadisticas/general",function(req,res){
   // mandar bajas de productos basicos y no basicos
   // primero busco las bajas de los productos basicos
-  Baja.find({tecnica: { "$exists" : true }}).exec(function(err,basicos){
+  Baja.find({tecnica: { "$exists" : true }},{_id:0,sucursal:1,producto:1,tecnica:1,cantidad:1,fecha:1}).populate("sucursal producto tecnica").exec(function(err,basicos){
     if(!err && basicos){ // si no hubo error y hay bajas
-      Baja.find({tecnica: { "$exists" : false }}).exec(function(err,productos){
+      Baja.find({tecnica: { "$exists" : false }},{_id:0,sucursal:1,producto:1,cantidad:1,fecha:1}).populate("sucursal producto").exec(function(err,productos){
         if(!err && productos){ // si no hubo error y hay bajas
           res.render("./historial/estadisticas/general",{productos:productos,basicos:basicos});
         }else{ // si hubo error
@@ -84,9 +84,9 @@ router.get("/estadisticas/general",function(req,res){
 router.get("/estadisticas/sucursal",function(req,res){
   // mandar bajas de productos basicos y no basicos
   // primero busco las bajas de los productos basicos
-  Baja.find({sucursal:res.locals.usuario.sucursal,tecnica: { "$exists" : true }}).exec(function(err,basicos){
+  Baja.find({sucursal:res.locals.usuario.sucursal,tecnica: { "$exists" : true }},{_id:0,producto:1,tecnica:1,cantidad:1,fecha:1}).populate("producto tecnica").exec(function(err,basicos){
     if(!err && basicos){ // si no hubo error y hay bajas
-      Baja.find({sucursal:res.locals.usuario.sucursal,tecnica: { "$exists" : false }}).exec(function(err,productos){
+      Baja.find({sucursal:res.locals.usuario.sucursal,tecnica: { "$exists" : false }},{_id:0,producto:1,cantidad:1,fecha:1}).populate("producto").exec(function(err,productos){
         if(!err && productos){ // si no hubo error y hay bajas
           res.render("./historial/estadisticas/general",{productos:productos,basicos:basicos});
         }else{ // si hubo error
