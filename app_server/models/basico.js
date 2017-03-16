@@ -10,15 +10,14 @@ var basico_schema = new Schema({
   tecnica:{
     type: Schema.Types.ObjectId,
     ref:"Tecnica"
-  }
+  },
   producto:{
     type: Schema.Types.ObjectId,
     ref:"Producto"
   },
-  cantidad: {
-    type: Number,
-    require: true,
-    min:[0,"No puede haber numeros negativos"]
+  enUso: {
+    type: Boolean,
+    require: true
   },
 
 });
