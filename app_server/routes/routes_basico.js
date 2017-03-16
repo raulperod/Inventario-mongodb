@@ -312,50 +312,106 @@ router.route("/")
                   // busco a la tecnica para asignarle la baja
                   Tecnica.findOne({nombreCompleto:req.body.tecnica},{_id:1}).exec(function(err,tecnica){
                     if(!err && tecnica){ // si no hubo error y la tecnica existe
-                      // le resto un producto al consumo
-                      res.locals.productoConUpdate = productoCon;
-                      res.locals.productoConUpdate.cantidad -= 1; // se le resta 1
-                      res.locals.productoConUpdate.save(function(err){
-                        if(err) console.log(err);
-                      });
-                      //--------------------------------
-                      // realizo la baja del producto
-                      // creo la fecha
-                      var fecha = new Date();
-                      fecha.setHours(fecha.getHours()-7);
-                      var baja = new Baja({
-                        sucursal:res.locals.usuario.sucursal,
-                        usuario:req.session.user_id,
-                        cantidad:1,
-                        producto:producto._id,
-                        tecnica:tecnica._id,
-                        fecha:fecha
-                      });
-                      fecha=null;
-                      // guarda la baja
-                      baja.save().then(function(us){
-                        // busco las tecnicas de la sucursal del usuario
-                        Tecnica.find({sucursal:res.locals.usuario.sucursal},{nombreCompleto:1}).exec(function(err,tecnicas){
-                          if(!err && tecnicas){ // si no hubo error y existen tecnicas
-                            // busca los productos basicos de la sucursal
-                            Producto.find({esBasico:true},{nombre:1}).exec(function(err,productos){
-                              if(!err && productos){ // si no hubo error y existen productos
-                                res.render("./basicos/manager",{tecnicas:tecnicas,productos:productos,Asignado:false,AlertAsignado:false,Baja:true,Alertbaja:false});
-                              }else{ // si hubo un error
-                                if(err) console.log(err); // imprime el error
-                                res.redirect("/producto/new");
+                      // busco en los basicos
+                      Basico.findOne({sucursal:res.locals.usuario.sucursal,tecnica:tecnica._id,producto:producto._id}).exec(function(err,productoBasico){
+                        if(!err && productoBasico){ // si no hay error y existe el registro del producto
+                          if(productoBasico.enUso){ // si esta en uso, entonces hace la baja
+                            // pone que no esta en uso ese producto
+                            res.locals.productoBasicoUpdate = productoBasico;
+                            res.locals.productoBasicoUpdate.enUso = false; // se le resta 1
+                            res.locals.productoBasicoUpdate.save(function(err){
+                              if(err) console.log(err);
+                            });
+                            // le resto un producto al consumo
+                            res.locals.productoConUpdate = productoCon;
+                            res.locals.productoConUpdate.cantidad -= 1; // se le resta 1
+                            res.locals.productoConUpdate.save(function(err){
+                              if(err) console.log(err);
+                            });
+                            //--------------------------------
+                            // realizo la baja del producto
+                            // creo la fecha
+                            var fecha = new Date();
+                            fecha.setHours(fecha.getHours()-7);
+                            var baja = new Baja({
+                              sucursal:res.locals.usuario.sucursal,
+                              usuario:req.session.user_id,
+                              cantidad:1,
+                              producto:producto._id,
+                              tecnica:tecnica._id,
+                              fecha:fecha
+                            });
+                            fecha=null;
+                            // guarda la baja
+                            baja.save().then(function(us){
+                              // busco las tecnicas de la sucursal del usuario
+                              Tecnica.find({sucursal:res.locals.usuario.sucursal},{nombreCompleto:1}).exec(function(err,tecnicas){
+                                if(!err && tecnicas){ // si no hubo error y existen tecnicas
+                                  // busca los productos basicos de la sucursal
+                                  Producto.find({esBasico:true},{nombre:1}).exec(function(err,productos){
+                                    if(!err && productos){ // si no hubo error y existen productos
+                                      res.render("./basicos/manager",{tecnicas:tecnicas,productos:productos,Asignado:false,AlertAsignado:false,Baja:true,Alertbaja:false,AlertYaAsignado:false,AlertNoAsignado:false});
+                                    }else{ // si hubo un error
+                                      if(err) console.log(err); // imprime el error
+                                      res.redirect("/producto/new");
+                                    }
+                                  });
+                                }else{ // si paso algun error
+                                  if(err) console.log(err); // imprime el error si hubo
+                                  res.redirect("/tecnicas/new");
+                                }
+                              });
+
+                            }, function(err){ // si ocurre un error lo imprime
+                              console.log(err);
+                            });
+                            //-----------------------------
+                          }else{ // si no esta en uso, alerta que no puede dar de baja
+                            // busco las tecnicas de la sucursal del usuario
+                            Tecnica.find({sucursal:res.locals.usuario.sucursal},{nombreCompleto:1}).exec(function(err,tecnicas){
+                              if(!err && tecnicas){ // si no hubo error y existen tecnicas
+                                // busca los productos basicos de la sucursal
+                                Producto.find({esBasico:true},{nombre:1}).exec(function(err,productos){
+                                  if(!err && productos){ // si no hubo error y existen productos
+                                    res.render("./basicos/manager",{tecnicas:tecnicas,productos:productos,Asignado:false,AlertAsignado:false,Baja:false,Alertbaja:false,AlertYaAsignado:false,AlertNoAsignado:true});
+                                  }else{ // si hubo un error
+                                    if(err) console.log(err); // imprime el error
+                                    res.redirect("/producto/new");
+                                  }
+                                });
+                              }else{ // si paso algun error
+                                if(err) console.log(err); // imprime el error si hubo
+                                res.redirect("/tecnicas/new");
                               }
                             });
-                          }else{ // si paso algun error
-                            if(err) console.log(err); // imprime el error si hubo
-                            res.redirect("/tecnicas/new");
                           }
-                        });
 
-                      }, function(err){ // si ocurre un error lo imprime
-                        console.log(err);
+                        }else{ // si paso algo
+                          if(!productoBasico){ // si no hay registro del producto
+                            // busco las tecnicas de la sucursal del usuario
+                            Tecnica.find({sucursal:res.locals.usuario.sucursal},{nombreCompleto:1}).exec(function(err,tecnicas){
+                              if(!err && tecnicas){ // si no hubo error y existen tecnicas
+                                // busca los productos basicos de la sucursal
+                                Producto.find({esBasico:true},{nombre:1}).exec(function(err,productos){
+                                  if(!err && productos){ // si no hubo error y existen productos
+                                    res.render("./basicos/manager",{tecnicas:tecnicas,productos:productos,Asignado:false,AlertAsignado:false,Baja:false,Alertbaja:false,AlertYaAsignado:false,AlertNoAsignado:true});
+                                  }else{ // si hubo un error
+                                    if(err) console.log(err); // imprime el error
+                                    res.redirect("/producto/new");
+                                  }
+                                });
+                              }else{ // si paso algun error
+                                if(err) console.log(err); // imprime el error si hubo
+                                res.redirect("/tecnicas/new");
+                              }
+                            });
+                          }else{ // si hubo error
+                            console.log(err);
+                            res.redirect("/basicos")
+                          }
+                        }
                       });
-                      //-----------------------------
+
                     }else{ // si hubo un error
                       if(err) console.log(err);
                       res.redirect("/tecnicas/new");
@@ -368,7 +424,7 @@ router.route("/")
                       // busca los productos basicos de la sucursal
                       Producto.find({esBasico:true},{nombre:1}).exec(function(err,productos){
                         if(!err && productos){ // si no hubo error y existen productos
-                          res.render("./basicos/manager",{tecnicas:tecnicas,productos:productos,Asignado:false,AlertAsignado:false,Baja:false,Alertbaja:true});
+                          res.render("./basicos/manager",{tecnicas:tecnicas,productos:productos,Asignado:false,AlertAsignado:false,Baja:false,Alertbaja:true,AlertYaAsignado:false,AlertNoAsignado:false});
                         }else{ // si hubo un error
                           if(err) console.log(err); // imprime el error
                           res.redirect("/producto/new");
