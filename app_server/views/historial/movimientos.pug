@@ -40,37 +40,37 @@ block contenido
                         
                         td Producto no basico   
                         
-                        if movimiento.fecha.getMonth() < 10
-                          - var month = "0"+movimiento.fecha.getMonth()          
-                        else
-                          
-                          - var month = movimiento.fecha.getMonth()
+                      if movimiento.fecha.getMonth() < 10
+                        - var month = "0"+movimiento.fecha.getMonth()          
+                      else
                         
-                        if movimiento.fecha.getDate() < 10
-                          - var day = "0"+movimiento.fecha.getDate()          
-                        else
-                          
-                          - var day = movimiento.fecha.getDate()
+                        - var month = movimiento.fecha.getMonth()
+                      
+                      if movimiento.fecha.getDate() < 10
+                        - var day = "0"+movimiento.fecha.getDate()          
+                      else
                         
-                        if movimiento.fecha.getHours() < 10
-                          - var hour = "0"+movimiento.fecha.getHours()        
-                        else
-                          
-                          - var hour = movimiento.fecha.getHours()
+                        - var day = movimiento.fecha.getDate()
+                      
+                      if movimiento.fecha.getHours() < 10
+                        - var hour = "0"+movimiento.fecha.getHours()        
+                      else
                         
-                        if movimiento.fecha.getMinutes()  < 10
-                          - var minute = "0"+ movimiento.fecha.getMinutes()        
-                        else
-                          
-                          - var minute =  movimiento.fecha.getMinutes()
+                        - var hour = movimiento.fecha.getHours()
+                      
+                      if movimiento.fecha.getMinutes()  < 10
+                        - var minute = "0"+ movimiento.fecha.getMinutes()        
+                      else
                         
-                        if movimiento.fecha.getSeconds() < 10
-                          - var second = "0"+movimiento.fecha.getSeconds()        
-                        else
-                          
-                          - var second = movimiento.fecha.getSeconds()  
-                               
-                        td #{movimiento.fecha.getFullYear()}/#{month}/#{day} #{hour}:#{minute}:#{second}
+                        - var minute =  movimiento.fecha.getMinutes()
+                      
+                      if movimiento.fecha.getSeconds() < 10
+                        - var second = "0"+movimiento.fecha.getSeconds()        
+                      else
+                        
+                        - var second = movimiento.fecha.getSeconds()  
+                             
+                      td #{movimiento.fecha.getFullYear()}/#{month}/#{day} #{hour}:#{minute}:#{second}
                                                 
                 else
 
