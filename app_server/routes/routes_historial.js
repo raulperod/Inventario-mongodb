@@ -74,10 +74,10 @@ router.get("/estadisticas/general",function(req,res){
           Tecnica.find({},{_id:0,nombreCompleto:1,sucursal:1}).populate("sucursal").exec(function(err,tecnicas){
             if(!err && tecnicas){ // si no hubo error y hay tecnicas
               // busco los productos basicos
-              Producto.find({esBasico:true},{_id:0,nombre:true}).exec(function(err,basicos){
+              Producto.find({esBasico:true},{_id:0,nombre:1}).exec(function(err,basicos){
                 if(!err && basicos){ // si no hubo error y hay basicos
                   // busco los productos no basicos
-                  Producto.find({esBasico:false},{_id:0,nombre:true}).exec(function(err,productos){
+                  Producto.find({esBasico:false},{_id:0,nombre:1}).exec(function(err,productos){
                     if(!err && productos){ // si no hubo error y hay productos
                       // busco las sucursales
                       Sucursal.find({},{_id:0,plaza:1}).exec(function(err,sucursales){
@@ -127,10 +127,10 @@ router.get("/estadisticas/sucursal",function(req,res){
           Tecnica.find({sucursal:res.locals.usuario.sucursal},{_id:0,nombreCompleto:1}).exec(function(err,tecnicas){
             if(!err && tecnicas){ // si no hubo error y hay tecnicas
               // busco los productos basicos
-              Producto.find({esBasico:true},{_id:0,nombre:true}).exec(function(err,basicos){
+              Producto.find({esBasico:true},{_id:0,nombre:1}).exec(function(err,basicos){
                 if(!err && basicos){ // si no hubo error y hay basicos
                   // busco los productos no basicos
-                  Producto.find({esBasico:false},{_id:0,nombre:true}).exec(function(err,productos){
+                  Producto.find({esBasico:false},{_id:0,nombre:1}).exec(function(err,productos){
                     if(!err && productos){ // si no hubo error y hay productos
                       res.render("./historial/estadisticas/sucursal",{bajasProductos:bajasProductos,bajasBasicos:bajasBasicos,tecnicas:tecnicas,basicos:basicos,productos:productos});
                     }else{ // si paso algo
