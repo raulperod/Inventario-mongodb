@@ -1,67 +1,148 @@
 extends ../../layout.pug
 block contenido
   #page-wrapper
-
-  
-      script(src='/src/vendor/jquery/jquery.min.js')
+    - var nombre=[]
+    - var cantidad=[];
+    - var i=0
+    - var bajas=[]
+    script.
+        var x = document.getElementById("Ffinal").value;
+        alert(x);
+    for pro in productos
+      - cantidad.push(0)
+      - nombre.push(pro.nombre)
+    for nom in nombre
+      for baj in bajasProductos
+        if nom==baj.producto.nombre
+          - cantidad[i]+=baj.cantidad  
+      - bajas.push({"producto":nom,"cantidad":cantidad[i]})
+      - bajas
+      - i++  
+      - bajas.sort(function(a, b){return (a.cantidad-b.cantidad)})
+      - bajas.reverse()
+      - var keys = Object.keys(bajas);  
+    .row
+      .col-lg-12
+        h3.page-header Estadisticas
+      - bajas.sort(function(a, b){return (a.cantidad-b.cantidad)})
+      - bajas.reverse()
+      - var keys = Object.keys(bajas);
+      .col-lg-6
+        .panel.panel-default
+          .panel-heading
+            | Top Ten Productos Usados
+          .panel-body
+            .form-groups
+              .panel-body
+                .col-lg-5
+                  label Fecha Inicio:
+                  input.form-control(id="Finicial" type="date" name="inicio" oninput="cambiar()")
+                .col-lg-5
+                  label Fecha Final:
+                  input.form-control(id="Ffinal" type="date" name="final")  
+            table#dataTables-example.table.table-striped.table-bordered.table-hover
+              thead
+                tr
+                  th Producto
+                  th Cantidad
+              tbody
+                  -i=0
+                  for numero in keys
+                    tr.odd.gradeX
+                      td #{bajas[i].producto}
+                      td #{bajas[i].cantidad}
+                    - i++
+      .col-lg-6
+        .panel.panel-default
+          .panel-heading
+            | Basicos por tecnica
+          .panel-body
+            .form-groups
+              .panel-body
+                .col-lg-5
+                  label Fecha Inicio:
+                  input.form-control(id="FinicialB" type="date" name="inicio" oninput="cambiar()")
+                .col-lg-5
+                  label Fecha Final:
+                  input.form-control(id="FfinalB" type="date" name="final")
+                .panel-body
+                  .col-lg-10
+                    label Producto:
+                    select.form-control(name="basico" oninput="cambiar()")
+                      for ba in basicos
+                        option(name="1") #{ba.nombre}
+                - var arreglo1=[]
+                - var arreglo2=[]
+                - var i=0
+                //for numero in keys
+                  - arreglo1.push("'"+bajas[numero].producto+"'")
+                  - arreglo2.push(bajas[numero].cantidad)
+                for tec in tecnicas
+                  - i+=3
+                  - arreglo1.push("'"+tec.nombreCompleto+"'")
+                  - arreglo2.push(i)
+                .row  
+                  script(type='text/javascript', src='https://www.gstatic.com/charts/loader.js')
+                  script(type='text/javascript').
+                    google.charts.load('current', {packages: ['corechart', 'bar']});
+                    google.charts.setOnLoadCallback(drawChart);
+                    function drawChart() {
+                      var i;
+                      var arr1=[#{arreglo1}];
+                      var arr2= [#{arreglo2}];
+                      var data = new google.visualization.DataTable();
+                      data.addColumn('string', "Nombre");
+                      data.addColumn('number', "Cantidad");
+                      for (i=0; i<arr2.length;i++){
+                        data.addRow([arr1[i],arr2[i]]);
+                      }
+                      var options = {
+                        title: 'Basicos',
+                        hAxis: {title: 'Tecnica',  titleTextStyle: {color: '#333'}},
+                        vAxis: {minValue: 0}
+                      };
+                      var chart = new google.visualization.ColumnChart(document.getElementById('grafica'));
+                      chart.draw(data, options);
+                    } 
+                  .col-lg-12
+                    #grafica(style="width: 400px; height: 318px;") 
+      script(script='/src/vendor/jquery/jquery.min.js')
       // Bootstrap Core JavaScript
       script(src='/src/vendor/bootstrap/js/bootstrap.min.js')
       // Metis Menu Plugin JavaScript
       script(src='/src/vendor/metisMenu/metisMenu.min.js')
       // DataTables JavaScript
-      script(src='/src/vendor/datatables/js/jquery.dataTables.min.js')
-      script(src='/src/vendor/datatables-plugins/dataTables.bootstrap.min.js')
-      script(src='/src/vendor/datatables-responsive/dataTables.responsive.js')
       // Custom Theme JavaScript
       script(src='/src/dist/js/sb-admin-2.js')
-      .row
-        .col-lg-12
-          h3.page-header Estadisticas
-        // /.col-lg-12
-      // /.row
-      .row
-        .col-lg-6
-          .panel.panel-default
-            .panel-heading
-              | Productos usados por categorias
-            // /.panel-heading
-            .panel-body
-              .flot-chart
-                #flot-pie-chart.flot-chart-content
-            // /.panel-body
-          // /.panel
-        // /.col-lg-6  
-        .col-lg-6
-          .panel.panel-default
-            .panel-heading
-              | Producto en la sucursal
-            // /.panel-heading
-            .panel-body
-              #morris-donut-chart
-            // /.panel-body
-          // /.panel
-        // /.col-lg-6  
-        .col-lg-12
-          .panel.panel-default
-            .panel-heading
-              | Producto por mes
-            // /.panel-heading
-            .panel-body
-              #morris-bar-chart
-            // /.panel-body
-          // /.panel
-        // /.col-lg-6        	
-      // Flot Charts JavaScript
-      script(src='/src/vendor/flot/excanvas.min.js')
-      script(src='/src/vendor/flot/jquery.flot.js')
-      script(src='/src/vendor/flot/jquery.flot.pie.js')
-      script(src='/src/vendor/flot/jquery.flot.resize.js')
-      script(src='/src/vendor/flot/jquery.flot.time.js')
-      script(src='/src/vendor/flot-tooltip/jquery.flot.tooltip.min.js')
-      script(src='/src/data/flot-data.js')
+      // con esta se hace
+      script.
+        function cambiar(){
+          
+        }
+      // inputs inicial del date  
+      script.
+        //para poner fechas por default/falta checar bien
+        var date = new Date();
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
 
-      // Morris Charts JavaScript
-      script(src='/src/vendor/raphael/raphael.min.js')
-      script(src='/src/vendor/morrisjs/morris.min.js')
-      script(src='/src/data/morris-data2.js')  
+        if (month < 10) month = "0" + month;
+        if (day < 10) day = "0" + day;
+
+        var today = year + "-" + month + "-" + day;
+        document.getElementById("Ffinal").value = today;
+        document.getElementById("FfinalB").value = today;
+        day = date.getDate();
+        month = date.getMonth();
+        year = date.getFullYear();
+
+        if (month < 10) month = "0" + month;
+        if (day < 10) day = "0" + day;
+
+        today = year + "-" + month + "-" + day;
+        document.getElementById("Finicial").value = today;
+        document.getElementById("FinicialB").value = today;
+        //var x = document.getElementById("Ffinal").value;
+        //alert(x);
   

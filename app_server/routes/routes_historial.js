@@ -3,7 +3,7 @@ var RegistroDeMovimiento = require("../models/registroDeMovimiento").RegistroDeM
 var Baja = require("../models/baja").Baja;
 var Tecnica = require("../models/tecnica").Tecnica;
 var Producto = require("../models/producto").Producto;
-var Sucursal = require("../models/tecnica").Sucursal;
+var Sucursal = require("../models/sucursal").Sucursal;
 var router = express.Router();
 // gelishtime/movimientos
 // Metodo GET
@@ -132,6 +132,10 @@ router.get("/estadisticas/sucursal",function(req,res){
                   // busco los productos no basicos
                   Producto.find({esBasico:false},{_id:0,nombre:1}).exec(function(err,productos){
                     if(!err && productos){ // si no hubo error y hay productos
+                      //console.log("productos "+productos);
+                      var arreglo = [];
+                      arreglo.push({nombre:12});
+                      console.log(arreglo);
                       res.render("./historial/estadisticas/sucursal",{bajasProductos:bajasProductos,bajasBasicos:bajasBasicos,tecnicas:tecnicas,basicos:basicos,productos:productos});
                     }else{ // si paso algo
                       if(err) console.log(err);
