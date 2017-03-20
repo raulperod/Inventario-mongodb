@@ -210,7 +210,7 @@ function redibujar(){
 // funcion principal
 $(function(){
   $.ajax({
-    url: 'http://localhost:8080/historial/datosGeneral',
+    url: 'https://gelishtime.herokuapp.com/historial/datosGeneral',
     type: 'GET',
     success : function(data) {
       datosGeneral = data;

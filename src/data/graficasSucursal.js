@@ -187,7 +187,7 @@ function redibujar(){
 // funcion principal
 $(function(){
   $.ajax({
-    url: 'http://localhost:8080/historial/datosSucursal',
+    url: 'https://gelishtime.herokuapp.com/historial/datosSucursal',
     type: 'GET',
     success : function(data) {
       datosSucursal = data;
