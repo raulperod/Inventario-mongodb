@@ -3,7 +3,7 @@ var bodyParser = require("body-parser")
 var Usuario = require("./app_server/models/usuario").Usuario;
 var cookieSession = require("cookie-session");
 var app = express();
-// importacion de las rutas
+// importacion de las rutass
 var router_user = require("./app_server/routes/routes_user");
 var router_sucursal = require("./app_server/routes/routes_sucursal");
 var router_category = require("./app_server/routes/routes_category");
