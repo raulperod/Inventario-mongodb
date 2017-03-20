@@ -61,9 +61,40 @@ router.get("/bajas",function(req,res){
     });
   }
 });
-// gelishtime/estadisticas/general
+// gelishtime/general
 // Metodo GET
-router.get("/estadisticas/general",function(req,res){
+router.get("/general",function(req,res){
+  Sucursal.find({},{_id:0,plaza:1}).exec(function(err,sucursales){
+    if(!err){
+      Producto.find({esBasico:true},{_id:0,nombre:1}).exec(function(err,basicos){
+        if(!err){
+          res.render("./historial/general",{sucursales:sucursales,basicos:basicos});
+        }else{
+          console.log(err);
+          res.redirect("/almacen");
+        }
+      });
+    }else{
+      console.log(err);
+      res.redirect("/almacen");
+    }
+  });
+});
+// gelishtime/sucursal
+// Metodo GET
+router.get("/sucursal",function(req,res){
+  Producto.find({esBasico:true},{_id:0,nombre:1}).exec(function(err,basicos){
+    if(!err){
+      res.render("./historial/sucursal",{basicos:basicos});
+    }else{
+      console.log(err);
+      res.redirect("/almacen");
+    }
+  });
+});
+// gelishtime/datosGeneral
+// Metodo GET
+router.get("/datosGeneral",function(req,res){
   // mandar bajas de productos basicos y no basicos
   // primero busco las bajas de los productos basicos
   Baja.find({tecnica: { "$exists" : true }},{_id:0,sucursal:1,producto:1,tecnica:1,cantidad:1,fecha:1}).populate("sucursal producto tecnica").exec(function(err,bajasBasicos){
@@ -82,7 +113,7 @@ router.get("/estadisticas/general",function(req,res){
                       // busco las sucursales
                       Sucursal.find({},{_id:0,plaza:1}).exec(function(err,sucursales){
                         if(!err && sucursales){ // si no hubo error y hay sucursales
-                          res.render("./historial/estadisticas/general",{bajasProductos:bajasProductos,bajasBasicos:bajasBasicos,tecnicas:tecnicas,basicos:basicos,productos:productos,sucursales:sucursales});
+                          res.json({bajasProductos:bajasProductos,bajasBasicos:bajasBasicos,tecnicas:tecnicas,basicos:basicos,productos:productos,sucursales:sucursales});
                         }else{ // si paso algo
                           if(err) console.log(err);
                           res.redirect("/almacen");
@@ -114,9 +145,9 @@ router.get("/estadisticas/general",function(req,res){
     }
   });
 });
-// gelishtime/estadisticas/sucursal
+// gelishtime/datosSucursal
 // Metodo GET
-router.get("/estadisticas/sucursal",function(req,res){
+router.get("/datosSucursal",function(req,res){
   // mandar bajas de productos basicos y no basicos
   // primero busco las bajas de los productos basicos
   Baja.find({sucursal:res.locals.usuario.sucursal,tecnica: { "$exists" : true }},{_id:0,producto:1,tecnica:1,cantidad:1,fecha:1}).populate("producto tecnica").exec(function(err,bajasBasicos){
@@ -132,11 +163,7 @@ router.get("/estadisticas/sucursal",function(req,res){
                   // busco los productos no basicos
                   Producto.find({esBasico:false},{_id:0,nombre:1}).exec(function(err,productos){
                     if(!err && productos){ // si no hubo error y hay productos
-                      //console.log("productos "+productos);
-                      var arreglo = [];
-                      arreglo.push({nombre:12});
-                      console.log(arreglo);
-                      res.render("./historial/estadisticas/sucursal",{bajasProductos:bajasProductos,bajasBasicos:bajasBasicos,tecnicas:tecnicas,basicos:basicos,productos:productos});
+                      res.json({bajasProductos:bajasProductos,bajasBasicos:bajasBasicos,tecnicas:tecnicas,basicos:basicos,productos:productos});
                     }else{ // si paso algo
                       if(err) console.log(err);
                       res.redirect("/almacen");
