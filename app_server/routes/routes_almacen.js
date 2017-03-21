@@ -43,7 +43,7 @@ router.route("/new")
       // Metodo GET
       .get(function(req,res){
         // si entra el admin general lo redirecciona, no debe estar aqui
-        if(res.locals.usuario.permisos == 2) res.redirect("/almacen")
+        if(res.locals.usuario.permisos == 2) res.redirect("/almacen");
         Producto.find({},function(err,productos){ // busca todos los productos
           if(!err){ // si no hubo error
             res.render("./almacen/new",{AlertProducto:false,productos:productos});
@@ -117,22 +117,23 @@ router.route("/new")
           }
         });
 });
-// gelishtime/almacen/:idAlmacen
-router.route("/:idAlmacen")
+// gelishtime/almacen/:idAlmacen/add
+router.route("/:idAlmacen/add")
       // Metodo GET
       .put(function(req,res){
         // si no mandaron cambios
-        if(parseInt(req.body.cantidad) == 0) res.redirect("/almacen");
-        Almacen.findById(req.params.idAlmacen,function(err,productoAlm){ // busco el almacen
-          if(!err && productoAlm){ // si no hay error y el almacen existe
-            res.locals.productoAlmUpdate = productoAlm;
-            if( req.body.botton1 == ''){// se restan al producto
+        if(parseInt(req.body.cantidad) == 0){
+          res.send(""); // no mando nada
+        }else{
+          // si no mandaron 0
+          Almacen.findById(req.params.idAlmacen,function(err,productoAlm){ // busco el almacen
+            if(!err && productoAlm){ // si no hay error y el almacen existe
+              res.locals.productoAlmUpdate = productoAlm;
               res.locals.productoAlmUpdate.cantidad += parseInt(req.body.cantidad);
               // genera el registro
               // creo la fecha
               var fecha = new Date();
               fecha.setHours(fecha.getHours()-7);
-
               var registro = new RegistroDeMovimiento({
                 sucursal:res.locals.usuario.sucursal,
                 usuario:req.session.user_id,
@@ -148,12 +149,31 @@ router.route("/:idAlmacen")
               });
               // guarda el registro
               registro.save().then(function(us){
-                res.redirect("/almacen");
+                // mando la nueva cantidad a mostrar
+                res.send(""+res.locals.productoAlmUpdate.cantidad);
               }, function(err){ // si ocurre un error lo imprime
                 console.log(err);
               });
 
-            }else{ // se agregan al producto
+            }else{
+              if(err) console.log(err);
+              res.redirect("/almacen");
+            }
+          });
+        }
+});
+// gelishtime/almacen/:idAlmacen/sub
+router.route("/:idAlmacen/sub")
+      // Metodo GET
+      .put(function(req,res){
+        // si no mandaron cambios
+        // si no mandaron cambios
+        if(parseInt(req.body.cantidad) == 0){
+          res.send(""); // no mando nada
+        }else{
+          Almacen.findById(req.params.idAlmacen,function(err,productoAlm){ // busco el almacen
+            if(!err && productoAlm){ // si no hay error y el almacen existe
+              res.locals.productoAlmUpdate = productoAlm;
               // si el numero que pusieron es mayor que el que tenian, entonces quedan 0 productos
               if( parseInt(req.body.cantidad) > res.locals.productoAlmUpdate.cantidad ){
                 // genera el registro
@@ -198,7 +218,8 @@ router.route("/:idAlmacen")
                     });
                     // guarda el registro
                     registro.save().then(function(us){
-                      res.redirect("/almacen");
+                      // mando la nueva cantidad a mostrar
+                      res.send("0");
                     }, function(err){ // si ocurre un error lo imprime
                       console.log(err);
                     });
@@ -256,17 +277,18 @@ router.route("/:idAlmacen")
                 });
                 // guarda el registro
                 registro.save().then(function(us){
-                  res.redirect("/almacen");
+                  // mando la nueva cantidad a mostrar
+                  res.send(""+res.locals.productoAlmUpdate.cantidad);
                 }, function(err){ // si ocurre un error lo imprime
                   console.log(err);
                 });
               }
-            }
-          }else{ // si hubo un error
-            console.log(err);
-            res.redirect("/almacen");
-          }
-        });
-});
 
+            }else{ // si hubo un error
+              console.log(err);
+              res.redirect("/almacen");
+            }
+          });
+      }
+});
 module.exports = router;

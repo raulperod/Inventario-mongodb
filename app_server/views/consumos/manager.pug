@@ -28,19 +28,19 @@ block contenido
                     tr.odd.gradeX
                       td #{consumo.producto.nombre}
                       td #{consumo.producto.codigo}
-                      td #{consumo.cantidad}
+                      td(name=""+consumo._id) #{consumo.cantidad}
                       td
                         if !consumo.producto.esBasico
-                          form(style="display:inline" action="/consumos/"+consumo._id+"?_method=PUT",method="POST",  onsubmit="return confirm('¿Esta seguro que desea realizar esas bajas?')")
-                            input.form-control(type="number" name="cantidad" min="0" max="10000" value="0" required)
+                          form(id=""+consumo._id,style="display:inline" action="/consumos/"+consumo._id+"?_method=PUT",method="POST",  onsubmit="return false")
+                            input.form-control(id=""+consumo.producto.codigo,type="number" name="cantidad" min="0" max="10000" value="0" required )
                             b &nbsp &nbsp &nbsp
-                            button(type="submit/image" alt="text" class="btn btn-danger btn-circle")
+                            button(type="submit/image" alt="text" name="button1" class="btn btn-danger btn-circle "+consumo._id+" "+consumo.producto.codigo ,onclick="return false")
                               i.fa.fa-times(title="Pasar a bajas")
                         else
                           
                           fieldset( disabled='')
-                            form(style="display:inline" action="/consumos/"+consumo._id+"?_method=PUT",method="POST",  onsubmit="return confirm('¿Esta seguro que desea realizar esas bajas?')")
-                              input#disabledInput.form-control(type="number" name="cantidad" min="0" max="10000" value="0" required disabled)
+                            form(style="display:inline" action="/consumos/"+consumo._id+"?_method=PUT",method="POST",   onsubmit="return false")
+                              input#disabledInput.form-control(type="number" name="cantidad" min="0" max="10000" value="0" required disabled )
                               b &nbsp &nbsp &nbsp
                               button(type="submit/image" alt="text" class="btn btn-danger btn-circle")
                                 i.fa.fa-times(title="Pasar a bajas")
@@ -59,6 +59,7 @@ block contenido
     // /.row
     // jQuery
     script(src='/src/vendor/jquery/jquery.min.js')
+    script(src='/src/data/postConsumo.js')  
     // Bootstrap Core JavaScript
     script(src='/src/vendor/bootstrap/js/bootstrap.min.js')
     // Metis Menu Plugin JavaScript

@@ -24,31 +24,31 @@ block contenido
                     th Acción
               tbody
                 if usuario.permisos < 2
-                  - var i = 1
+                
                   for alm in almacen
                     tr.odd.gradeX
                       td #{alm.producto.nombre}
                       td #{alm.producto.codigo}
                       if alm.cantidad > alm.producto.minimo
-                        td #{alm.cantidad}
+                        td(name=""+alm._id) #{alm.cantidad}
                       else
-
-                        td(style="color:red" title="Pocos productos") #{alm.cantidad}
-                      td(id="columna"+i)
-                        form(style="display:inline" action="/almacen/"+alm._id+"?_method=PUT",method="POST",  onsubmit="return confirm('¿Esta seguro que desea realizar esos cambios?')")
-                          input.form-control(type="number" name="cantidad" min="0" max="10000" value="0" required)
+                        
+                        td(name=""+alm._id style="color:red" title="Pocos productos") #{alm.cantidad}
+                      td
+                        form(id=""+alm._id,style="display:inline" action="/almacen/"+alm._id+"?_method=PUT",method="POST" onsubmit="return false")
+                          input.form-control(id=""+alm.producto.codigo,type="number" name="cantidad" min="0" max="10000" value="0" required)
                           b &nbsp &nbsp &nbsp
-                          button(type="submit/image" alt="text" name="botton1" class="btn btn-primary btn-circle")
+                          button(type="submit/image", alt="text", name="button1", class="btn btn-primary btn-circle "+alm._id+" "+alm.producto.codigo+" "+alm.producto.minimo ,onclick="return false")
                             i.fa.fa-plus(title="Agregar")
                           if !alm.producto.esBasico                            
                             b &nbsp &nbsp &nbsp
-                            button(type="submit/image" alt="text" name="botton2" class="btn btn-danger btn-circle")
+                            button(type="submit/image", alt="text", name="button2", class="btn btn-danger btn-circle "+alm._id+" "+alm.producto.codigo+" "+alm.producto.minimo ,onclick="return false")
                               i.fa.fa-minus(title="Pasar a consumo")
                           
                           else      
                             
                             b &nbsp &nbsp &nbsp
-                            button(type="submit/image" alt="text" name="botton2" class="btn btn-danger btn-circle" disabled)
+                            button(type="submit/image", alt="text", name="button2", class="btn btn-danger btn-circle", disabled)
                               i.fa.fa-minus(title="Pasar a consumo")
                 
                 else
@@ -68,7 +68,8 @@ block contenido
       // /.col-lg-12
     // /.row
     // jQuery
-    script(src='/src/vendor/jquery/jquery.min.js')  
+    script(src='/src/vendor/jquery/jquery.min.js') 
+    script(src='/src/data/postAlmacen.js')  
     // Bootstrap Core JavaScript
     script(src='/src/vendor/bootstrap/js/bootstrap.min.js')
     // Metis Menu Plugin JavaScript
