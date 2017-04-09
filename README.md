@@ -1,2 +1,2 @@
 # Inventario
-Sistema de inventario, implementadobcon Nodejs
+Sistema de inventario, implementado con Nodejs y MongoDB
