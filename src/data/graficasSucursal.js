@@ -1,13 +1,13 @@
-var datosSucursal;
-var productos; // nombre de los productos no basicos
-var bajasBasicos;//agarro las bajas con tecnica
-var tecnicas;///para nombres de tecnicas
-var objetoBasicos;//para el json
-var columnasGrafica;//para saber cuantas columnas seran
-var productoElegido;//para agarrar el producto elegido
-var datos;//para los datos de la grafica
-var options;//para las opciones de la grafica
-var grafica;//para la grafica
+var  datosSucursal,
+     productos, // nombre de los productos no basicos
+     bajasBasicos,//agarro las bajas con tecnica
+     tecnicas,///para nombres de tecnicas
+     objetoBasicos,//para el json
+     columnasGrafica,//para saber cuantas columnas seran
+     productoElegido,//para agarrar el producto elegido
+     datos,//para los datos de la grafica
+     options,//para las opciones de la grafica
+     grafica;//para la grafica
 // funcion que obtiene el nombre de los productos
 function obtenerNombres(productos){
   var arregloNombres = [];
