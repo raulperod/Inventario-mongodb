@@ -1,6 +1,6 @@
 extends ../layout.pug
 block contenido
-  
+
   #page-wrapper
     .row
       .col-lg-12
@@ -31,41 +31,41 @@ block contenido
                       if baja.tecnica
                         td #{baja.tecnica.nombreCompleto}
                       else
-                        
+
                         td Producto no basico
-                      
+
                       if baja.fecha.getMonth() < 10
-                        - var month = "0"+baja.fecha.getMonth()          
+                        - var month = "0"+baja.fecha.getMonth()
                       else
-                        
+
                         - var month = baja.fecha.getMonth()
-                      
+
                       if baja.fecha.getDate() < 10
-                        - var day = "0"+baja.fecha.getDate()          
+                        - var day = "0"+baja.fecha.getDate()
                       else
-                        
+
                         - var day = baja.fecha.getDate()
-                      
+
                       if baja.fecha.getHours() < 10
-                        - var hour = "0"+baja.fecha.getHours()        
+                        - var hour = "0"+baja.fecha.getHours()
                       else
-                        
+
                         - var hour = baja.fecha.getHours()
-                      
+
                       if baja.fecha.getMinutes()  < 10
-                        - var minute = "0"+ baja.fecha.getMinutes()        
+                        - var minute = "0"+ baja.fecha.getMinutes()
                       else
-                        
+
                         - var minute =  baja.fecha.getMinutes()
-                      
+
                       if baja.fecha.getSeconds() < 10
-                        - var second = "0"+baja.fecha.getSeconds()        
+                        - var second = "0"+baja.fecha.getSeconds()
                       else
-                        
-                        - var second = baja.fecha.getSeconds()  
-                             
+
+                        - var second = baja.fecha.getSeconds()
+
                       td #{baja.fecha.getFullYear()}/#{month}/#{day} #{hour}:#{minute}:#{second}
-                      
+
                 else
 
                   for baja in bajas
@@ -76,40 +76,40 @@ block contenido
                       if baja.tecnica
                         td #{baja.tecnica.nombreCompleto}
                       else
-                        
+
                         td Producto no basico
                       td #{baja.sucursal.plaza}
-                      
+
                       if baja.fecha.getMonth() < 10
-                        - var month = "0"+baja.fecha.getMonth()          
+                        - var month = "0"+baja.fecha.getMonth()
                       else
-                        
+
                         - var month = baja.fecha.getMonth()
-                      
+
                       if baja.fecha.getDate() < 10
-                        - var day = "0"+baja.fecha.getDate()          
+                        - var day = "0"+baja.fecha.getDate()
                       else
-                        
+
                         - var day = baja.fecha.getDate()
-                      
+
                       if baja.fecha.getHours() < 10
-                        - var hour = "0"+baja.fecha.getHours()        
+                        - var hour = "0"+baja.fecha.getHours()
                       else
-                        
+
                         - var hour = baja.fecha.getHours()
-                      
+
                       if baja.fecha.getMinutes()  < 10
-                        - var minute = "0"+ baja.fecha.getMinutes()        
+                        - var minute = "0"+ baja.fecha.getMinutes()
                       else
-                        
+
                         - var minute =  baja.fecha.getMinutes()
-                      
+
                       if baja.fecha.getSeconds() < 10
-                        - var second = "0"+baja.fecha.getSeconds()        
+                        - var second = "0"+baja.fecha.getSeconds()
                       else
-                        
-                        - var second = baja.fecha.getSeconds()  
-                             
+
+                        - var second = baja.fecha.getSeconds()
+
                       td #{baja.fecha.getFullYear()}/#{month}/#{day} #{hour}:#{minute}:#{second}
             // /.panel-body
         // /.panel
@@ -133,24 +133,24 @@ block contenido
     script(src="/src/excel/js/tableexport.min.js")
     if usuario.permisos == 2
       script.
-        $(document).ready(function() {
-          $('#dataTables-example').DataTable({
-            responsive: true,
-            "order": [[ 5, "desc" ]]
+          $(document).ready(function() {
+              $('#dataTables-example').DataTable({
+                  responsive: true,
+                  "order": [[ 5, "desc" ]]
+              });
           });
-        });
     else
-      
+
       script.
-        $(document).ready(function() {
-          $('#dataTables-example').DataTable({
-            responsive: true,
-            "order": [[ 4, "desc" ]]
+          $(document).ready(function() {
+              $('#dataTables-example').DataTable({
+                  responsive: true,
+                  "order": [[ 4, "desc" ]]
+              });
           });
-        });
     script.
-      $("table").tableExport({
-          formats: ["xlsx"],
-          bootstrap: true,
-          fileName: "Bajas"
-      });
+        $("table").tableExport({
+            formats: ["xlsx"],
+            bootstrap: true,
+            fileName: "Bajas"
+        });
