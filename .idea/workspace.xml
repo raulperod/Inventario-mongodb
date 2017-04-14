@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f8aa8a45-ac43-4bbe-bbe0-dade9b43161a" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app_server/controllers/sucursal.js" afterPath="$PROJECT_DIR$/app_server/controllers/sucursal.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app_server/routes/routes_sucursal.js" afterPath="$PROJECT_DIR$/app_server/routes/routes_sucursal.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app_server/controllers/tecnica.js" afterPath="$PROJECT_DIR$/app_server/controllers/tecnica.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app_server/models/config.js" afterPath="$PROJECT_DIR$/app_server/models/config.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app_server/routes/routes_tecnica.js" afterPath="$PROJECT_DIR$/app_server/routes/routes_tecnica.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -18,24 +19,19 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="sucursal.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app_server/controllers/sucursal.js">
+      <file leaf-file-name="tecnica.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app_server/controllers/tecnica.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="422">
-              <caret line="119" column="0" lean-forward="true" selection-start-line="119" selection-start-column="0" selection-end-line="119" selection-end-column="0" />
+            <state relative-caret-position="255">
+              <caret line="187" column="0" lean-forward="true" selection-start-line="187" selection-start-column="0" selection-end-line="187" selection-end-column="0" />
               <folding>
                 <element signature="e#0#47#0" expanded="false" />
+                <element signature="n#!!block;n#tecnicasGet#0" expanded="false" />
+                <element signature="n#!!block;n#tecnicasNewGet#0" expanded="false" />
+                <element signature="n#!!block;n#tecnicasNewPost#0" expanded="false" />
+                <element signature="n#!!block;n#tecnicasIdTecnicaGet#0" expanded="false" />
+                <element signature="n#!!block;n#tecnicasIdTecnicaPut#0" expanded="false" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="routes_sucursal.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app_server/routes/routes_sucursal.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="19" column="0" lean-forward="true" selection-start-line="18" selection-start-column="30" selection-end-line="19" selection-end-column="0" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -56,12 +52,10 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/app_server/controllers/baja.js" />
-        <option value="$PROJECT_DIR$/app_server/controllers/tecnica.js" />
         <option value="$PROJECT_DIR$/app_server/controllers/usuario.js" />
         <option value="$PROJECT_DIR$/Procfile" />
         <option value="$PROJECT_DIR$/server.js" />
         <option value="$PROJECT_DIR$/config.js" />
-        <option value="$PROJECT_DIR$/app_server/models/config.js" />
         <option value="$PROJECT_DIR$/app_server/models/connection.js" />
         <option value="$PROJECT_DIR$/app_server/models/categoria.js" />
         <option value="$PROJECT_DIR$/app_server/models/basico.js" />
@@ -94,7 +88,10 @@
         <option value="$PROJECT_DIR$/app_server/routes/routes_product.js" />
         <option value="$PROJECT_DIR$/app_server/controllers/producto.js" />
         <option value="$PROJECT_DIR$/app_server/routes/routes_sucursal.js" />
+        <option value="$PROJECT_DIR$/app_server/models/config.js" />
         <option value="$PROJECT_DIR$/app_server/controllers/sucursal.js" />
+        <option value="$PROJECT_DIR$/app_server/routes/routes_tecnica.js" />
+        <option value="$PROJECT_DIR$/app_server/controllers/tecnica.js" />
       </list>
     </option>
   </component>
@@ -308,12 +305,12 @@
       <option name="presentableId" value="Default" />
       <updated>1492117897481</updated>
       <workItem from="1492117924695" duration="10898000" />
-      <workItem from="1492129246428" duration="11756000" />
+      <workItem from="1492129246428" duration="13517000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="22654000" />
+    <option name="totallyTimeSpent" value="24415000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="784" extended-state="6" />
@@ -390,13 +387,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app_server/controllers/tecnica.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app_server/controllers/usuario.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -408,20 +398,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="16" lean-forward="false" selection-start-line="0" selection-start-column="16" selection-end-line="0" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app_server/models/config.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="6" column="90" lean-forward="true" selection-start-line="6" selection-start-column="90" selection-end-line="6" selection-end-column="90" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app_server/models/connection.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" column="25" lean-forward="false" selection-start-line="12" selection-start-column="25" selection-end-line="12" selection-end-column="25" />
         </state>
       </provider>
     </entry>
@@ -478,13 +454,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
           <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app_server/models/tecnica.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="27" column="15" lean-forward="false" selection-start-line="27" selection-start-column="15" selection-end-line="27" selection-end-column="15" />
         </state>
       </provider>
     </entry>
@@ -548,14 +517,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
           <caret line="8" column="1" lean-forward="false" selection-start-line="8" selection-start-column="1" selection-end-line="8" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="1" lean-forward="true" selection-start-line="5" selection-start-column="1" selection-end-line="5" selection-end-column="1" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -693,6 +654,42 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="1" lean-forward="true" selection-start-line="5" selection-start-column="1" selection-end-line="5" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app_server/models/connection.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" column="25" lean-forward="false" selection-start-line="12" selection-start-column="25" selection-end-line="12" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app_server/models/config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="8" column="20" lean-forward="false" selection-start-line="8" selection-start-column="20" selection-end-line="8" selection-end-column="20" />
+          <folding>
+            <element signature="e#0#47#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app_server/controllers/sucursal.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="422">
+          <caret line="119" column="0" lean-forward="false" selection-start-line="119" selection-start-column="0" selection-end-line="119" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#47#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app_server/routes/routes_sucursal.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="323">
@@ -701,12 +698,33 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app_server/controllers/sucursal.js">
+    <entry file="file://$PROJECT_DIR$/app_server/models/tecnica.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="422">
-          <caret line="119" column="0" lean-forward="true" selection-start-line="119" selection-start-column="0" selection-end-line="119" selection-end-column="0" />
+        <state relative-caret-position="459">
+          <caret line="27" column="15" lean-forward="false" selection-start-line="27" selection-start-column="15" selection-end-line="27" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app_server/routes/routes_tecnica.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="23" column="52" lean-forward="false" selection-start-line="23" selection-start-column="52" selection-end-line="23" selection-end-column="52" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app_server/controllers/tecnica.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="187" column="0" lean-forward="true" selection-start-line="187" selection-start-column="0" selection-end-line="187" selection-end-column="0" />
           <folding>
             <element signature="e#0#47#0" expanded="false" />
+            <element signature="n#!!block;n#tecnicasGet#0" expanded="false" />
+            <element signature="n#!!block;n#tecnicasNewGet#0" expanded="false" />
+            <element signature="n#!!block;n#tecnicasNewPost#0" expanded="false" />
+            <element signature="n#!!block;n#tecnicasIdTecnicaGet#0" expanded="false" />
+            <element signature="n#!!block;n#tecnicasIdTecnicaPut#0" expanded="false" />
           </folding>
         </state>
       </provider>
