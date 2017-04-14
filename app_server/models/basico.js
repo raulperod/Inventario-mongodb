@@ -1,28 +1,25 @@
-var mongoose = require("mongoose");
-var Schema = mongoose.Schema;
+'use strict'
 
-// validaciones
-var basico_schema = new Schema({
-  sucursal: {
-    type: Schema.Types.ObjectId,
-    ref:"Sucursal"
-  },
-  tecnica:{
-    type: Schema.Types.ObjectId,
-    ref:"Tecnica"
-  },
-  producto:{
-    type: Schema.Types.ObjectId,
-    ref:"Producto"
-  },
-  enUso: {
-    type: Boolean,
-    require: true
-  },
+const mongoose = require("mongoose"),
+      Schema = mongoose.Schema,
+      basico_schema = new Schema({
+      sucursal: {
+        type: Schema.Types.ObjectId,
+        ref:"Sucursal"
+      },
+      tecnica:{
+        type: Schema.Types.ObjectId,
+        ref:"Tecnica"
+      },
+      producto:{
+        type: Schema.Types.ObjectId,
+        ref:"Producto"
+      },
+      enUso: {
+        type: Boolean,
+        require: true
+      },
+    }),
+    Basico = mongoose.model("Basico",basico_schema)
 
-});
-
-// exporta al usuario
-var Basico = mongoose.model("Basico",basico_schema);
-
-module.exports.Basico = Basico;
+module.exports = Basico;

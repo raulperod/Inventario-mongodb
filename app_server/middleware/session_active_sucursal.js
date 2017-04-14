@@ -1,27 +1,14 @@
-var Usuario = require("../models/usuario").Usuario;
+'use strict'
 
 module.exports = function(req,res,next){
-  if(!req.session.user_id ){
-    res.redirect("/login");
-  }else{
-
-    if(res.locals.usuario && res.locals.usuario.permisos < 2){
-      next();
-    }else{
-      Usuario.findById(req.session.user_id).populate("sucursal").exec(function(err,usuario){
-        if(!err){
-          if(usuario.permisos < 2 ){
-            res.locals.usuario = usuario;
-            next();
-          }else{
-            res.redirect("/almacen");
-          }
+    let user = req.session.user
+    if( user ){
+        if( user.permisos < 2){
+            next()
         }else{
-          if(err) console.log(err);
-          res.redirect("/almacen");
+            res.redirect("/almacen")
         }
-      });
+    }else{
+        res.redirect("/login")
     }
-
-  }
 }

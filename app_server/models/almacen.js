@@ -1,24 +1,22 @@
-var mongoose = require("mongoose");
-var Schema = mongoose.Schema;
+'use strict'
 
-// validaciones
-var almacen_schema = new Schema({
-  sucursal: {
-    type: Schema.Types.ObjectId,
-    ref:"Sucursal"
-  },
-  cantidad: {
-    type: Number,
-    require: true,
-    min:[0,"No puede haber numeros negativos"]
-  },
-  producto:{
-    type: Schema.Types.ObjectId,
-    ref:"Producto"
-  }
-});
+const mongoose = require("mongoose"),
+      Schema = mongoose.Schema,
+      almacen_schema = new Schema({
+        sucursal: {
+          type: Schema.Types.ObjectId,
+          ref:"Sucursal"
+        },
+        cantidad: {
+          type: Number,
+          require: true,
+          min:[0,"No puede haber numeros negativos"]
+        },
+        producto:{
+          type: Schema.Types.ObjectId,
+          ref:"Producto"
+        }
+      }),
+      Almacen = mongoose.model("Almacen",almacen_schema)
 
-// exporta al usuario
-var Almacen = mongoose.model("Almacen",almacen_schema);
-
-module.exports.Almacen = Almacen;
+module.exports = Almacen

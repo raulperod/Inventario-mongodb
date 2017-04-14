@@ -1,67 +1,21 @@
 var express = require("express");
 var bodyParser = require("body-parser")
-var Usuario = require("./app_server/models/usuario").Usuario;
 var cookieSession = require("cookie-session");
 var app = express();
-// importacion de las rutass
-var router_user = require("./app_server/routes/routes_user");
-var router_sucursal = require("./app_server/routes/routes_sucursal");
-var router_category = require("./app_server/routes/routes_category");
-var router_product = require("./app_server/routes/routes_product");
-var router_almacen = require("./app_server/routes/routes_almacen");
-var router_historial = require("./app_server/routes/routes_historial");
-var router_consumo = require("./app_server/routes/routes_consumo");
-var router_tecnica = require("./app_server/routes/routes_tecnica");
-var router_basico = require("./app_server/routes/routes_basico");
-// para utilizar los metodos PUT y DELETE
 var methodOverride = require("method-override");
-// importacion de middleware para verificar el tipo de usuario
-var session_admin = require("./app_server/middleware/session_admin");
-var session_active = require("./app_server/middleware/session_active");
-var session_general_admin = require("./app_server/middleware/session_general_admin");
-var session_active_sucursal = require("./app_server/middleware/session_active_sucursal");
-//----------------------------------------
-app.set('port', (process.env.PORT || 8080)); // definir el puerto
-// servir archivos publicos
+app.set('port', (process.env.PORT || 8080));
 app.use("/src",express.static("src"));
-// parsers
-app.use(bodyParser.json()); // para peticiones application/json
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
-// Para los metodos PUT y DELETE
 app.use(methodOverride("_method"));
-// configuracion del gestor de sesiones
 app.use(cookieSession({
   name: "session",
   keys: ["gelish","time"],
-  // Cookie Options
   expires: new Date(Date.now() + 8 * 60 * 60 * 1000) // 8 horas de session
 }));
-// configura el motor de vistas con pug
 app.set("view engine","pug");
-app.set('views', './app_server/views'); // define la ruta de las vistas
-// -------------------- configuracion de mongo ------------------------------------- //
-var mongoose = require("mongoose");
-// conectar a la base de datos
-mongoose.Promise = require("bluebird");
-var uristring = process.env.PROD_MONGODB;
-mongoose.connect(uristring);
-// ------- impresiones de log dependiendo de la situacion ---------------------------//
-// si se conecto
-mongoose.connection.on('connected', function () {
- console.log('Mongoose connected to ' + uristring);
-});
-// si hubo un error
-mongoose.connection.on('error',function (err) {
- console.log('Mongoose connection error: ' + err);
-});
-// si se desconecto
-mongoose.connection.on('disconnected', function () {
- console.log('Mongoose disconnected');
-});
-// -------------------------------------------------------------------------//
-// -------------------- Configuracion de las rutas -------------------------//
-// gelishtime/
-// Metodo GET
+app.set('views', './app_server/views');
+
 app.get("/",function(req,res){
   // verifica si existe un usuario logeado
   if(req.session.user_id){
@@ -71,9 +25,7 @@ app.get("/",function(req,res){
     res.redirect("/login");
   }
 });
-// gelishtime/logout
-// Metodo GET
-// para terminar la sesion
+
 app.get("/logout",function(req,res){
   // cierra la sesion del usuario
   req.session = null;
@@ -81,10 +33,7 @@ app.get("/logout",function(req,res){
   // te redirecciona al inicio
   res.redirect("/login");
 });
-// gelishtime/login
-// Metodo GET y POST
 
-// Metodo GET
 app.get("/login",function(req,res){
   // si no esta logeado entra al login
   if(!req.session.user_id){
@@ -95,7 +44,6 @@ app.get("/login",function(req,res){
   }
 });
 
-// Metodo POST
 app.post("/login",function(req,res){
     // busca al usuario
     Usuario.findOne({username:req.body.username})
@@ -153,7 +101,5 @@ app.use("/categories",router_category);
 // gelishtime/products
 app.use("/products",session_general_admin);
 app.use("/products",router_product);
-// inicia el servidor en el puerto 8080
-app.listen(app.get('port'), function() {
-  console.log('Node app is running on port', app.get('port'));
-});
+
+
