@@ -156,8 +156,9 @@ function historialDatosSucursalGet(req, res) {
     // mandar bajas de productos basicos y no basicos
     // primero busco las bajas de los productos basicos
     let datos = {},
+        usuario = req.session.user,
         promesa = new Promise( (resolve, reject) => {
-            Baja.find({tecnica: { "$exists" : true }},{_id:0,sucursal:1,producto:1,tecnica:1,cantidad:1,fecha:1}).populate("sucursal producto tecnica").exec( (err, bajasBasicos) => {
+            Baja.find({sucursal: usuario.sucursal,tecnica: { "$exists" : true }},{_id:0,producto:1,tecnica:1,cantidad:1,fecha:1}).populate("producto tecnica").exec( (err, bajasBasicos) => {
                 return (err) ? reject( new Error('Error') ) : resolve(bajasBasicos)
             })
         })
@@ -166,7 +167,7 @@ function historialDatosSucursalGet(req, res) {
         .then( resolved => {
             datos.bajasBasicos = resolved
             return new Promise((resolve, reject) => {
-                Baja.find({tecnica: { "$exists" : false }},{_id:0,sucursal:1,producto:1,cantidad:1,fecha:1}).populate("sucursal producto").exec( (err, bajasProductos) => {
+                Baja.find({sucursal: usuario.sucursal,tecnica: { "$exists" : false }},{_id:0,producto:1,cantidad:1,fecha:1}).populate("producto").exec( (err, bajasProductos) => {
                     return (err) ? reject( new Error('Error') ) : resolve(bajasProductos)
                 })
             })
@@ -174,7 +175,7 @@ function historialDatosSucursalGet(req, res) {
         .then( resolved => {
             datos.bajasProductos = resolved
             return new Promise((resolve, reject) => {
-                Tecnica.find({},{_id:0,nombreCompleto:1,sucursal:1}).populate("sucursal").exec( (err, tecnicas) => {
+                Tecnica.find({sucursal: usuario.sucursal},{_id:0,nombreCompleto:1}).exec( (err, tecnicas) => {
                     return (err) ? reject( new Error('Error') ) : resolve(tecnicas)
                 })
             })
