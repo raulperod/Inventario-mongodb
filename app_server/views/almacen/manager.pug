@@ -90,21 +90,20 @@ block contenido
           responsive: true
         });
       });
-    script.
-      $("table").tableExport({
-          formats: ["xlsx"],
-          bootstrap: true,
-          ignoreCols: 3, 
-          fileName: "Almacen"
-      });/*
-      $("table").tableExport({
-          headings: true,                    // (Boolean), display table headings (th/td elements) in the <thead>
-          footers: true,                     // (Boolean), display table footers (th/td elements) in the <tfoot>
-          formats: ["xlsx","xls", "csv", "txt"],    // (String[]), filetypes for the export
-          fileName: "id",                    // (id, String), filename for the downloaded file
-          bootstrap: true,                   // (Boolean), style buttons using bootstrap
-          position: "bottom"                 // (top, bottom), position of the caption element relative to table
-          ignoreRows: null,                  // (Number, Number[]), row indices to exclude from the exported file
-          ignoreCols: null                   // (Number, Number[]), column indices to exclude from the exported file
-          ignoreCSS: ".tableexport-ignore"   // (selector, selector[]), selector(s) to exclude from the exported file
-      });*/
+    if usuario.permisos == 2 
+      script.
+        $("table").tableExport({
+            formats: ["xlsx"],
+            bootstrap: true,
+            fileName: "Almacen"
+        });
+    
+    else     
+      
+      script.
+        $("table").tableExport({
+            formats: ["xlsx"],
+            bootstrap: true,
+            ignoreCols: 3, 
+            fileName: "Almacen"
+        });

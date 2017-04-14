@@ -80,10 +80,20 @@ block contenido
     script(src="/src/excel/js/xlsx.core.min.js")
     script(src="/src/excel/js/FileSaver.min.js")
     script(src="/src/excel/js/tableexport.min.js")
-    script.
-      $("table").tableExport({
-          formats: ["xlsx"],
-          bootstrap: true,
-          ignoreCols: 3, 
-          fileName: "Consumo"
-      });
+    if usuario.permisos == 2 
+      script.
+        $("table").tableExport({
+            formats: ["xlsx"],
+            bootstrap: true,
+            fileName: "Consumo"
+        });
+    
+    else     
+      
+      script.
+        $("table").tableExport({
+            formats: ["xlsx"],
+            bootstrap: true,
+            ignoreCols: 3, 
+            fileName: "Consumo"
+        });

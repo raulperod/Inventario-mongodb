@@ -11,7 +11,7 @@ $(document).ready(function () {
       var formulario = $("#"+id);
       // edito el action el formulario
       formulario.attr("action","/almacen/"+id+"/add?_method=PUT");
-
+      // comentario
       $.ajax({
         type: formulario.attr("method"),
         url:  formulario.attr("action"),
