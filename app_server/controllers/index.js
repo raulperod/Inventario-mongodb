@@ -15,14 +15,14 @@ function indexGet(req, res) {
     }
 }
 
-function loginGet(req, res) {
+function logout(req, res) {
     // cierra la sesion del usuario
     req.session = null
     // te redirecciona al inicio
     res.redirect("/login")
 }
 
-function loginPost(req, res) {
+function loginGet(req, res) {
     // si no esta logeado entra al login
     if(!req.session.user){
         // manda falsa las alertas y renderisa login
@@ -32,9 +32,9 @@ function loginPost(req, res) {
     }
 }
 
-function logout(req, res) {
+function loginPost(req, res) {
     // busca al usuario
-    let username = req.basico.username
+    let username = req.body.username
     Usuario.findOne({username}).populate("sucursal").exec( (err, usuario) => {
 
         if(!err && usuario){

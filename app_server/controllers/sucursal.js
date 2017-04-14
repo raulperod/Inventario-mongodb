@@ -3,12 +3,12 @@
  */
 'use strict'
 
-var Sucursal = require("../models/sucursal").Sucursal;
-var Usuario = require("../models/usuario").Usuario;
-var Almacen = require("../models/almacen").Almacen;
-var Consumo = require("../models/consumo").Consumo;
-var RegistroDeMovimiento = require("../models/registroDeMovimiento").RegistroDeMovimiento;
-var Baja = require("../models/baja").Baja;
+const Sucursal = require("../models/sucursal"),
+      Usuario = require("../models/usuario"),
+      Almacen = require("../models/almacen"),
+      Consumo = require("../models/consumo"),
+      RegistroDeMovimiento = require("../models/registroDeMovimiento"),
+      Baja = require("../models/baja")
 
 function sucursalesGet(req, res) {
     // busca todas las sucursales de la base de datos
@@ -97,6 +97,7 @@ function sucursalesIdSucursalPut(req, res) {
 
 function sucursalesIdSucursalDelete(req, res) {
     let sucursal = req.params.idSucursal
+
     Usuario.remove({sucursal}).exec( err => {
         if(err) console.log(err)
     })
