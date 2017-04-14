@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f8aa8a45-ac43-4bbe-bbe0-dade9b43161a" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app_server/controllers/categoria.js" afterPath="$PROJECT_DIR$/app_server/controllers/categoria.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app_server/routes/routes_category.js" afterPath="$PROJECT_DIR$/app_server/routes/routes_category.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -95,6 +94,7 @@
         <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/app_server/routes/routes_category.js" />
         <option value="$PROJECT_DIR$/app_server/controllers/categoria.js" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -271,12 +271,12 @@
       <option name="presentableId" value="Default" />
       <updated>1492117897481</updated>
       <workItem from="1492117924695" duration="10898000" />
-      <workItem from="1492129246428" duration="900000" />
+      <workItem from="1492129246428" duration="1085000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="11798000" />
+    <option name="totallyTimeSpent" value="11983000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="784" extended-state="6" />
@@ -624,6 +624,17 @@
             <element signature="e#1078#1399#0" expanded="false" />
             <element signature="e#1438#2761#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="17">
+            <caret line="1" column="57" lean-forward="false" selection-start-line="1" selection-start-column="57" selection-end-line="1" selection-end-column="57" />
+            <folding />
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>
