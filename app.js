@@ -22,6 +22,7 @@ const express = require("express"),
       router_sucursal = require('./app_server/routes/routes_sucursal'),
       router_category = require('./app_server/routes/routes_category'),
       router_product = require('./app_server/routes/routes_product'),
+      mongo = require('./app_server/models/connection'), // inicia la coneccion con mongodb
       app = express()
 
 // configuraciones de express
