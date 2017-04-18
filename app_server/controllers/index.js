@@ -60,9 +60,14 @@ function loginPost(req, res) {
     })
 }
 
+function error404(req, res) {
+    res.redirect('/almacen')
+}
+
 module.exports = {
     indexGet,
     loginGet,
     loginPost,
-    logout
+    logout,
+    error404
 }

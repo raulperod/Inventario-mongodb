@@ -41,14 +41,13 @@ function sucursalesNewPost(req, res) {
             }, err => { // si ocurre un error lo imprime
                 console.log(err)
             })
+        }else if(sucursal){ // si la sucursal ya existe
+            res.render("./sucursales/new",{ usuario : req.session.user, alertSucursal:true,plaza:req.body.plaza,ciudad:req.body.ciudad})
         }else{ // si hubo un error
-            if(sucursal){ // si la sucursal ya existe
-                res.render("./sucursales/new",{ usuario : req.session.user, alertSucursal:true,plaza:req.body.plaza,ciudad:req.body.ciudad})
-            }else{ // si hubo un error
-                console.log(err)
-                res.redirect("/sucursales/new")
-            }
+            console.log(err)
+            res.redirect("/sucursales/new")
         }
+
     })
 }
 
@@ -79,13 +78,11 @@ function sucursalesIdSucursalPut(req, res) {
                         if(err) console.log(err)
                         res.redirect("/sucursales")
                     })
+                }else if(sucursalC){
+                    res.render("./sucursales/update",{ usuario: req.session.user, id:req.params.idSucursal,alertSucursal:true,plaza:req.body.plaza,ciudad:req.body.ciudad})
                 }else{
-                    if(sucursalC){
-                        res.render("./sucursales/update",{ usuario: req.session.user, id:req.params.idSucursal,alertSucursal:true,plaza:req.body.plaza,ciudad:req.body.ciudad})
-                    }else{
-                        console.log(err)
-                        res.redirect("/sucursales")
-                    }
+                    console.log(err)
+                    res.redirect("/sucursales")
                 }
             })
         }else{

@@ -82,6 +82,9 @@ app
 app
     .use("/products",session_general_admin)
     .use("/products",router_product)
+// si ponen una ruta no existente, se redirecciona a almacen
+app
+    .use( IndexController.error404 )
 
 module.exports = app
 
