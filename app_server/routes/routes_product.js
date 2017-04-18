@@ -13,6 +13,13 @@ producto
         .get( ProductoController.productsNewGet )
         // Metodo POST
         .post( ProductoController.productsNewPost )
+// gelishtime/products/new
+producto
+    .route("/new/excel")
+    // Metodo GET
+    .get( ProductoController.excelGet )
+    // Metodo POST
+    .post( ProductoController.excelPost )
 // gelishtime/products/:idProducto
 producto
         .route("/:idProducto")
