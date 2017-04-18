@@ -34,7 +34,7 @@ function loginGet(req, res) {
 
 function loginPost(req, res) {
     // busca al usuario
-    let username = req.body.username
+    let username = req.body.username.toLowerCase()
     Usuario.findOne({username}).populate("sucursal").exec( (err, usuario) => {
 
         if(!err && usuario){
