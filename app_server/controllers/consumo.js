@@ -49,6 +49,11 @@ function consumosIdConsumoPut(req, res) {
         // busca el producto que cambiaron
         Consumo.findById(req.params.idConsumo).exec( (err, productoCon) => {
             if(!err && productoCon){ // si no hay error y el producto existe
+                // si no hay productos, se acaba y regresa
+                if(productoCon.cantidad === 0 ){
+                    res.send("")
+                    return;
+                }
                 res.locals.productoConUpdate = productoCon
                 // si el numero que pusieron es mayor que el que tenian, entonces quedan 0 productos
                 if( parseInt(req.body.cantidad) > res.locals.productoConUpdate.cantidad ){
