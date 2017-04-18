@@ -8,7 +8,11 @@ const Categoria = require("../models/categoria"),
       Almacen = require("../models/almacen"),
       Consumo = require("../models/consumo"),
       RegistroDeMovimiento = require("../models/registroDeMovimiento"),
-      Baja = require("../models/baja")
+      Baja = require("../models/baja"),
+      fs = require('fs'),
+      xlstojson = require("xls-to-json-lc"),
+      xlsxtojson = require("xlsx-to-json-lc"),
+      excel = require('./exel')
 
 function productsGet(req, res) {
     // busca todos los productos de la base de datos
@@ -297,11 +301,139 @@ function productsIdProductoDelete(req, res) {
     })
 }
 
+function excelGet(req, res) {
+    res.render("./products/excel",{ usuario: req.session.user, Subido:false,AlertExcel:false});
+}
+
+function excelPost(req, res) {
+    let exceltojson,
+        usuario = req.session.user
+    excel.upload(req, res, err => {
+        if(err){
+            console.log(err)
+            res.render("./products/excel",{ usuario, Subido: false, AlertExcel: true})
+            return
+        }
+        // Multer gives us file info in req.file object
+        if(!req.file){
+            console.log("No hay archivo")
+            res.render("./products/excel",{ usuario, Subido: false, AlertExcel: true})
+            return
+        }
+
+        if(req.file.originalname.split('.')[req.file.originalname.split('.').length-1] === 'xlsx'){
+            exceltojson = xlsxtojson;
+        }else{
+            exceltojson = xlstojson;
+        }
+        try{
+            exceltojson({
+                input: req.file.path,
+                output: null, //since we don't need output.json
+                lowerCaseHeaders:true
+            }, (err, productosExcel) => {
+                if(!err && productosExcel){
+                    // borrar el archivo
+                    try{
+                        fs.unlinkSync(req.file.path)
+                    }catch(e) {
+                        console.log(e)
+                        res.redirect("/products")
+                    }
+                    // crear los productos
+                    for(let productoExcel of productosExcel){
+                        // registo cada producto que se haya pasado
+                        if(productoExcel.categoria){
+                            Categoria.findOne({nombre: productoExcel.categoria},{_id:1}).exec( (err, categoria) => {
+                                if(!err && categoria){
+                                    Producto.findOne({nombre:productoExcel.nombre},{_id:1}).exec( (err, prod) => {
+                                        if(!err && !prod){
+
+                                            let productoNuevo = new Producto({
+                                                nombre: productoExcel.nombre,
+                                                codigo: productoExcel.codigo,
+                                                descripcion: productoExcel.descripcion,
+                                                minimo: parseInt(productoExcel.minimo),
+                                                categoria: categoria._id,
+                                                esBasico: productoExcel.basico === "Si"
+                                            })
+                                            // guarda al producto en la base de datos
+                                            productoNuevo.save().then( pdt => {
+                                            }, err => { // si ocurre un error lo imprime
+                                                console.log(err)
+                                            })
+
+                                        }else{ // si paso algo
+                                            if(err) console.log(err)
+                                            if(prod) console.log("El producto "+productoExcel.nombre+" existe")
+                                        }
+                                    })
+                                }else{ // si paso algo
+                                    if(!categoria){ // si la categoria no existe
+                                        // crea una categoria nueva con sus respectivos atributos
+                                        let categoriaNueva = new Categoria({
+                                            nombre:productoExcel.categoria,
+                                        })
+                                        // guarda la categoria en la base de datos
+                                        categoriaNueva.save().then( cat => {
+                                            // ya con la categoria creada creo al producto
+                                            Producto.findOne({nombre:productoExcel.nombre},{_id:1}).exec( (err, prod) => {
+                                                if(!err && !prod){
+
+                                                    let productoNuevo = new Producto({
+                                                        nombre: productoExcel.nombre,
+                                                        codigo: productoExcel.codigo,
+                                                        descripcion: productoExcel.descripcion,
+                                                        minimo: parseInt(productoExcel.minimo),
+                                                        categoria: cat._id,
+                                                        esBasico: productoExcel.basico === "Si"
+                                                    })
+                                                    // guarda al producto en la base de datos
+                                                    productoNuevo.save().then( pdt => {
+                                                    }, err => { // si ocurre un error lo imprime
+                                                        console.log(err)
+                                                    })
+                                                }else{ // si paso algo
+                                                    if(err) console.log(err)
+                                                    if(prod) console.log("El producto "+productoExcel.nombre+" existe")
+                                                }
+                                            })
+                                        }, err => { // si ocurre un error lo imprime
+                                            console.log(err)
+                                        })
+
+                                    }else{ // si paso un error
+                                        console.log(err)
+                                        res.redirect("/products")
+                                    }
+                                }
+                            })
+                        }
+                    }
+                    res.render("./products/excel",{ usuario, Subido:true,AlertExcel:false})
+
+                    //----------------------
+                }else{
+                    if(err) console.log(err)
+                    res.redirect("/products")
+                }
+            })
+
+        }catch(e){
+            console.log(e)
+            res.redirect("/products")
+        }
+
+    })
+}
+
 module.exports = {
     productsGet,
     productsNewGet,
     productsNewPost,
     productsIdProductoGet,
     productsIdProductoPut,
-    productsIdProductoDelete
+    productsIdProductoDelete,
+    excelGet,
+    excelPost
 }
