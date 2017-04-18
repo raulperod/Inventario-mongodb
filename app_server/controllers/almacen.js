@@ -168,6 +168,11 @@ function almacenIdAlmacenSubPut(req, res) {
         let usuario = req.session.user
         Almacen.findById(req.params.idAlmacen).exec( (err, productoAlm) => { // busco el almacen
             if(!err && productoAlm){ // si no hay error y el almacen existe
+                // si no hay productos, se acaba y regresa
+                if(productoAlm.cantidad === 0 ){
+                    res.send("")
+                    return;
+                }
                 res.locals.productoAlmUpdate = productoAlm
                 // si el numero que pusieron es mayor que el que tenian, entonces quedan 0 productos
                 if( parseInt(req.body.cantidad) > res.locals.productoAlmUpdate.cantidad ){
