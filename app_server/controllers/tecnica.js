@@ -42,8 +42,6 @@ function tecnicasNewGet(req, res) {
         Sucursal.find({}).exec( (err, sucursales) => {
             if(!err && sucursales ){ // si no hubo un error
                 res.render("./tecnicas/new",{sucursales, usuario})
-            }else if(!sucursales){ // si no hay sucursales
-                res.redirect("/sucursales")
             }else{ // si hubo un error
                 console.log(err)
                 res.redirect("/users")
@@ -89,8 +87,6 @@ function tecnicasNewPost(req, res) {
                     console.log(err)
                     res.redirect("/almacen")
                 })
-            }else if(!sucursal){ // si no existe la sucursal
-                res.redirect("/sucursales")
             }else{ // si hubo un error
                 console.log(err)
                 res.redirect("/tecnicas")
@@ -114,8 +110,6 @@ function tecnicasIdTecnicaGet(req, res) {
                         res.redirect("/tecnicas")
                     }
                 })
-            }else if(!sucursales){ // si no existe la sucursal
-                res.redirect("/sucursales")
             }else{ // si hubo un error lo imprime
                 console.log(err)
                 res.redirect("/tecnicas")
@@ -157,8 +151,6 @@ function tecnicasIdTecnicaPut(req, res) {
                         res.redirect("/tecnicas")
                     }
                 })
-            }else if(!sucursal){ // si no existe la sucursal
-                res.redirect("/sucursales")
             }else{ // si hubo un error lo imprime
                 console.log(err)
                 res.redirect("/tecnicas")
