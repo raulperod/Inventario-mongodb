@@ -3,7 +3,7 @@
  */
 'use strict'
 
-const RegistroDeMovimiento = require("../models/registroDeMovimiento"),
+const RegistroDeMovimiento = require("../models/movimiento"),
       Baja = require("../models/baja"),
       Tecnica = require("../models/tecnica"),
       Producto = require("../models/producto"),

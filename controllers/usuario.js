@@ -23,7 +23,7 @@ function usersGet(req, res) {
         })
     }else{ // si es administador general
         // busca todos los administadores de sucursal y recepcionistas de la base de datos
-        UsuarioModel.find({ _id :{ $ne: usuario._id } }).populate("sucursal").exec( (error, usuarios) => {
+        UsuarioModel.find({ _id :{ $ne: usuario._id } }).populate('sucursal','plaza').exec( (error, usuarios) => {
             if(error){ // si no hubo error
                 console.log(`Error al obtener los usuarios: ${error}`) // imprimo el error
                 res.redirect("/almacen") // redirecciono al inicio
@@ -40,7 +40,7 @@ function usersNewGet(req, res) {
     // si es administrador general
     if( usuario.permisos === 2){
         // busca todas las sucursales
-        Sucursal.find({}, {_id:0, plaza:1}).exec( (error, sucursales) => {
+        SucursalModel.find({}, {_id:0, plaza:1}).exec( (error, sucursales) => {
             if(error){ // si hubo un error
                 console.log(`Error al obtener las plazas: ${error}`)
                 res.redirect("/users")
@@ -77,7 +77,7 @@ function usersIdUsuarioGet(req, res) {
     let usuario = req.session.user
     if( usuario.permisos === 2){ // si es administador general
         // busco las plazas de las sucursales
-        Sucursal.find({},{_id:0, plaza:1}).exec( (error, sucursales) => { // busca todas las sucursales
+        SucursalModel.find({},{_id:0, plaza:1}).exec( (error, sucursales) => { // busca todas las sucursales
             if(error){ // si hubo error
                 console.log(`Error al obtener las sucursales: ${error}`)
                 res.redirect("/users")
@@ -130,7 +130,7 @@ function createUser(body, res, usuario, sucursal, permisos) {
 
 function getUser(idUsuario, datos) {
     // busco al usuario a editar
-    Usuario.findById(idUsuario).exec( (error, usuarioUpdate) => {
+    UsuarioModel.findById(idUsuario).exec( (error, usuarioUpdate) => {
         if(error){ // si hubo error
             console.log(`Error al obtener el usuario: ${error}`)
             res.redirect("/users")

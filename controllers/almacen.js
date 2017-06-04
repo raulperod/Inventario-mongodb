@@ -6,7 +6,7 @@
 const Almacen = require("../models/almacen"),
       Consumo = require("../models/consumo"),
       Producto = require("../models/producto"),
-      RegistroDeMovimiento = require("../models/registroDeMovimiento")
+      RegistroDeMovimiento = require("../models/movimiento")
 
 function almacenGet(req, res) {
     let usuario = req.session.user

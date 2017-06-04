@@ -17,6 +17,6 @@ const mongoose = require("mongoose"),
               trim: true
           }
       }),
-      Sucursal = mongoose.model("Sucursal",sucursal_schema)
+      Sucursal = mongoose.model("Sucursal", sucursal_schema, "sucursales")
 
 module.exports = Sucursal
