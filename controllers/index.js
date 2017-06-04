@@ -3,7 +3,7 @@
  */
 'use strict'
 
-const Usuario = require('../models/usuario'),
+const UsuarioModel = require('../models/usuario'),
       Utilidad = require('../ayuda/utilidad')
 
 function indexGet(req, res) {
@@ -25,10 +25,10 @@ function loginGet(req, res) {
 
 function loginPost(req, res) {
     // declaro variables necesarias
-    let username = req.body.username.toLowerCase(),
+    let username = req.body.username,
         password = req.body.password
 
-    Usuario.findOne({username}).populate("sucursal").exec( (error, usuario) => {
+    UsuarioModel.findOne({username},{nombre:0,apellido:0}).populate("sucursal").exec( (error, usuario) => {
         // declaro la promesa
         let promesa = Utilidad.returnPromise(!error, true, { msg: `Error con la base de datos : ${error}`, tipo: 0 })
         // ejecuto la promesa

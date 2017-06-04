@@ -3,32 +3,33 @@
  */
 'use strict'
 
-const Usuario = require("../models/usuario"),
-      Sucursal = require("../models/sucursal")
+const UsuarioModel = require("../models/usuario"),
+      SucursalModel = require("../models/sucursal"),
+      Utilidad = require('../ayuda/utilidad')
 
 function usersGet(req, res) {
     let usuario = req.session.user
     // si es administrador de sucursal
     if( usuario.permisos === 1){
         // busca todas las recepcionistas de la sucursal del administrador
-        Usuario.find({ permisos: 0, sucursal: usuario.sucursal}).exec( (err,usuarios) => {
-            if(!err){ // si no hubo error
-                // paso a los usuarios a la vista
-                res.render("./users/manager",{usuarios, usuario})
+        UsuarioModel.find({ permisos: 0, sucursal: usuario.sucursal}).exec( (error, usuarios) => {
+            if(error){ // si no hubo error
+                console.log(`Error al obtener los usuarios: ${error}`) // imprimo el error
+                res.redirect('/almacen') // redirecciono al almacen
             }else{ // si hubo error
-                console.log(err) // imprimo el error
-                res.redirect("/almacen") // redirecciono al almacen
+                // paso a los usuarios a la vista
+                res.render('./users/manager',{usuarios, usuario})
             }
         })
     }else{ // si es administador general
         // busca todos los administadores de sucursal y recepcionistas de la base de datos
-        Usuario.find({ permisos :{ $ne: 2 } }).populate("sucursal").exec( (err, usuarios) => {
-            if(!err){ // si no hubo error
-                // paso a los usuarios a la vista
-                res.render("./users/manager",{usuarios, usuario })
-            }else{ // si hubo error
-                console.log(err) // imprimo el error
+        UsuarioModel.find({ _id :{ $ne: usuario._id } }).populate("sucursal").exec( (error, usuarios) => {
+            if(error){ // si no hubo error
+                console.log(`Error al obtener los usuarios: ${error}`) // imprimo el error
                 res.redirect("/almacen") // redirecciono al inicio
+            }else{ // si hubo error
+                // paso a los usuarios a la vista
+                res.render("./users/manager",{usuarios, usuario})
             }
         })
     }

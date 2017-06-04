@@ -8,17 +8,18 @@ block contenido
             h3.panel-title Editar sucursal
           .panel-body
             #aviso
-            form(action="/sucursales/"+sucursalUpdate.idSucursal+"?_method=PUT",method="POST",id="formUpdate")
+            form(action="/sucursales/"+sucursalUpdate._id+"?_method=PUT", method="POST", id="formUpdate")
               fieldset
               .form-group
                 h5  Plaza:
-                input.form-control(type="text",name="plaza", value=sucursalUpdate.plaza, required,id="plaza" )
+                input.form-control(type="text", name="plaza", value=sucursalUpdate.plaza, required, id="plaza" )
               .form-group
                 h5  Ciudad:
-                input.form-control(type="text",name="ciudad", value=sucursalUpdate.ciudad, required, id="city")
+                input.form-control(type="text", name="ciudad", value=sucursalUpdate.ciudad, required, id="city")
               // boton para registrar
               .form-group
               input(type="submit" value="Actualizar" class="btn btn-lg btn-primary btn-block")
+
   // jQuery
   script(src='/public/vendor/jquery/jquery.min.js')
   // Bootstrap Core JavaScript
