@@ -49,7 +49,7 @@ function productsNewPost(req, res) {
     Producto.findOne({ $or: [ { nombre: req.body.nombre } , { codigo: req.body.codigo } ] } ).exec( (err, producto) => {
         // si no hay error y no hay producto repetido, entonces lo crea
         if(!err && !producto){
-            // busca la sucursal para
+            // busca la categoria para
             Categoria.findOne({ nombre: req.body.categoria }).exec( (err, categoria) => {
                 if(!err && categoria){
                     // crea un producto nuevo con sus respectivos atributos
@@ -302,7 +302,7 @@ function productsIdProductoDelete(req, res) {
 }
 
 function excelGet(req, res) {
-    res.render("./products/excel",{ usuario: req.session.user, Subido:false,AlertExcel:false});
+    res.render("./products/excel",{ usuario: req.session.user, Subido:false,AlertExcel:false})
 }
 
 function excelPost(req, res) {
@@ -327,11 +327,7 @@ function excelPost(req, res) {
             exceltojson = xlstojson;
         }
         try{
-            exceltojson({
-                input: req.file.path,
-                output: null, //since we don't need output.json
-                lowerCaseHeaders:true
-            }, (err, productosExcel) => {
+            exceltojson({ input: req.file.path, output: null, lowerCaseHeaders:true }, (err, productosExcel) => {
                 if(!err && productosExcel){
                     // borrar el archivo
                     try{
