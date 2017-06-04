@@ -28,7 +28,7 @@ const express = require("express"),
 // configuraciones de express
 app
     .set( 'port', config.PORT || 3000 )
-    .use( "/src", express.static("src") )
+    .use( "/public", express.static("public") )
     .use( bodyParser.json() )
     .use( bodyParser.urlencoded({extended:true}))
     .use( methodOverride("_method"))
@@ -87,4 +87,3 @@ app
     .use( IndexController.error404 )
 
 module.exports = app
-

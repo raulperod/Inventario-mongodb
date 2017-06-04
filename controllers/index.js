@@ -20,7 +20,7 @@ function logout(req, res) {
 
 function loginGet(req, res) {
     // si no esta logeado entra al login
-    (req.session.user) ? res.redirect("/almacen") : res.render('login')
+    (req.session.user) ? res.redirect("/almacen") : res.render('login',{usuario: req.session.user})
 }
 
 function loginPost(req, res) {
