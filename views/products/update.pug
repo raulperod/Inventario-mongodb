@@ -7,166 +7,62 @@ block contenido
           .panel-heading
             h3.panel-title Editar producto
           .panel-body
-            if !AlertNombre && !AlertCodigo
+            #aviso
+            form(action="/products/"+productoUpdate.idProducto+"?_method=PUT",method="POST",id="formUpdate")
+              fieldset
+                .form-group
+                  h5  Nombre:
+                  input.form-control(type="text", name="nombre", value=productoUpdate.nombre, required,id="name")
+                .form-group
+                  h5  Codigo de barras:
+                  input.form-control(type="text", name="codigo", value=productoUpdate.codigo, required,id="cb")
+                .form-group
+                  h5  Descripcion:
+                  input.form-control(type="text", name="descripcion", value=productoUpdate.descripcion, required,id="desc")
+                .form-group
+                  h5  Cantidad minima:
+                  input.form-control(type="number", value=productoUpdate.minimo ,name="minimo", min="0", max="10000" required,id="min")
+                .form-group
+                  h5  Categoria:
+                  select.form-control.selectpicker(name="categoria", data-live-search="true")
+                    for categoria in categorias
+                      option #{categoria.nombre}
+                //esto todavia hay que ver los estilos para poner un select en vez de un input
+                // boton para registrar
+                if productoUpdate.esBasico
+                  .form-group
+                    label Basico
+                    .radio
+                      label
+                        input#optionsRadios1(type='radio', name='basico', value='Si', checked='')
+                        | Si
+                    .radio
+                      label
+                        input#optionsRadios2(type='radio', name='basico', value='No')
+                        | No
 
-              form(action="/products/"+productoUpdate._id+"?_method=PUT",method="POST")
-                fieldset
-                  .form-group
-                    h5  Nombre:
-                    input.form-control(type="text",name="nombre",required="required",value=productoUpdate.nombre, pattern="{3,40}$",title="El nombre del producto debe tener un minimo 3 caracteres y 40 como maximo")
-                  .form-group
-                    h5  Codigo de barras:
-                    input.form-control(type="text",name="codigo",required="required",value=productoUpdate.codigo, pattern="{3,30}$",title="El nombre de la plaza debe tener un minimo 3 caracteres y 30 como maximo")
-                  .form-group
-                    h5  Descripcion:
-                    input.form-control(type="text",name="descripcion",required="required",value=productoUpdate.descripcion, pattern="{3,70}$",title="El nombre de la plaza debe tener un minimo 3 caracteres y 70 como maximo")
-                  .form-group
-                    h5  Cantidad minima:
-                    input.form-control(type="number", value=productoUpdate.minimo ,name="minimo", min="0", max="10000", title="Cantidad minima del producto en el almacen" required)
-                  .form-group
-                    h5  Categoria:
-                    select.form-control.selectpicker(name="categoria", data-live-search="true")
-                      for categoria in categorias
-                        option(name="1") #{categoria.nombre}
-                  //esto todavia hay que ver los estilos para poner un select en vez de un input
-                  // boton para registrar
-                  if productoUpdate.esBasico == "Si"
-                    .form-group
-                      label Basico
-                      .radio
-                        label
-                          input#optionsRadios1(type='radio', name='esBasico', value='Si', checked='')
-                          | Si
-                      .radio
-                        label
-                          input#optionsRadios2(type='radio', name='esBasico', value='No')
-                          | No
-                  
-                  else
-                    
-                    .form-group
-                      label Basico
-                      .radio
-                        label
-                          input#optionsRadios1(type='radio', name='esBasico', value='Si')
-                          | Si
-                      .radio
-                        label
-                          input#optionsRadios2(type='radio', name='esBasico', value='No', checked='')
-                          | No
-                  .form-group
-                  input(type="submit" value="Actualizar" class="btn btn-lg btn-primary btn-block")
+                else
 
-            else if AlertNombre
+                  .form-group
+                    label Basico
+                    .radio
+                      label
+                        input#optionsRadios1(type='radio', name='basico', value='Si')
+                        | Si
+                    .radio
+                      label
+                        input#optionsRadios2(type='radio', name='basico', value='No', checked='')
+                        | No
+                .form-group
+                input(type="submit" value="Actualizar" class="btn btn-lg btn-primary btn-block")
 
-              form(action="/products/"+id+"?_method=PUT",method="POST")
-                fieldset
-                  .alert.alert-warning.alert-dismissable
-                    button.close(type='button', data-dismiss='alert', aria-hidden='true') ×
-                    | Ya existe un producto con ese nombre
-                  .form-group.has-error
-                    h5  Nombre:
-                    input#inputError.form-control(type="text", name="nombre", value=nombre, pattern="{3,40}$",title="El nombre del producto debe tener un minimo 3 caracteres y 40 como maximo" required)
-                  .form-group
-                    h5  Codigo:
-                    input.form-control(type="text", name="codigo", value=codigo, pattern="{3,30}$",title="El nombre de la plaza debe tener un minimo 3 caracteres y 30 como maximo" required)
-                  .form-group
-                    h5  Descripcion:
-                    input.form-control(type="text", name="descripcion", value=descripcion, pattern="{3,70}$",title="El nombre de la plaza debe tener un minimo 3 caracteres y 70 como maximo" required)
-                  .form-group
-                    h5  Cantidad minima:
-                    input.form-control(type="number", value=minimo ,name="minimo", min="0", max="10000", title="Cantidad minima del producto en el almacen" required)
-                  .form-group
-                    h5  Categoria:
-                    select.form-control.selectpicker(name="categoria", data-live-search="true")
-                      for categoria in categorias
-                        option(name="1") #{categoria.nombre}
-                  //esto todavia hay que ver los estilos para poner un select en vez de un input
-                  // boton para registrar
-                  if esBasico == "Si"
-                    .form-group
-                      label Basico
-                      .radio
-                        label
-                          input#optionsRadios1(type='radio', name='esBasico', value='Si', checked='')
-                          | Si
-                      .radio
-                        label
-                          input#optionsRadios2(type='radio', name='esBasico', value='No')
-                          | No
-                  
-                  else
-                    
-                    .form-group
-                      label Basico
-                      .radio
-                        label
-                          input#optionsRadios1(type='radio', name='esBasico', value='Si')
-                          | Si
-                      .radio
-                        label
-                          input#optionsRadios2(type='radio', name='esBasico', value='No', checked='')
-                          | No
-                  .form-group
-                  input(type="submit" value="Agregar Producto" class="btn btn-lg btn-primary btn-block")
-
-            else if AlertCodigo
-
-              form(action="/products/"+id+"?_method=PUT",method="POST")
-                fieldset
-                  .form-group
-                    h5  Nombre:
-                    input.form-control(type="text", name="nombre", value=nombre, pattern="{3,40}$",title="El nombre del producto debe tener un minimo 3 caracteres y 40 como maximo" required)
-                  .alert.alert-warning.alert-dismissable
-                    button.close(type='button', data-dismiss='alert', aria-hidden='true') ×
-                    | Ya existe un producto con ese codigo
-                  .form-group.has-error
-                    h5  Codigo:
-                    input#inputError.form-control(type="text", name="codigo", value=codigo, pattern="{3,30}$",title="El nombre de la plaza debe tener un minimo 3 caracteres y 30 como maximo" required)
-                  .form-group
-                    h5  Descripcion:
-                    input.form-control(type="text", name="descripcion", value=descripcion, pattern="{3,70}$",title="El nombre de la plaza debe tener un minimo 3 caracteres y 70 como maximo" required)
-                  .form-group
-                    h5  Cantidad minima:
-                    input.form-control(type="number", value=minimo  ,name="minimo", min="0", max="10000", title="Cantidad minima del producto en el almacen" required)
-                  .form-group
-                    h5  Categoria:
-                    select.form-control.selectpicker(name="categoria", data-live-search="true")
-                      for categoria in categorias
-                        option(name="1") #{categoria.nombre}
-                  // boton para registrar
-                  if esBasico == "Si"
-                    .form-group
-                      label Basico
-                      .radio
-                        label
-                          input#optionsRadios1(type='radio', name='esBasico', value='Si', checked='')
-                          | Si
-                      .radio
-                        label
-                          input#optionsRadios2(type='radio', name='esBasico', value='No')
-                          | No
-                  
-                  else
-                    
-                    .form-group
-                      label Basico
-                      .radio
-                        label
-                          input#optionsRadios1(type='radio', name='esBasico', value='Si')
-                          | Si
-                      .radio
-                        label
-                          input#optionsRadios2(type='radio', name='esBasico', value='No', checked='')
-                          | No
-                  .form-group
-                  input(type="submit" value="Agregar Producto" class="btn btn-lg btn-primary btn-block")
   // jQuery
-  script(src='/src/vendor/jquery/jquery.min.js')
+  script(src='/public/vendor/jquery/jquery.min.js')
   // Bootstrap Core JavaScript
-  script(src='/src/vendor/bootstrap/js/bootstrap.min.js')
+  script(src='/public/vendor/bootstrap/js/bootstrap.min.js')
   // Metis Menu Plugin JavaScript
-  script(src='/src/vendor/metisMenu/metisMenu.min.js')
+  script(src='/public/vendor/metisMenu/metisMenu.min.js')
   // Custom Theme JavaScript
-  script(src='/src/dist/js/sb-admin-2.js')
-  script(src='/src/dist/js/bootstrap-select.min.js')
+  script(src='/public/dist/js/sb-admin-2.js')
+  script(src='/public/dist/js/bootstrap-select.min.js')
+  script(src='/public/avisos/productoUpdate.js')  

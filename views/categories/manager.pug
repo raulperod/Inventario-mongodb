@@ -23,10 +23,10 @@ block contenido
                     td #{categoria.nombre}
                     td #{categoria.descripcion}
                     td
-                      a(class="btn btn btn-primary btn-circle" href="/categories/"+categoria._id)
+                      a(class="btn btn btn-primary btn-circle" href="/categories/"+categoria.idCategoria)
                         i.fa.fa-list(title="Editar")
                       b &nbsp &nbsp &nbsp
-                      form(id="eliminar"  style="display:inline" action="/categories/"+categoria._id+"?_method=DELETE",method="POST" onsubmit="return confirm('¿Continuar con la eliminación?')")
+                      form(id="eliminar"  style="display:inline" action="/categories/"+categoria.idCategoria+"?_method=DELETE",method="POST" onsubmit="return confirm('¿Continuar con la eliminación?')")
                         button(type="submit/image" alt="text" value="" class="btn btn-danger btn-circle")
                           i.fa.fa-times(title="Eliminar")
             // /.panel-body
@@ -34,19 +34,19 @@ block contenido
       // /.col-lg-12
     // /.row
     // jQuery
-    script(src='/src/vendor/jquery/jquery.min.js')
+    script(src='/public/vendor/jquery/jquery.min.js')
     // Bootstrap Core JavaScript
-    script(src='/src/vendor/bootstrap/js/bootstrap.min.js')
+    script(src='/public/vendor/bootstrap/js/bootstrap.min.js')
     // Metis Menu Plugin JavaScript
-    script(src='/src/vendor/metisMenu/metisMenu.min.js')
+    script(src='/public/vendor/metisMenu/metisMenu.min.js')
     // Custom Theme JavaScript
-    script(src='/src/dist/js/sb-admin-2.js')
+    script(src='/public/dist/js/sb-admin-2.js')
     // DataTables JavaScript
-    script(src='/src/vendor/datatables/js/jquery.dataTables.min.js')
-    script(src='/src/vendor/datatables-plugins/dataTables.bootstrap.min.js')
-    script(src='/src/vendor/datatables-responsive/dataTables.responsive.js')
+    script(src='/public/vendor/datatables/js/jquery.dataTables.min.js')
+    script(src='/public/vendor/datatables-plugins/dataTables.bootstrap.min.js')
+    script(src='/public/vendor/datatables-responsive/dataTables.responsive.js')
     // Custom Theme JavaScript
-    script(src='/src/dist/js/sb-admin-2.js')
+    script(src='/public/dist/js/sb-admin-2.js')
     // Page-Level Demo Scripts - Tables - Use for reference
     script.
       $(document).ready(function() {

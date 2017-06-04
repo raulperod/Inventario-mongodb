@@ -7,39 +7,24 @@ block contenido
           .panel-heading
             h3.panel-title Registrar categoria
           .panel-body
-            if !AlertNombre
+            #aviso
+            form(action="/categories/new",method="POST",role='form',id="formNew")
+              fieldset
+                .form-group
+                  h5  Nombre:
+                  input.form-control(type="text" name="nombre" placeholder="Nombre", id="name" required)
+                .form-group
+                  h5  Descripcion:
+                  input.form-control(type="text" name="descripcion" placeholder="Descripcion" id="desc" required)
+                .form-group
+                input(type="submit" value="Agregar categoria" class="btn btn-lg btn-primary btn-block")
 
-              form(action="/categories/new",method="POST",role='form')
-                fieldset
-                  .form-group
-                    h5  Nombre:
-                    input.form-control(type="text" name="nombre" placeholder="Nombre" required)
-                  .form-group
-                    h5  Descripcion:
-                    input.form-control(type="text" name="descripcion" placeholder="Descripcion" required)
-                  .form-group
-                  input(type="submit" value="Agregar categoria" class="btn btn-lg btn-primary btn-block")
-
-            else
-
-              form(action="/categories/new",method="POST",role='form')
-                fieldset
-                  .alert.alert-warning.alert-dismissable
-                    button.close(type='button', data-dismiss='alert', aria-hidden='true') ×
-                    | Ya existe una categoria con ese nombre
-                  .form-group.has-error
-                    h5  Nombre:
-                    input#inputError.form-control(type="text", name="nombre",value=nombre ,required)
-                  .form-group
-                    h5  Descripcion:
-                    input.form-control(type="text", name="descripcion", value=descripcion, required)
-                  .form-group
-                  input(type="submit" value="Agregar categoria" class="btn btn-lg btn-primary btn-block")
   // jQuery
-  script(src='/src/vendor/jquery/jquery.min.js')
+  script(src='/public/vendor/jquery/jquery.min.js')
   // Bootstrap Core JavaScript
-  script(src='/src/vendor/bootstrap/js/bootstrap.min.js')
+  script(src='/public/vendor/bootstrap/js/bootstrap.min.js')
   // Metis Menu Plugin JavaScript
-  script(src='/src/vendor/metisMenu/metisMenu.min.js')
+  script(src='/public/vendor/metisMenu/metisMenu.min.js')
   // Custom Theme JavaScript
-  script(src='/src/dist/js/sb-admin-2.js')
+  script(src='/public/dist/js/sb-admin-2.js')
+  script(src='/public/avisos/categoriaNew.js')

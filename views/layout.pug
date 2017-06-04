@@ -4,24 +4,23 @@ html(lang="es")
     title Gelishtime
     meta(charset="utf-8")
     // Bootstrap Core CSS
-    link( href="/src/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet")
+    link( href="/public/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet")
     // MetisMenu CSS
-    link( href="/src/vendor/metisMenu/metisMenu.min.css" rel="stylesheet")
+    link( href="/public/vendor/metisMenu/metisMenu.min.css" rel="stylesheet")
     // Custom CSS
-    link( href="/src/dist/css/sb-admin-2.css" rel="stylesheet")
+    link( href="/public/dist/css/sb-admin-2.css" rel="stylesheet")
     // DataTables CSS
-    link(href='/src/vendor/datatables-plugins/dataTables.bootstrap.css', rel='stylesheet')
+    link(href='/public/vendor/datatables-plugins/dataTables.bootstrap.css', rel='stylesheet')
     // DataTables Responsive CSS
-    link(href='/src/vendor/datatables-responsive/dataTables.responsive.css', rel='stylesheet')
+    link(href='/public/vendor/datatables-responsive/dataTables.responsive.css', rel='stylesheet')
     // Custom Fonts
-    link( href="/src/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css")
-    link(rel="icon" href="/src/images/icon.ico")
-    // Morris Charts CSS
-    link(href='/src/vendor/morrisjs/morris.css', rel='stylesheet')
+    link( href="/public/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css")
+    // favicon
+    link(rel="icon" href="/public/images/icon.ico")
     // select  
-    link(href='/src/dist/css/bootstrap-select.min.css', rel='stylesheet')
+    link(href='/public/dist/css/bootstrap-select.min.css', rel='stylesheet')
     // excel
-    link( href="/src/excel/css/tableexport.min.css" rel="stylesheet")
+    link( href="/public/excel/css/tableexport.min.css" rel="stylesheet")
   body
     #wrapper
       nav.navbar.navbar-default.navbar-static-top(role='navigation', style='margin-bottom: 0')
@@ -33,7 +32,7 @@ html(lang="es")
               span.icon-bar
             a.navbar-brand(href='/almacen')
             a(title='gelishtime', href='/almacen')
-              img(src='/src/images/logo.png', alt='gelishtime' width="30%" height="30%")
+              img(src='/public/images/logo.png', alt='gelishtime' width="30%" height="30%")
           // /.navbar-header
           if usuario
             ul.nav.navbar-top-links.navbar-right
@@ -51,22 +50,12 @@ html(lang="es")
             .navbar-default.sidebar(role='navigation')
               .sidebar-nav.navbar-collapse
                 ul#side-menu.nav
-                  if usuario.permisos == 0
+                  if usuario.permisos === 0
 
                     li
-                      a(href='#')
+                      a(href='/almacen')
                         i.fa.fa-archive.fa-fw
                         |  Almacen
-                        span.fa.arrow
-                      ul.nav.nav-second-level
-                        li
-                          a(href='/almacen/new')
-                            i.fa.fa-plus
-                            |  Registrar
-                        li
-                          a(href='/almacen')
-                            i.fa.fa-edit
-                            |  Lista
                     li
                       a(href='/consumos')
                         i.fa.fa-archive.fa-fw
@@ -76,22 +65,12 @@ html(lang="es")
                         i.fa.fa-archive.fa-fw
                         |  Basico    
                         
-                  else if  usuario.permisos == 1
+                  else if  usuario.permisos === 1
 
                     li
-                      a(href='#')
+                      a(href='/almacen')
                         i.fa.fa-archive.fa-fw
                         |  Almacen
-                        span.fa.arrow
-                      ul.nav.nav-second-level
-                        li
-                          a(href='/almacen/new')
-                            i.fa.fa-plus
-                            |  Registrar
-                        li
-                          a(href='/almacen')
-                            i.fa.fa-edit
-                            |  Lista
                     li
                       a(href='/consumos')
                         i.fa.fa-archive.fa-fw
@@ -171,7 +150,7 @@ html(lang="es")
                           a(href='/products/new')
                             i.fa.fa-plus
                             |  Registrar
-                        li
+                        //li
                           a(href='/products/new/excel')
                             i.fa.fa-plus
                             |  Registrar con excel

@@ -4,20 +4,19 @@ html(lang="es")
     title Gelishtime
     meta(charset="utf-8")
     // Bootstrap Core CSS
-    link( href="/src/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet")
+    link( href="/public/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet")
     // MetisMenu CSS
-    link( href="/src/vendor/metisMenu/metisMenu.min.css" rel="stylesheet")
+    link( href="/public/vendor/metisMenu/metisMenu.min.css" rel="stylesheet")
     // Custom CSS
-    link( href="/src/dist/css/sb-admin-2.css" rel="stylesheet")
+    link( href="/public/dist/css/sb-admin-2.css" rel="stylesheet")
     // DataTables CSS
-    link(href='/src/vendor/datatables-plugins/dataTables.bootstrap.css', rel='stylesheet')
+    link(href='/public/vendor/datatables-plugins/dataTables.bootstrap.css', rel='stylesheet')
     // DataTables Responsive CSS
-    link(href='/src/vendor/datatables-responsive/dataTables.responsive.css', rel='stylesheet')
+    link(href='/public/vendor/datatables-responsive/dataTables.responsive.css', rel='stylesheet')
     // Custom Fonts
-    link( href="/src/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css")
-    link(rel="icon" href="/src/images/icon.ico")
-    // Morris Charts CSS
-    link(href='../vendor/morrisjs/morris.css', rel='stylesheet')
+    link( href="/public/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css")
+    // Favicon
+    link(rel="icon" href="/public/images/icon.ico")
   body
     #wrapper
       nav.navbar.navbar-default.navbar-static-top(role='navigation', style='margin-bottom: 0')
@@ -29,7 +28,7 @@ html(lang="es")
               span.icon-bar
             a.navbar-brand(href='/almacen')
             a(title='gelishtime', href='/almacen')
-              img(src='/src/images/logo.png', alt='gelishtime' width="30%" height="30%")
+              img(src='/public/images/logo.png', alt='gelishtime' width="30%" height="30%")
           // /.navbar-header
       .container
         .row
@@ -38,73 +37,24 @@ html(lang="es")
               .panel-heading
                 h3.panel-title Inicio de sesión
               .panel-body
-                    if !alertStatus && !alertUsername && !alertPassword
+                #aviso
+                form(action="/login",method="POST",role='form', id="formLogin")
+                  fieldset
+                    // input normal
+                    .form-group
+                      input.form-control(placeholder='Nombre de usuario',name='username',type='text', required, id="user")
+                    .form-group
+                      input.form-control(placeholder='Contraseña',name='password',type='password', required, id="pass")
+                    // boton para logearte
+                    .form-group
+                      input(type="submit" value="Entrar" class="btn btn-lg btn-primary btn-block", id="login")
 
-                      form(action="/login",method="POST",role='form')
-                        fieldset
-                          // input normal
-                          .form-group
-                            input.form-control(placeholder='Nombre de usuario',name='username',type='text',pattern="^([a-zA-Z0-9]{4,20})$", title="El nombre de usuario debe tener unicamente letras y numeros, minimo 4 caracteres y 20 como maximo" required)
-                          .form-group
-                            input.form-control(placeholder='Contraseña',name='password',type='password',pattern="^([a-zA-Z0-9]{8,20})$", title="La contraseña debe tener como minimo 8 caracteres y maximo 20" required)
-                          // boton para logearte
-                          .form-group
-                            input(type="submit" value="Entrar" class="btn btn-lg btn-primary btn-block")
-
-                    else if alertPassword
-
-                      form(action="/login",method="POST",role='form')
-                        fieldset
-                          // input normal
-                          .form-group
-                            input.form-control(value=username,name='username',type='text',pattern="^([a-zA-Z0-9]{4,20})$", title="El nombre de usuario debe tener unicamente letras y numeros, minimo 4 caracteres y 20 como maximo" required)
-                          // input con error
-                          .form-group.has-error
-                            .alert.alert-warning.alert-dismissable
-                              button.close(type='button', data-dismiss='alert', aria-hidden='true') ×
-                              | Contraseña incorrecta
-                            input#inputError.form-control(placeholder="Contraseña", name='password',type='password',pattern="^([a-zA-Z0-9]{8,20})$", title="La contraseña debe tener como minimo 8 caracteres y maximo 20" required)
-                          // boton para logearte
-                          .form-group
-                            input(type="submit" value="Entrar" class="btn btn-lg btn-primary btn-block")
-
-                    else if alertUsername
-
-                      form(action="/login",method="POST",role='form')
-                        fieldset
-                          // input con error
-                          .form-group.has-error
-                            .alert.alert-warning.alert-dismissable
-                              button.close(type='button', data-dismiss='alert', aria-hidden='true') ×
-                              | Usuario no encontrado
-                            input#inputError.form-control(value=username,name='username',type='text',pattern="^([a-zA-Z0-9]{4,20})$", title="El nombre de usuario debe tener unicamente letras y numeros, minimo 4 caracteres y 20 como maximo" required)
-                          .form-group
-                          input.form-control(placeholder="Contraseña",name='password',type='password',pattern="^([a-zA-Z0-9]{8,20})$", title="La contraseña debe tener como minimo 8 caracteres y maximo 20" required)
-                          // boton para logearte
-                          .form-group
-                          input(type="submit" value="Entrar" class="btn btn-lg btn-primary btn-block")
-
-                    else
-
-                      form(action="/login",method="POST",role='form')
-                        fieldset
-                          .alert.alert-warning.alert-dismissable
-                            button.close(type='button', data-dismiss='alert', aria-hidden='true') ×
-                            | Usuario Inactivo
-                          // input con error
-                          .form-group.has-error
-                            input#inputError.form-control(value=username,name='username',type='text',pattern="^([a-zA-Z0-9]{4,20})$", title="El nombre de usuario debe tener unicamente letras y numeros, minimo 4 caracteres y 20 como maximo" required)
-                          // input normal
-                          .form-group
-                          input.form-control(placeholder="Contraseña",name='password',type='password',pattern="^([a-zA-Z0-9]{8,20})$", title="La contraseña debe tener como minimo 8 caracteres y maximo 20" required)
-                          // boton para logearte
-                          .form-group
-                          input(type="submit" value="Entrar" class="btn btn-lg btn-primary btn-block")
   // jQuery
-  script(src='/src/vendor/jquery/jquery.min.js')
+  script(src='/public/vendor/jquery/jquery.min.js')
   // Bootstrap Core JavaScript
-  script(src='/src/vendor/bootstrap/js/bootstrap.min.js')
+  script(src='/public/vendor/bootstrap/js/bootstrap.min.js')
   // Metis Menu Plugin JavaScript
-  script(src='/src/vendor/metisMenu/metisMenu.min.js')
+  script(src='/public/vendor/metisMenu/metisMenu.min.js')
   // Custom Theme JavaScript
-  script(src='/src/dist/js/sb-admin-2.js')
+  script(src='/public/dist/js/sb-admin-2.js')
+  script(src='/public/avisos/login.js')  

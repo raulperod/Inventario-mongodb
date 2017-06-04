@@ -4,7 +4,7 @@
 'use strict'
 
 const Usuario = require('../models/usuario'),
-      Utilidad = require('../ayuda/')
+      Utilidad = require('../ayuda/utilidad')
 
 function indexGet(req, res) {
     // verifica si existe un usuario logeado
@@ -14,7 +14,7 @@ function indexGet(req, res) {
 function logout(req, res) {
     // cierra la sesion del usuario
     req.session = null
-    // te redirecciona al inicio
+    // te redirecciona al login
     res.redirect("/login")
 }
 
@@ -25,8 +25,9 @@ function loginGet(req, res) {
 
 function loginPost(req, res) {
     // declaro variables necesarias
-    let username = req.body.username,
+    let username = req.body.username.toLowerCase(),
         password = req.body.password
+
     Usuario.findOne({username}).populate("sucursal").exec( (error, usuario) => {
         // declaro la promesa
         let promesa = Utilidad.returnPromise(!error, true, { msg: `Error con la base de datos : ${error}`, tipo: 0 })
