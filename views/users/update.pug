@@ -8,7 +8,7 @@ block contenido
             h3.panel-title Editar usuario
           .panel-body
             #aviso
-            form(action="/users/"+usuarioUpdate.idUsuario+"?_method=PUT", method="POST", id="formUpdate")
+            form(action="/users/"+usuarioUpdate._id+"?_method=PUT", method="POST", id="formUpdate")
               fieldset
                 .form-group
                   h5  Usuario:

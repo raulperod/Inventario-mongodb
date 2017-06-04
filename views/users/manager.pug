@@ -31,7 +31,7 @@ block contenido
                       td #{user.password}
                       td #{user.nombre}
                       td #{user.apellido}
-                      td #{user.plaza}
+                      td #{user.sucursal.plaza}
                       if user.permisos === 1
                         td Administrador
                       else
@@ -41,7 +41,7 @@ block contenido
                       else
                         td Inactivo
                       td
-                        a(class="btn btn btn-primary btn-circle" href="/users/"+user.idUsuario)
+                        a(class="btn btn btn-primary btn-circle" href="/users/"+user._id)
                           i.fa.fa-list(title="Editar")
 
                 else
@@ -57,13 +57,10 @@ block contenido
                       else
                         td Inactivo
                       td
-                        a(class="btn btn btn-primary btn-circle" href="/users/"+user.idUsuario)
+                        a(class="btn btn btn-primary btn-circle" href="/users/"+user._id)
                           i.fa.fa-list(title="Editar")
-            // /.panel-body
-        // /.panel
-      // /.col-lg-12
-    // /.row
-    // jQuery
+
+
     script(src='/public/vendor/jquery/jquery.min.js')
     // Bootstrap Core JavaScript
     script(src='/public/vendor/bootstrap/js/bootstrap.min.js')

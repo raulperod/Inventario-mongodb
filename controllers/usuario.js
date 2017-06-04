@@ -40,255 +40,124 @@ function usersNewGet(req, res) {
     // si es administrador general
     if( usuario.permisos === 2){
         // busca todas las sucursales
-        Sucursal.find({}).exec( (err, sucursales) => {
-            if(!err && sucursales ){ // si no hubo un error
-                res.render("./users/new",{ AlertContrasena:false,AlertUsername:false,sucursales, usuario })
-            }else if(!sucursales){ // si no hay sucursales
-                res.redirect("/sucursales")
-            }else{ // si hubo un error
-                console.log(err)
+        Sucursal.find({}, {_id:0, plaza:1}).exec( (error, sucursales) => {
+            if(error){ // si hubo un error
+                console.log(`Error al obtener las plazas: ${error}`)
                 res.redirect("/users")
+            }else{ // si no hubo un error
+                res.render("./users/new",{ sucursales, usuario })
             }
         })
     }else{ // si es administador de sucursal
-        res.render("./users/new",{ usuario, AlertContrasena:false,AlertUsername:false})
+        res.render("./users/new", {usuario})
     }
 }
 
 function usersNewPost(req, res) {
-    let usuario = req.session.user
-    // Si la contrasena no coincide
-    if(req.body.password !== req.body.password_confirmation ){
-        if( usuario.permisos === 1 ){ // si administrador de sucursal
-            res.render("./users/new",{ usuario, AlertContrasena:true,AlertUsername:false,un:req.body.username,nm:req.body.name,ln:req.body.last_name,pw:req.body.password,pwc:req.body.password_confirmation})
-        }else{ // si es administrador general
-            // busca todas las sucursales
-            Sucursal.find({}).exec( (err, sucursales) => {
-                if(!err && sucursales){ // si no hubo error
-                    res.render("./users/new",{ usuario, AlertContrasena:true,AlertUsername:false,sucursales ,un:req.body.username,nm:req.body.name,ln:req.body.last_name,pw:req.body.password,pwc:req.body.password_confirmation})
-                }else if(!sucursales){ // si no hay sucursales
-                    res.redirect("/sucursales")
-                }else{ // si hubo un error
-                    console.log(err)
-                    res.redirect("/users")
-                }
-            })
-        }
-    }else{ // si no hubo error en la contrasena
-        // validar que el username no este repetido
-        let username = req.body.username.toLowerCase()
-        Usuario.findOne({username}).exec( (err, usuarioNew) => {
-            // si no hay error y no hay username repetido, entonces lo crea
-            if(!err && !usuarioNew){
-                // si es administrador de sucursal
-                if( usuario.permisos === 1){
-                    // crea una Recepcionista nueva con sus respectivos atributos
-                    let nuevoUsuario = new Usuario({
-                        username,
-                        nombre: req.body.name,
-                        apellido: req.body.last_name,
-                        password: req.body.password,
-                        sucursal: usuario.sucursal,
-                        permisos: 0
-                    })
-                    // guarda la recepcionista en la base de datos
-                    nuevoUsuario.save().then( us => {
-                        res.redirect("/users")
-                    }, err => { // si ocurre un error lo imprime y redirecciona al almacen
-                        console.log(err)
-                        res.redirect("/almacen")
-                    })
-                }else{ // si es administrador general
-                    // busca la sucursal con el nombre de la plaza
-                    Sucursal.findOne({ plaza: req.body.plaza}).exec( (err, sucursal) => {
-                        if(!err && sucursal){
-                            // crea un nuevo administrador de sucural con sus respectivos atributos
-                            let nuevoUsuario = new Usuario({
-                                username,
-                                nombre: req.body.name,
-                                apellido: req.body.last_name,
-                                password: req.body.password,
-                                sucursal: sucursal._id,
-                                permisos: 1
-                            })
-                            // guarda al usuario en la base de datos
-                            nuevoUsuario.save().then( us => {
-                                res.redirect("/users")
-                            }, err => { // si ocurre un error lo imprime
-                                console.log(err)
-                                res.redirect("/almacen")
-                            })
-                        }else if(!sucursal){ // si no existe la sucursal
-                            res.redirect("/sucursales")
-                        }else{ // si hubo un error
-                            console.log(err)
-                            res.redirect("/users")
-                        }
-                    })
-                }
-            }else if(usuario){ // si se repite el username
-                if( usuario.permisos === 1){ // si es Administrador de sucursal
-                    res.render("./users/new",{ usuario, AlertContrasena:false,AlertUsername:true,un:username,nm:req.body.name,ln:req.body.last_name,pw:req.body.password,pwc:req.body.password_confirmation})
-                }else{ // si es Administrador general
-                    // busca todas las sucursales
-                    Sucursal.find({}).exec( (err, sucursales) => {
-                        if(!err && sucursales){ // si no hubo error
-                            res.render("./users/new",{ usuario, AlertContrasena:false,AlertUsername:true,sucursales,un:username,nm:req.body.name,ln:req.body.last_name,pw:req.body.password,pwc:req.body.password_confirmation})
-                        } else { // si hubo un error lo imprime
-                            console.log(err)
-                            res.redirect("/users")
-                        }
-                    })
-                }
-            }else if(err){ // si hubo un error
-                console.log(err)
-                res.redirect("/users")
+    let usuario = req.session.user,
+        body = req.body
+    if(usuario.permisos === 1){ // si es administrador de sucursal
+        // creas al nuevo usuario (Recepcionista)
+        createUser(body, res, usuario.sucursal, 0)
+    } else{ // si es administrador general
+        // busco el id de la sucursal
+        SucursalModel.findOne({plaza: body.plaza},{_id:1}).exec((error, sucursal) => {
+            if(error){
+                Utilidad.printError(res, {msg:`Error al obtener la sucursal: ${error}`, tipo:0})
+            } else {
+                // creas al nuevo usuario (administrador de sucursal)
+                createUser(body, res, sucursal._id, 1)
             }
         })
     }
+
 }
 
 function usersIdUsuarioGet(req, res) {
     let usuario = req.session.user
     if( usuario.permisos === 2){ // si es administador general
-        Sucursal.find({}).exec( (err, sucursales) => { // busca todas las sucursales
-            if(!err && sucursales){ // si no hubo error y existen sucursales
-                // busco al usuario a editar
-                Usuario.findById(req.params.idUsuario).exec( (err, usuarioUpdate) => {
-                    if(!err && usuarioUpdate){ // si no hubo error y el usuario existe
-                        res.render("./users/update",{ usuario, sucursales ,usuarioUpdate,AlertContrasena:false,AlertUsername:false})
-                    }else{ // si hubo error o el usuario no existe
-                        // imprimo el error y lo redirecciono al administrador de usuarios
-                        if(err) console.log(err)
-                        res.redirect("/users")
-                    }
-                })
-            }else{ // si hubo un error lo imprime
-                console.log(err)
+        // busco las plazas de las sucursales
+        Sucursal.find({},{_id:0, plaza:1}).exec( (error, sucursales) => { // busca todas las sucursales
+            if(error){ // si hubo error
+                console.log(`Error al obtener las sucursales: ${error}`)
                 res.redirect("/users")
+            }else{ // si no hubo error
+                getUser(req.params.idUsuario, { usuario, sucursal })
             }
         })
     }else{ // si es administrador de sucursal
-        // busco al usuario a editar
-        Usuario.findById(req.params.idUsuario).exec( (err, usuarioUpdate) => {
-            if(!err && usuarioUpdate){ // si no hubo error y el usuario existe
-                res.render("./users/update",{usuarioUpdate, usuario,AlertContrasena:false,AlertUsername:false})
-            }else{ // si hubo error o el usuario no existe
-                // imprimo el error y lo redirecciono al administrador de usuarios
-                if(err) console.log(err)
-                res.redirect("/users")
-            }
-        })
+        getUser(req.params.idUsuario, { usuario })
     }
 }
 
 function usersIdUsuarioPut(req ,res) {
     let usuario = req.session.user,
-        username = req.body.username.toLowerCase()
-    // si el password es diferente a la confirmacion
-    if(req.body.password !== req.body.password_confirmation ){
-        if( usuario.permisos === 1){ // si es administrador de sucursal
-            // busco el usuario a editar
-            Usuario.findById(req.params.idUsuario).exec( (err, usuarioUpdate) => {
-                if(!err && usuarioUpdate){ // si no hubo error y el usuario existe
-                    res.render("./users/update",{usuarioUpdate, usuario,AlertContrasena:true,AlertUsername:false,un:username,nm:req.body.name,ln:req.body.last_name,pw:req.body.password,pwc:req.body.password_confirmation})
-                }else{ // si hubo error o el usuario no existe
-                    // imprimo el error y lo redirecciono al administrador de usuarios
-                    if(err) console.log(err)
-                    res.redirect("/users")
-                }
-            })
-        }else{ // si es administrador general
-            Sucursal.find({}).exec( (err, sucursales) => { // busco todas las sucursales
-                if(!err && sucursales){ // si no hubo error y existen sucursales
-                    Usuario.findById(req.params.idUsuario).exec( (err, usuarioUpdate) => {
-                        if(!err && usuarioUpdate){ // si no hay error y el usuario existe
-                            res.render("./users/update",{sucursales,usuarioUpdate, usuario,AlertContrasena:true,AlertUsername:false,un:username,nm:req.body.name,ln:req.body.last_name,pw:req.body.password,pwc:req.body.password_confirmation})
-                        }else{
-                            // imprimo el error y lo redirecciono al administrador de usuarios
-                            if(err) console.log(err)
-                            res.redirect("/users")
-                        }
-                    })
-                }else{ // si hubo un error lo imprime
-                    console.log(err)
-                    res.redirect("/users")
-                }
-            })
-        }
-    }else{ // si no hubo error en el password
-        // verifica que el nuevo username no este repetido
-        Usuario.findOne({username}).exec( (err, usuarioC) => {
-            if( !err  &&  ( (!usuarioC) || (req.params.idUsuario == usuarioC._id) ) ){ // si no hubo error y el username no esta repetido
-                if( usuario.permisos === 2){ // si es administrador general
-                    Sucursal.findOne({ plaza: req.body.plaza }).exec( (err, sucursal) => { // busco la sucursal
-                        if(!err && sucursal){ // si no hubo error y la sucursal existe
-                            // busco al usuario
-                            Usuario.findById(req.params.idUsuario).exec( (err, usuarioU) => {
-                                if(!err && usuarioU){ // si no hubo error y el usuario existe
-                                    res.locals.usuarioUpdate = usuarioU
-                                    res.locals.usuarioUpdate.username = username
-                                    res.locals.usuarioUpdate.password = req.body.password
-                                    res.locals.usuarioUpdate.nombre = req.body.name
-                                    res.locals.usuarioUpdate.apellido = req.body.last_name
-                                    res.locals.usuarioUpdate.sucursal = sucursal._id
-                                    res.locals.usuarioUpdate.status = req.body.status === "Activo"
-                                    res.locals.usuarioUpdate.permisos = req.body.permisos === "Recepcionista" ? 0 : 1
-                                    res.locals.usuarioUpdate.save( err => {
-                                        if(err) console.log(err)
-                                        res.redirect("/users")
-                                    })
-                                }else{
-                                    if(err) console.log(err)
-                                    res.redirect("/users")
-                                }
-                            })
-                        }else{ // si hubo un error lo imprime
-                            console.log(err);
-                            res.redirect("/users");
-                        }
-                    })
-                }else{
-
-                    // busco al usuario
-                    Usuario.findById(req.params.idUsuario).exec( (err, usuarioU) => {
-                        if(!err && usuarioU){ // si no hubo error y el usuario existe
-                            res.locals.usuarioUpdate = usuarioU
-                            res.locals.usuarioUpdate.username = username
-                            res.locals.usuarioUpdate.password = req.body.password
-                            res.locals.usuarioUpdate.nombre = req.body.name
-                            res.locals.usuarioUpdate.apellido = req.body.last_name
-                            res.locals.usuarioUpdate.status = req.body.status === "Activo"
-                            res.locals.usuarioUpdate.save( err => {
-                                if(err) console.log(err)
-                                res.redirect("/users")
-                            })
-                        }else{ // si hubo error
-                            if(err) console.log(err)
-                            res.redirect("/users")
-                        }
-                    })
-
-                }
-            }else if(usuarioC){ // si el username esta repetido
-                if( usuario.permisos === 2){ // si es administrador general
-                    Sucursal.find({}).exec( (err,sucursales) => { // busca todas las sucursales
-                        if(!err && sucursales){ // si no hubo error y existen sucursales
-                            res.render("./users/update",{ usuario, sucursales ,id:req.params.idUsuario,AlertContrasena:false,AlertUsername:true,un:username,nm:req.body.name,ln:req.body.last_name,pw:req.body.password,pwc:req.body.password_confirmation})
-                        }else{ // si hubo un error
-                            console.log(err)
-                            res.redirect("/almacen")
-                        }
-                    })
-                }else{ // si es administrador de sucursal
-                    res.render("./users/update",{ usuario, id:req.params.idUsuario,AlertContrasena:false,AlertUsername:true,un:username,nm:req.body.name,ln:req.body.last_name,pw:req.body.password,pwc:req.body.password_confirmation})
-                }
-            }else{ // si hubo un error
-                console.log(err)
-                res.redirect("/almacen")
+        body = req.body,
+        idUsuario = req.params.idUsuario
+    if(usuario.permisos === 1){ // si es administrador de sucursal
+        updateUser(idUsuario, body, usuario.sucursal, res)
+    }else{ // si es administrador general
+        // obtengo el id de la sucursal
+        SucursalModel.findOne({plaza: body.plaza},{_id:1}).exec((error, sucursal) => {
+            if(error){
+                Utilidad.printError(res, {msg:`Error al obtener la sucursal: ${error}`, tipo:0})
+            }else{
+                updateUser(idUsuario, body, sucursal._id, res)
             }
         })
     }
+}
+
+function createUser(body, res, usuario, sucursal, permisos) {
+    // creas al nuevo usuario
+    let nuevoUsuario = new Usuario({
+        nombre: body.nombre,
+        apellido: body.apellido,
+        username: body.username,
+        password: body.password,
+        sucursal,
+        permisos
+    })
+    // guardas al nuevo usuario
+    nuevoUsuario.save( error => {
+        if(error){
+            Utilidad.printError(res, {msg:`Error al guardar el nuevo usuario: ${error}`, tipo: 1})
+        }else{
+            res.json({msg:`Usuario guardado correctamente`, tipo: 3})
+        }
+    })
+}
+
+function getUser(idUsuario, datos) {
+    // busco al usuario a editar
+    Usuario.findById(idUsuario).exec( (error, usuarioUpdate) => {
+        if(error){ // si hubo error
+            console.log(`Error al obtener el usuario: ${error}`)
+            res.redirect("/users")
+        }else{ // si no hubo error
+            datos.usuarioUpdate = usuarioUpdate
+            res.render("./users/update", datos)
+        }
+    })
+}
+
+function updateUser(idUsuario, body, sucursal, res) {
+    // creo al usuario actualizado
+    let usuarioUpdate = {
+        nombre: body.nombre,
+        apellido: body.apellido,
+        username: body.username,
+        password: body.password,
+        status: body.status,
+        sucursal
+    }
+    UsuarioModel.findByIdAndUpdate(idUsuario, usuarioUpdate).exec( error => {
+        if(error){
+            Utilidad.printError(res, {msg:`Error al actualizar el usuario: ${error}`, tipo:1})
+        }else{
+            res.json({msg:`Usuario actualizado correctamente`, tipo:3})
+        }
+    })
 }
 
 module.exports = {

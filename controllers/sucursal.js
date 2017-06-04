@@ -4,11 +4,10 @@
 'use strict'
 
 const SucursalModel = require("../models/sucursal"),
-      Usuario = require("../models/usuario"),
-      Almacen = require("../models/almacen"),
-      Consumo = require("../models/consumo"),
-      RegistroDeMovimiento = require("../models/registroDeMovimiento"),
-      Baja = require("../models/baja"),
+      UsuarioModel = require("../models/usuario"),
+      AlmacenModel = require("../models/almacen"),
+      MovimientoModel = require("../models/registroDeMovimiento"),
+      BajaModel = require("../models/baja"),
       Utilidad = require('../ayuda/utilidad')
 
 function sucursalesGet(req, res) {
@@ -79,16 +78,16 @@ function sucursalesIdSucursalPut(req, res) {
 function sucursalesIdSucursalDelete(req, res) {
     let sucursal = req.params.idSucursal
 
-    Usuario.remove({sucursal}).exec( error => {
+    UsuarioModel.remove({sucursal}).exec( error => {
         if(error) console.log(error)
     })
-    Baja.remove({sucursal}).exec( error => {
+    BajaModel.remove({sucursal}).exec( error => {
         if(error) console.log(error)
     })
-    RegistroDeMovimiento.remove({sucursal}).exec( error => {
+    MovimientoModel.remove({sucursal}).exec( error => {
         if(error) console.log(error)
     })
-    Almacen.remove({sucursal}).exec( error => {
+    AlmacenModel.remove({sucursal}).exec( error => {
         if(error) console.log(error)
     })
     SucursalModel.findByIdAndRemove(sucursal).exec( error => {
