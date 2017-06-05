@@ -5,7 +5,6 @@
 
 const Producto = require("../models/producto"),
       Almacen = require("../models/almacen"),
-      Consumo = require("../models/consumo"),
       RegistroDeMovimiento = require("../models/movimiento"),
       Baja = require("../models/baja"),
       Tecnica = require("../models/tecnica"),

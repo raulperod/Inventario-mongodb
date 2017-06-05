@@ -3,8 +3,7 @@
  */
 'use strict'
 
-const Consumo = require("../models/consumo"),
-      Baja = require("../models/baja")
+const Baja = require("../models/baja")
 
 function consumosGet(req, res) {
     let usuario = req.session.user

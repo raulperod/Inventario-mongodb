@@ -56,7 +56,7 @@ function loginPost(req, res) {
                     // si hubo erro lo manda
                     Utilidad.printError(res, error)
                 })
-          }
+    })
 }
 
 function error404(req, res) {

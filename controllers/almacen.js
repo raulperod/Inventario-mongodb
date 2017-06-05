@@ -3,10 +3,9 @@
  */
 'use strict'
 
-const Almacen = require("../models/almacen"),
-      Consumo = require("../models/consumo"),
-      Producto = require("../models/producto"),
-      RegistroDeMovimiento = require("../models/movimiento")
+const AlmacenModel = require("../models/almacen"),
+      ProductoModel = require("../models/producto"),
+      MovimientoModel = require("../models/movimiento")
 
 function almacenGet(req, res) {
     let usuario = req.session.user
