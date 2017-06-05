@@ -110,7 +110,7 @@ function usersIdUsuarioPut(req ,res) {
 
 function createUser(body, res, usuario, sucursal, permisos) {
     // creas al nuevo usuario
-    let nuevoUsuario = new Usuario({
+    let nuevoUsuario = new UsuarioModel({
         nombre: body.nombre,
         apellido: body.apellido,
         username: body.username,

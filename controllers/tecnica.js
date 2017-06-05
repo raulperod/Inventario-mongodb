@@ -55,7 +55,7 @@ function tecnicasNewPost(req, res) {
     let usuario = req.session.user
     if( usuario.permisos === 1){ // si es administador de sucursal
         // crea una Tecnica nueva con sus respectivos atributos
-        let tecnica = new Tecnica({
+        let tecnica = new TecnicaModel({
             nombre: req.body.name,
             apellido: req.body.last_name,
             sucursal: usuario.sucursal
@@ -70,7 +70,7 @@ function tecnicasNewPost(req, res) {
                 res.redirect("/tecnicas")
             }else{ // si no hubo un error
                 // crea una Tecnica nueva con sus respectivos atributos
-                let tecnica = new Tecnica({
+                let tecnica = new TecnicaModel({
                     nombre: req.body.name,
                     apellido: req.body.last_name,
                     sucursal: sucursal._id

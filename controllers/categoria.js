@@ -29,7 +29,7 @@ function categoriesNewGet(req, res) {
 function categoriesNewPost(req, res) {
     // si no hay categoria repetida, entonces la crea
     // crea una categoria nueva con sus respectivos atributos
-    let categoria = new Categoria({
+    let categoria = new CategoriaModel({
         nombre: req.body.nombre,
         descripcion: req.body.descripcion
     })

@@ -28,7 +28,7 @@ function sucursalesNewGet(req, res) {
 
 function sucursalesNewPost(req, res) {
     // validar que la sucursal no este repetida
-    let sucursal = new Sucursal({
+    let sucursal = new SucursalModel({
         plaza: req.body.plaza,
         ciudad: req.body.ciudad
     })
