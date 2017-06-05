@@ -3,141 +3,99 @@
  */
 'use strict'
 
-const Categoria = require("../models/categoria"),
-      Producto = require("../models/producto"),
-      Almacen = require("../models/almacen"),
-      Consumo = require("../models/consumo"),
-      RegistroDeMovimiento = require("../models/movimiento"),
-      Baja = require("../models/baja")
+const CategoriaModel = require("../models/categoria"),
+      ProductoModel = require("../models/producto"),
+      AlmacenModel = require("../models/almacen"),
+      MovimientoModel = require("../models/movimiento"),
+      BajaModel = require("../models/baja"),
+      Utilidad = require("../ayuda/utilidad")
 
 function categoriesGet(req, res) {
     // muestra la lista de categorias
-    Categoria.find({}).exec( (err,categorias) => {
-        if(!err){ // si no hubo error
-            res.render("./categories/manager",{categorias, usuario: req.session.user })
-        }else{ // si hubo error
-            console.log(err) // imprimo el error
+    CategoriaModel.find({}).exec( (error, categorias) => {
+        if(error){ // si no hubo error
+            console.log(`Error al obtener las categorias`) // imprimo el error
             res.redirect("/almacen") // redirecciono al almacen
+        }else{ // si hubo error
+            res.render("./categories/manager",{categorias, usuario: req.session.user })
         }
     })
 }
 
 function categoriesNewGet(req, res) {
-    res.render("./categories/new",{ usuario: req.session.user, AlertNombre: false})
+    res.render("./categories/new",{ usuario: req.session.user})
 }
 
 function categoriesNewPost(req, res) {
-    // validar que el nombre no este repetida
-    Categoria.findOne({ nombre: req.body.nombre }).exec( (err, categoria) => {
-        if(!err && !categoria){
-            // si no hay categoria repetida, entonces la crea
-            // crea una categoria nueva con sus respectivos atributos
-            let categoria = new Categoria({
-                nombre: req.body.nombre,
-                descripcion: req.body.descripcion
-            })
-            // guarda la categoria en la base de datos
-            categoria.save().then( cat => {
-                res.redirect("/categories")
-            }, err => { // si ocurre un error lo imprime
-                console.log(err)
-            })
-        }else{ // si paso algo
-            if(categoria){ // si el nombre de la categoria se repite
-                res.render("./categories/new",{ usuario: req.session.user, AlertNombre: true, nombre: req.body.nombre, descripcion: req.body.descripcion })
-            }else{// si paso un error
-                console.log(err)
-                res.redirect("/categories/new")
-            }
+    // si no hay categoria repetida, entonces la crea
+    // crea una categoria nueva con sus respectivos atributos
+    let categoria = new Categoria({
+        nombre: req.body.nombre,
+        descripcion: req.body.descripcion
+    })
+    // guarda la categoria en la base de datos
+    categoria.save( error => {
+        if(error){
+            Utilidad.printError(res, {msg:`Error al guardar el producto: ${error}`, tipo:1})
+        }else{
+            res.json({msg:"Productos guardados correctamente", tipo:3})
         }
     })
 }
 
 function categoriesIdCategoryGet(req, res) {
     // busco la categoria
-    Categoria.findById(req.params.idCategoria).exec( (err, categoryUpdate) => {
-        if(!err && categoryUpdate){// si no hubo error y la categoria existe
-            res.render("./categories/update",{ usuario: req.session.user, categoryUpdate, AlertNombre:false})
-        }else{
-            // imprimo el error y lo redirecciono al administrador de sucursales
-            if(err) console.log(err)
+    CategoriaModel.findById(req.params.idCategoria).exec( (error, categoryUpdate) => {
+        if(error){// si no hubo error y la categoria existe
+            console.log(err)
             res.redirect("/categories")
+        }else{
+            res.render("./categories/update",{ usuario: req.session.user, categoryUpdate})
         }
     })
 }
 
 function categoriesIdCategoryPut(req, res) {
-    // busco la categoria
-    Categoria.findById(req.params.idCategoria).exec( (err,categoria) => {
-        if(!err && categoria){// si no hay error y la categoria existe
-            if(categoria.nombre === req.body.nombre){ // si no modifico su nombre
-                res.locals.categoryUpdate = categoria
-                res.locals.categoryUpdate.descripcion = req.body.descripcion
-                res.locals.categoryUpdate.save( err => {
-                    if(err) console.log(err)
-                    res.redirect("/categories")
-                })
-            }else{ // si modifico su nombre
-                // verifica que el nuevo nombre no este repetido
-                Categoria.findOne({nombre:req.body.nombre}).exec( (err, categoriaNew) => {
-                    if(!err && !categoriaNew){
-                        // si no se repite entonces actualizo la categoria
-                        res.locals.categoryUpdate = categoria
-                        res.locals.categoryUpdate.nombre = req.body.nombre
-                        res.locals.categoryUpdate.descripcion = req.body.descripcion
-                        res.locals.categoryUpdate.save( err => {
-                            if(err) console.log(err)
-                            res.redirect("/categories")
-                        })
-                    }else{ // si paso algo
-                        if(categoriaNew){ // si hay una categoria con el nuevo nombre
-                            // mando una alerta
-                            res.render("./categories/update",{ usuario: req.session.user, AlertNombre: true, nombre: req.body.nombre, descripcion: req.body.descripcion, id: req.params.idCategoria})
-                        }else{ // si hay error
-                            console.log(err)
-                            res.redirect("/categoria")
-                        }
-                    }
-                })
-            }
-        }else{ // si paso algo
-            if(err) console.log(err)
-            res.redirect("/categories")
+    // obtengo el id
+    let idCateroria = req.params.idCategoria
+    // creo la categoria actualizada
+    let categoriaUpdate = {
+        nombre: req.body.nombre,
+        descripcion: req.body.descripcion
+    }
+    // actualizo la categoria
+    CategoriaModel.findByIdAndUpdate(idCateroria, categoriaUpdate).exec((error, categoriaUp) => {
+        if(error){
+            Utilidad.printError(res, {msg:`Error al actualizar la categoria: ${error}`, tipo:1})
+        }else{
+            res.json({msg:`Categoria actualizada correctamente`, tipo:3})
         }
     })
 }
 
 function categoriesIdCategoryDelete(req, res) {
     // busco todos los productos que tengan la catedoria
-    Producto.find({categoria:req.params.idCategoria}).exec( (err, productos) => {
-        if(!err && productos){
-            // borro todos los productos de la categoria a eliminar
-            for(let producto of productos){
-                Baja.remove({producto: producto._id}).exec( err => {
-                    if(err) console.log(err)
-                })
-                RegistroDeMovimiento.remove({producto:producto._id}).exec( err => {
-                    if(err) console.log(err)
-                })
-                Consumo.remove({producto:producto._id}).exec( err => {
-                    if(err) console.log(err)
-                })
-                Almacen.remove({producto:producto._id}).exec( err => {
-                    if(err) console.log(err)
-                })
-                Producto.findOneAndRemove({_id:producto._id}).exec( err => {
-                    if(err) console.log(err)
-                })
-            }
-        }else{ // si paso un error
-            if(err) console.log(err) // imprimo el error
+    ProductoModel.find({categoria:req.params.idCategoria}).exec( (error, productos) => {
+        if(error){ // si paso un error
+            console.log(`Error al borrar categoria: ${error}`)
             res.redirect("/categories")
+        }else{  // si no hubo error
+            // borro en cascada todos lo que contenia esa categoria
+            productos.forEach( producto => {
+                // borro el historial de bajas de ese producto
+                BajaModel.remove({producto: producto._id}).exec( error => { if(error) console.log(error) })
+                // borro los movimientos de ese producto
+                MovimientoModel.remove({producto:producto._id}).exec( error => { if(error) console.log(error) })
+                // borro los almacenes de ese producto
+                AlmacenModel.remove({producto:producto._id}).exec( error => { if(error) console.log(error) })
+                // borro el producto
+                ProductoModel.findByIdAndRemove(producto._id).exec( error => { if(error) console.log(error) })
+            })
         }
     })
     // por ultimo borro la categoria
-    Categoria.findOneAndRemove({_id: req.params.idCategoria}).exec( err => {
-        if(err) console.log(err)
-        res.redirect("/categories")
+    CategoriaModel.findByIdAndRemove(req.params.idCategoria).exec( error => {
+        (error) ? console.log(`Error al borrar categoria: ${error}`) : res.redirect("/categories")
     })
 }
 
