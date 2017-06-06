@@ -26,22 +26,22 @@ block contenido
                 if usuario.permisos < 2
                   for alm in almacen
                     tr.odd.gradeX
-                      td #{alm.nombreProducto}
+                      td #{alm.producto.nombre}
                       td #{alm.codigo}
-                      td #{alm.nombreCategoria}
+                      td #{alm.categoria.nombre}
                       if alm.cantidadAlmacen > alm.minimo
-                        td(name=""+alm.idAlmacen) #{alm.cantidadAlmacen}
+                        td(name=""+alm._id) #{alm.cantidadAlmacen}
                       else
-                        td(name=""+alm.idAlmacen style="color:red" title="Pocos productos") #{alm.cantidadAlmacen}
+                        td(name=""+alm._id, style="color:red", title="Pocos productos") #{alm.cantidadAlmacen}
                       td
-                        form(id=""+alm.idAlmacen,style="display:inline" action="/almacen/"+alm.idAlmacen+"?_method=PUT",method="POST" onsubmit="return false")
+                        form(id=""+alm._id, style="display:inline", action="/almacen/"+alm._id+"?_method=PUT",method="POST" onsubmit="return false")
                           input.form-control(id=""+alm.codigo,type="number" name="cantidad" min="0" max="10000" value="0" required)
                           b &nbsp &nbsp &nbsp
-                          button(type="submit/image", alt="text", name="button1", class="btn btn-primary btn-circle "+alm.idAlmacen+" "+alm.codigo+" "+alm.minimo ,onclick="return false")
+                          button(type="submit/image", alt="text", name="button1", class="btn btn-primary btn-circle "+alm._id+" "+alm.codigo+" "+alm.minimo ,onclick="return false")
                             i.fa.fa-plus(title="Agregar")
                           if !alm.esBasico
                             b &nbsp &nbsp &nbsp
-                            button(type="submit/image", alt="text", name="button2", class="btn btn-danger btn-circle "+alm.idAlmacen+" "+alm.codigo+" "+alm.minimo ,onclick="return false")
+                            button(type="submit/image", alt="text", name="button2", class="btn btn-danger btn-circle "+alm._idA+" "+alm.codigo+" "+alm.minimo ,onclick="return false")
                               i.fa.fa-minus(title="Pasar a consumo")
                           else
                             b &nbsp &nbsp &nbsp
@@ -50,14 +50,14 @@ block contenido
                 else
                   for alm in almacen
                     tr.odd.gradeX
-                      td #{alm.nombreProducto}
+                      td #{alm.producto.nombre}
                       td #{alm.codigo}
-                      td #{alm.nombreCategoria}
+                      td #{alm.categoria.nombre}
                       if alm.cantidadAlmacen > alm.minimo
                         td #{alm.cantidadAlmacen}
                       else
                         td(style="color:red" title="Pocos productos")  #{alm.cantidadAlmacen}
-                      td #{alm.plaza}
+                      td #{alm.sucursal.plaza}
             // /.panel-body
         // /.panel
       // /.col-lg-12

@@ -20,6 +20,10 @@ const mongoose = require("mongoose"),
               type: Schema.Types.ObjectId,
               ref:"Producto"
           },
+          categoria:{
+              type: Schema.Types.ObjectId,
+              ref:"Categoria"
+          },
           cantidad: {
               type: Number,
               require: true,
