@@ -3,103 +3,82 @@
  */
 'use strict'
 
-const Baja = require("../models/baja")
+const AlmacenModel = require('../models/almacen'),
+      BajaModel = require("../models/baja")
 
 function consumosGet(req, res) {
     let usuario = req.session.user
-    if( usuario.permisos === 2){ // si es administrador general
-        // busca los productos en consumo de todas las sucursales
-        Consumo.find({ })
-            .populate("producto sucursal")
-            .exec( (err,consumos) => {
 
-                if(!err && consumos){ // si no hay error
-                    // le mandas los productos del almacen
-                    res.render("./consumos/manager",{consumos, usuario})
-                }else{ // si hubo error
-                    console.log(err)
-                    res.redirect("/almacen")
-                }
+    if(usuario.permisos === 2){
+        // busca los pruductos del almacen donde sea de la sucursal del usuario
+        AlmacenModel.find({},{cantidadAlmacen:0})
+            .populate('producto', 'nombre')  // obtengo el nombre del producto
+            .populate('sucursal', 'plaza') // obtengo la plaza de la sucursal
+            .populate('categoria', 'nombre') // obtengo el nombre de la categoria
+            .exec( (error, almacen) => {
+                // si hubo error imprime el error, sino renderisa la vista
+                (error) ? console.log(`Error al obtener el almacen: ${error}`) : res.render("./almacen/manager",{ almacen, usuario })
             })
-    }else{ // si es administrador de sucursal o recepcionista
-        // busca los pruductos en consumo donde sean de la sucursal del usuario
-        Consumo.find({ sucursal:usuario.sucursal })
-            .populate("producto sucursal")
-            .exec( (err, consumos) => {
-
-                if(!err && consumos){ // si no hubo error
-                    // le mandas los productos del almacen
-                    res.render("./consumos/manager",{consumos, usuario })
-                }else{ // si hubo error
-                    console.log(err)
-                    res.redirect("/almacen")
-                }
+    }else{
+        // busca los pruductos del almacen donde sea de la sucursal del usuario
+        AlmacenModel.find({sucursal: usuario.sucursal},{cantidadAlmacen:0,sucursal:0})
+            .populate('producto', 'nombre')  // obtengo el nombre del producto
+            .populate('categoria', 'nombre') // obtengo el nombre de la categoria
+            .exec( (error, almacen) => {
+                // si hubo error imprime el error, sino renderisa la vista
+                (error) ? console.log(`Error al obtener el almacen: ${error}`) : res.render("./almacen/manager",{ almacen, usuario })
             })
     }
 }
 
 function consumosIdConsumoPut(req, res) {
-    // si no mandaron cambios, redirecciona a consumo
-    if(parseInt(req.body.cantidad) === 0){
-        res.send("")
-    }else{
-        let usuario = req.session.user,
-            baja = null
-        // busca el producto que cambiaron
-        Consumo.findById(req.params.idConsumo).exec( (err, productoCon) => {
-            if(!err && productoCon){ // si no hay error y el producto existe
-                // si no hay productos, se acaba y regresa
-                if(productoCon.cantidad === 0 ){
+    // obtenemos la cantidad
+    let cantidad = parseInt(req.body.cantidad),
+        usuario = req.session.user,
+        idAlmacen = req.params.idConsumo
+
+    // obtengo el almacen
+    AlmacenModel.findById(idAlmacen,{_id:0,cantidadConsumo:1,producto:1,categoria:1}).exec((error, almacen) => {
+        if(error){ // si hubo error
+            console.log(`Error al obtener el almacen: ${error}`)
+            res.send("")
+        } else if(almacen.cantidadConsumo === 0){ // si no hay nada en consumo
+            res.send("")
+        } else { // si no hubo error
+            // genero los cambios
+            let verificar = (cantidad >= almacen.cantidadConsumo),
+                almacenUpdate = {
+                    cantidadConsumo: (verificar) ? (0) : (almacen.cantidadConsumo - cantidad)
+                }
+            // guardo los cambios
+            AlmacenModel.findByIdAndUpdate(idAlmacen, almacenUpdate).exec(error => {
+                if(error){
+                    console.log(`Error al actualizar el almacen: ${error}`)
                     res.send("")
-                    return;
-                }
-                res.locals.productoConUpdate = productoCon
-                // si el numero que pusieron es mayor que el que tenian, entonces quedan 0 productos
-                if( parseInt(req.body.cantidad) > res.locals.productoConUpdate.cantidad ){
-                    // genera la baja
-                    // creo la fecha
-                    let fecha = new Date()
-                    fecha.setHours(fecha.getHours()-7)
-                    baja = new Baja({
+                } else {
+                    // creo el movimiento
+                    let baja = new BajaModel({
                         sucursal: usuario.sucursal,
                         usuario: usuario._id,
-                        cantidad: res.locals.productoConUpdate.cantidad,
-                        producto: productoCon.producto,
-                        fecha
+                        producto: almacen.producto,
+                        categoria: almacen.categoria,
+                        cantidad: (verificar) ? (almacen.cantidadConsumo) : (cantidad)
                     })
-                    res.locals.productoConUpdate.cantidad = 0
-                    // guarda al producto en la base de datos
-                }else{ // si no, solamente se resta la cantidad que mando
-                    // genera el registro
-                    // creo la fecha
-                    let fecha = new Date()
-                    fecha.setHours(fecha.getHours()-7)
-                    baja = new Baja({
-                        sucursal: usuario.sucursal,
-                        usuario: usuario._id,
-                        cantidad: parseInt(req.body.cantidad),
-                        producto: productoCon.producto,
-                        fecha
+                    // guardo el movimiento que ocurrio
+                    baja.save( error => {
+                        if(error) { // si hubo error
+                            console.log(`Error al crear el movimiento: ${error}`)
+                            res.send("")
+                        }else { // si no hubo
+                            // mando la nueva cantidad del almacen
+                            (verificar) ? ( res.send('0') ) : ( res.send(`${almacenUpdate.cantidadConsumo}`))
+                        }
                     })
-                    // se le resta la cantidad
-                    res.locals.productoConUpdate.cantidad -= parseInt(req.body.cantidad)
                 }
-                // actualiza el producto en consumo
-                res.locals.productoConUpdate.save( err => {
-                    if(err) console.log(err)
-                })
-                // guarda la baja
-                baja.save().then( baj => {
-                    res.send(""+res.locals.productoConUpdate.cantidad)
-                }, err => { // si ocurre un error lo imprime
-                    console.log(err)
-                })
-            }else{ // si hubo un error
-                console.log(err)
-                res.redirect("/consumos")
-            }
-        })
-    }
+            })
+        }
+    })
+
 }
 
 module.exports = {

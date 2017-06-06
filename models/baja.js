@@ -15,6 +15,10 @@ const mongoose = require("mongoose"),
               type: Schema.Types.ObjectId,
               ref:"Producto"
           },
+          categoria:{
+              type: Schema.Types.ObjectId,
+              ref:"Categoria"
+          },
           tecnica:{
               type: Schema.Types.ObjectId,
               ref:"Tecnica"
