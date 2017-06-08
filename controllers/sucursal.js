@@ -39,7 +39,7 @@ function sucursalesNewPost(req, res) {
         } else {
             res.json({ msg:"Se guardo la sucursal correctamente", tipo:3})
             // genero los almacenes
-            // pendiente
+            generarAlmacenes(nuevaSucursal)
         }
     })
 }
@@ -93,6 +93,29 @@ function sucursalesIdSucursalDelete(req, res) {
     SucursalModel.findByIdAndRemove(sucursal).exec( error => {
         if(error) console.log(error)
         res.redirect("/sucursales")
+    })
+}
+
+function generarAlmacenes(nuevaSucursal) {
+    // busco todos los productos registrados
+    ProductModel.find({},{categoria:1}).exec( (error, productos) => {
+        (error) ? (
+            console.log(`Error al obtener los ids de los productos: ${error}`)
+        ) : (
+            productos.forEach(producto => generarAlmacen(nuevaSucursal._id, producto))
+        )
+    })
+}
+
+function generarAlmacen(sucursal, producto) {
+    // genero un almacen, con la sucursal y el producto dado
+    let nuevoAlmacen = new AlmacenModel({
+        producto: producto._id,
+        categoria: producto.categoria,
+        sucursal
+    })
+    nuevoAlmacen.save( error => {
+        if(error) console.log(`Error al crear el almacen: ${error}`)
     })
 }
 
