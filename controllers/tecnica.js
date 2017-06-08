@@ -137,7 +137,8 @@ function tecnicasIdTecnicaPut(req, res) {
     }else{ // si es administrador de sucursal
         let tecnica = {
             nombre: body.name,
-            apellido: body.last_name
+            apellido: body.last_name,
+            sucursal: usuario.sucursal
         }
         // actualiza a la tecnica
         updateTecnica(res, idTecnica, tecnica)
@@ -146,12 +147,13 @@ function tecnicasIdTecnicaPut(req, res) {
 
 function createTecnica(res, tecnica) {
     // guarda la tecnica en la base de datos
-    tecnica.save().then( (error, nuevaTecnica) => {
+    tecnica.save( (error, nuevaTecnica) => {
         if(error){
             Utilidad.printError(res, {msg:`Error al guardar la tecnica`, tipo:0})
         }else{
-            res.redirect('/tecnicas')
             // generar basicos
+            generarBasicosEnUso(nuevaTecnica)
+            res.redirect('/tecnicas')
         }
     })
 }
@@ -164,6 +166,32 @@ function updateTecnica(res, idTecnica, tecnica) {
         }else{ // si no hubo error
             res.redirect('/tecnicas')
         }
+    })
+}
+
+function generarBasicosEnUso(tecnica){
+     // busco todos los productos basicos
+    ProductModel.find({esBasico:true},{_id:1}).exec( (error, productosBasicos) => {
+        if(error){ // si hubo un error
+            console.log(`Error al obtener los productos basicos: ${error}`)
+        } else { // si no hubo error
+            // genero un basico en uso pro cada producto basico existente
+            productosBasicos.forEach(productoBasico => generarBasicoEnUso(tecnica.sucursal, tecnica._id, productoBasico._id))
+        }
+    })
+}
+
+function generarBasicoEnUso(sucursal, tecnica, producto) {
+    // creo el basico
+    let basico = new BasicoModel({
+        sucursal,
+        tecnica,
+        producto,
+        enUso: false
+    })
+    // guardo el basico
+    basico.save( error => {
+        if(error) console.log(`Error al crear basico en uso: ${error}`)
     })
 }
 
