@@ -53,11 +53,14 @@ function productsNewPost(req, res) {
                 esbasico: req.body.basico === 'Si',
                 categoria: categoria._id
             })
-            producto.save( error => {
+            producto.save( (error, nuevoProducto) => {
                 if(error){
                     Utilidad.printError(res, {msg:`Error al guardar el producto: ${error}`, tipo: 1})
                 }else{
                     // generar almacenes
+                    generarAlmacenes(nuevoProducto)
+                    // si el producto es basico, se generan los basicos en uso para las tecnicas
+                    if(nuevoProducto.esbasico) generarBasicosEnUso(nuevoProducto)
                     // si es basico, generar basicos en uso
                     res.json({msg:`Producto guardado correctamente`, tipo: 3})
                 }
@@ -205,6 +208,55 @@ function excelPost(req, res) {
                 })
             }
         })
+    })
+}
+
+function generarAlmacenes(producto) {
+    // cuando se crea un producto, ese producto se registra en el almacen de cada sucursal
+    // agregar el producto a las sucursales
+    SucursalModel.find({},{_id:1}).exec((error, sucursales) => {
+        if(error){ // si hubo error
+            console.log(`Error al obtener el id de las sucursales: ${error}`)
+            return
+        }
+        // genero un ciclo para generar el almacen de ese producto en cada sucursal
+        sucursales.forEach(sucursal => generalAlmacen(sucursal._id, producto))
+    })
+}
+
+function generalAlmacen(sucursal, producto) {
+    // genera el almacen para la sucursal y el producto
+    let nuevoAlmacen = new AlmacenModel({
+        producto: producto._id,
+        categoria: producto.categoria,
+        sucursal
+    })
+    nuevoAlmacen.save( error => {
+        if(error) console.log(`Error al crear el almacen: ${error}`)
+    })
+}
+
+function generarBasicosEnUso(producto) {
+    // obtengo el id de las tecnicas
+    TecnicaModel.find({},{_id:1,sucursal:1}).exec((error, tecnicas) => {
+        if(error){ // si hubo error
+            console.log(`Error al obtener las tecnicas: ${error}`)
+        } else { // si no hubo error
+            tecnicas.forEach(tecnica => generarBasicoEnUso(tecnica, producto._id))
+        }
+    })
+}
+
+function generarBasicoEnUso(tecnica, producto) {
+    let basico = new BajaModel({
+        sucursal: tecnica.sucursal,
+        tecnica: tecnica._id,
+        producto,
+        enUso: false
+    })
+    // guardo el basico en uso
+    basico.save( error => {
+        if(error) console.log(`Error al crear el basico en uso: ${error}`)
     })
 }
 
