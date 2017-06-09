@@ -82,6 +82,7 @@ function productsIdProductoGet(req, res) {
                     console.log(`Error al obtener el producto: ${error}`)
                     res.redirect("/products")
                 }else{ // si hubo un error
+                    req.session.productoUpdate = productoUpdate
                     res.render("./products/update",{categorias, productoUpdate})
                 }
             })
@@ -109,6 +110,9 @@ function productsIdProductoPut(req, res) {
                 if(error){
                     Utilidad.printError(res, {msg:`Error al actualizar el producto: ${error}`, tipo:1})
                 }else{
+                    if(productoUp.esbasico && !req.session.productoUpdate.esBasico) generarBasicosEnUso(productoUp)
+                    // restablesco el productoUpdate
+                    req.session.productoUpdate = null
                     // generar los basicos, si el producto es un basico y antes no era
                     res.json({msg:`Producto actualizado correctamente`, tipo:3})
                 }

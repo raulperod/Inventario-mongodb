@@ -6,23 +6,23 @@ const express = require("express"),
       methodOverride = require("method-override"),
       config = require('./config'),
       // controlador del inicio
-      IndexController = require('./app_server/controllers/index'),
+      IndexController = require('./controllers/index'),
       // middlewares
-      session_active = require('./app_server/middleware/session_active'),
-      session_active_sucursal = require('./app_server/middleware/session_active_sucursal'),
-      session_admin = require('./app_server/middleware/session_admin'),
-      session_general_admin = require('./app_server/middleware/session_general_admin'),
+      session_active = require('./middleware/session_active'),
+      session_active_sucursal = require('./middleware/session_active_sucursal'),
+      session_admin = require('./middleware/session_admin'),
+      session_general_admin = require('./middleware/session_general_admin'),
       // rutes
-      router_almacen = require('./app_server/routes/routes_almacen'),
-      router_consumo = require('./app_server/routes/routes_consumo'),
-      router_basico = require('./app_server/routes/routes_basico'),
-      router_user = require('./app_server/routes/routes_user'),
-      router_tecnica = require('./app_server/routes/routes_tecnica'),
-      router_historial = require('./app_server/routes/routes_historial'),
-      router_sucursal = require('./app_server/routes/routes_sucursal'),
-      router_category = require('./app_server/routes/routes_category'),
-      router_product = require('./app_server/routes/routes_product'),
-      mongo = require('./app_server/models/connection'), // inicia la coneccion con mongodb
+      router_almacen = require('./routes/routes_almacen'),
+      router_consumo = require('./routes/routes_consumo'),
+      router_basico = require('./routes/routes_basico'),
+      router_user = require('./routes/routes_user'),
+      router_tecnica = require('./routes/routes_tecnica'),
+      router_historial = require('./routes/routes_historial'),
+      router_sucursal = require('./routes/routes_sucursal'),
+      router_category = require('./routes/routes_category'),
+      router_product = require('./routes/routes_product'),
+      mongo = require('./models/connection'), // inicia la coneccion con mongodb
       app = express()
 
 // configuraciones de express
@@ -38,7 +38,7 @@ app
       expires: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000) // 1 año de session
     }))
     .set("view engine","pug")
-    .set('views', './app_server/views')
+    .set('views', './views')
 // rutas de la raiz
 app
     .get("/", IndexController.indexGet )

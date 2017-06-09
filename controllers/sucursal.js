@@ -6,6 +6,7 @@
 const SucursalModel = require("../models/sucursal"),
       UsuarioModel = require("../models/usuario"),
       AlmacenModel = require("../models/almacen"),
+      ProductModel = require('../models/producto'),
       MovimientoModel = require("../models/movimiento"),
       BajaModel = require("../models/baja"),
       Utilidad = require('../ayuda/utilidad')

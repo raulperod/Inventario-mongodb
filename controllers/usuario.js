@@ -82,11 +82,11 @@ function usersIdUsuarioGet(req, res) {
                 console.log(`Error al obtener las sucursales: ${error}`)
                 res.redirect("/users")
             }else{ // si no hubo error
-                getUser(req.params.idUsuario, { usuario, sucursal })
+                getUser(res, req.params.idUsuario, { usuario, sucursales })
             }
         })
     }else{ // si es administrador de sucursal
-        getUser(req.params.idUsuario, { usuario })
+        getUser(res, req.params.idUsuario, { usuario })
     }
 }
 
@@ -95,29 +95,49 @@ function usersIdUsuarioPut(req ,res) {
         body = req.body,
         idUsuario = req.params.idUsuario
     if(usuario.permisos === 1){ // si es administrador de sucursal
-        updateUser(idUsuario, body, usuario.sucursal, res)
+        // creo al usuario actualizado
+        let usuarioUpdate = {
+            nombre: body.name,
+            apellido: body.last_name,
+            username: body.username,
+            password: body.password,
+            status: body.status,
+            sucursal: usuario.sucursal
+        }
+        updateUser(res, idUsuario, usuarioUpdate)
     }else{ // si es administrador general
         // obtengo el id de la sucursal
         SucursalModel.findOne({plaza: body.plaza},{_id:1}).exec((error, sucursal) => {
             if(error){
                 Utilidad.printError(res, {msg:`Error al obtener la sucursal: ${error}`, tipo:0})
             }else{
-                updateUser(idUsuario, body, sucursal._id, res)
+                // creo al usuario actualizado
+                let usuarioUpdate = {
+                    nombre: body.name,
+                    apellido: body.last_name,
+                    username: body.username,
+                    password: body.password,
+                    status: body.status,
+                    sucursal: sucursal._id,
+                    permisos: body.permisos === "Administrador"
+                }
+                updateUser(res, idUsuario, usuarioUpdate )
             }
         })
     }
 }
 
-function createUser(body, res, usuario, sucursal, permisos) {
+function createUser(body, res, sucursal, permisos) {
     // creas al nuevo usuario
     let nuevoUsuario = new UsuarioModel({
-        nombre: body.nombre,
-        apellido: body.apellido,
+        nombre: body.name,
+        apellido: body.last_name,
         username: body.username,
         password: body.password,
         sucursal,
         permisos
     })
+    console.log(nuevoUsuario)
     // guardas al nuevo usuario
     nuevoUsuario.save( error => {
         if(error){
@@ -128,7 +148,7 @@ function createUser(body, res, usuario, sucursal, permisos) {
     })
 }
 
-function getUser(idUsuario, datos) {
+function getUser(res, idUsuario, datos) {
     // busco al usuario a editar
     UsuarioModel.findById(idUsuario).exec( (error, usuarioUpdate) => {
         if(error){ // si hubo error
@@ -141,17 +161,9 @@ function getUser(idUsuario, datos) {
     })
 }
 
-function updateUser(idUsuario, body, sucursal, res) {
-    // creo al usuario actualizado
-    let usuarioUpdate = {
-        nombre: body.nombre,
-        apellido: body.apellido,
-        username: body.username,
-        password: body.password,
-        status: body.status,
-        sucursal
-    }
-    UsuarioModel.findByIdAndUpdate(idUsuario, usuarioUpdate).exec( error => {
+function updateUser(res, idUsuario, usuario) {
+    // actualizo el usuario
+    UsuarioModel.findByIdAndUpdate(idUsuario, usuario).exec( error => {
         if(error){
             Utilidad.printError(res, {msg:`Error al actualizar el usuario: ${error}`, tipo:1})
         }else{
