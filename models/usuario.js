@@ -8,7 +8,6 @@ const mongoose = require("mongoose"),
               require: true,
               maxlength: [20,"Username muy grande"],
               unique: true,
-              lowercase: true,
               trim: true
           },
           password: {

@@ -101,7 +101,7 @@ function usersIdUsuarioPut(req ,res) {
             apellido: body.last_name,
             username: body.username,
             password: body.password,
-            status: body.status,
+            status: body.status === "Activo",
             sucursal: usuario.sucursal
         }
         updateUser(res, idUsuario, usuarioUpdate)
@@ -117,7 +117,7 @@ function usersIdUsuarioPut(req ,res) {
                     apellido: body.last_name,
                     username: body.username,
                     password: body.password,
-                    status: body.status,
+                    status: body.status === "Activo",
                     sucursal: sucursal._id,
                     permisos: body.permisos === "Administrador"
                 }

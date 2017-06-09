@@ -27,7 +27,7 @@ block contenido
                   for alm in almacen
                     tr.odd.gradeX
                       td #{alm.producto.nombre}
-                      td #{alm.codigo}
+                      td #{alm.producto.codigo}
                       td #{alm.categoria.nombre}
                       if alm.cantidadAlmacen > alm.minimo
                         td(name=""+alm._id) #{alm.cantidadAlmacen}
@@ -51,7 +51,7 @@ block contenido
                   for alm in almacen
                     tr.odd.gradeX
                       td #{alm.producto.nombre}
-                      td #{alm.codigo}
+                      td #{alm.producto.codigo}
                       td #{alm.categoria.nombre}
                       if alm.cantidadAlmacen > alm.minimo
                         td #{alm.cantidadAlmacen}

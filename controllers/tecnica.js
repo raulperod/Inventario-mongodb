@@ -5,6 +5,7 @@
 
 const TecnicaModel = require("../models/tecnica"),
       SucursalModel = require("../models/sucursal"),
+      ProductModel = require("../models/producto"),
       Utilidad = require('../ayuda/utilidad')
 
 function tecnicasGet(req, res) {

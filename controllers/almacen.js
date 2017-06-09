@@ -12,7 +12,7 @@ function almacenGet(req, res) {
     if(usuario.permisos === 2){
         // busca los pruductos del almacen donde sea de la sucursal del usuario
         AlmacenModel.find({},{cantidadConsumo:0})
-            .populate('producto', 'nombre')  // obtengo el nombre del producto
+            .populate('producto', 'nombre codigo')  // obtengo el nombre del producto
             .populate('sucursal', 'plaza') // obtengo la plaza de la sucursal
             .populate('categoria', 'nombre') // obtengo el nombre de la categoria
             .exec( (error, almacen) => {
@@ -22,7 +22,7 @@ function almacenGet(req, res) {
     }else{
         // busca los pruductos del almacen donde sea de la sucursal del usuario
         AlmacenModel.find({sucursal: usuario.sucursal},{cantidadConsumo:0,sucursal:0})
-            .populate('producto', 'nombre')  // obtengo el nombre del producto
+            .populate('producto', 'nombre codigo')  // obtengo el nombre del producto
             .populate('categoria', 'nombre') // obtengo el nombre de la categoria
             .exec( (error, almacen) => {
                 // si hubo error imprime el error, sino renderisa la vista
