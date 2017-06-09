@@ -5,6 +5,8 @@
 
 const AlmacenModel = require("../models/almacen"),
       MovimientoModel = require("../models/movimiento"),
+      TecnicaModel = require('../models/tecnica'),
+      ProductModel = require('../models/producto'),
       BajaModel = require("../models/baja"),
       BasicoModel = require("../models/basico"),
       Utilidad = require('../ayuda/utilidad')
@@ -12,7 +14,7 @@ const AlmacenModel = require("../models/almacen"),
 function basicosGet(req, res) {
     let usuario = req.session.user
     // busco las tecnicas de la sucursal del usuario
-    Tecnica.find({ sucursal: usuario.sucursal }).exec( (error, tecnicas) => {
+    TecnicaModel.find({ sucursal: usuario.sucursal }).exec( (error, tecnicas) => {
         if(error){ // si no hubo error y existen tecnicas
             console.log(`Error al obtener las tecnicas: ${error}`)
             res.redirect("/tecnicas/new")
@@ -20,7 +22,7 @@ function basicosGet(req, res) {
             // salvo las tecnicas
             req.session.tecnicas = tecnicas
             // busca los productos basicos
-            Producto.find({ esBasico: true }, { nombre:1,categoria:1 }).exec( (error, productos) => {
+            ProductModel.find({ esBasico: true }, { nombre:1,categoria:1 }).exec( (error, productos) => {
                 if(error){ // si hubo error
                     console.log(`Error al obtener los basicos: ${error}`)
                     res.redirect("/producto/new")

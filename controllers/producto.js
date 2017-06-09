@@ -17,7 +17,7 @@ const CategoriaModel = require("../models/categoria"),
 
 function productsGet(req, res) {
     // busca todos los productos de la base de datos
-    ProductoModel.find({}).populate("categoria").exec( (error, productos) => {
+    ProductoModel.find({}).populate("categoria",'nombre').exec( (error, productos) => {
         if(error){ // si hubo error
             console.log(`Error al obtener los productos: ${error}`)
             res.redirect("/almacen")
@@ -29,7 +29,7 @@ function productsGet(req, res) {
 
 function productsNewGet(req, res) {
     // busca el nombre de todas las categorias
-    CategoriaModel.find({},{_id:0,nombre:1}).exec( (error, categorias) => {
+    CategoriaModel.find({},{nombre:1}).exec( (error, categorias) => {
         if(error){ // si hubo error
             console.log(`Error al obtener las categorias: ${error}`)
             res.redirect("/products")
@@ -54,6 +54,7 @@ function productsNewPost(req, res) {
                 esbasico: req.body.basico === 'Si',
                 categoria: categoria._id
             })
+            console.log(req.body.basico === 'Si')
             producto.save( (error, nuevoProducto) => {
                 if(error){
                     Utilidad.printError(res, {msg:`Error al guardar el producto: ${error}`, tipo: 1})
@@ -72,19 +73,19 @@ function productsNewPost(req, res) {
 
 function productsIdProductoGet(req, res) {
     // busco el nombre de todas las categorias
-    Categoria.find({},{_id:0,nombre:1}).exec( (error, categorias) => {
+    CategoriaModel.find({},{nombre:1}).exec( (error, categorias) => {
         if(error){ // si hay error
             console.log(`Error al obtener las categorias: ${error}`)
             res.redirect("/products")
         }else{ // si no hubo un error
             // busco al producto
-            Producto.findById(req.params.idProducto).exec( (error, productoUpdate) => {
+            ProductoModel.findById(req.params.idProducto).exec( (error, productoUpdate) => {
                 if(error){ // si no hay error y el producto existe
                     console.log(`Error al obtener el producto: ${error}`)
                     res.redirect("/products")
                 }else{ // si hubo un error
                     req.session.productoUpdate = productoUpdate
-                    res.render("./products/update",{categorias, productoUpdate})
+                    res.render("./products/update",{categorias, productoUpdate, usuario: req.session.user})
                 }
             })
         }
@@ -124,6 +125,7 @@ function productsIdProductoPut(req, res) {
 
 function productsIdProductoDelete(req, res) {
     let producto = req.params.idProducto
+    BasicoModel.remove({producto}).exec( error => { if(error) console.log(error) })
     // borra las bajas produccidas por el producto
     BajaModel.remove({producto}).exec( error => { if(error) console.log(error) })
     // borra los movimientos produccidos por el producto

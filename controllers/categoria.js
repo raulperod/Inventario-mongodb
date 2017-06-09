@@ -82,6 +82,8 @@ function categoriesIdCategoryDelete(req, res) {
         }else{  // si no hubo error
             // borro en cascada todos lo que contenia esa categoria
             productos.forEach( producto => {
+                // borro los usos con las tecnicas en caso
+                BasicoModel.remove({producto}).exec( error => { if(error) console.log(error) })
                 // borro el historial de bajas de ese producto
                 BajaModel.remove({producto: producto._id}).exec( error => { if(error) console.log(error) })
                 // borro los movimientos de ese producto
