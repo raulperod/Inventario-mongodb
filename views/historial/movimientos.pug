@@ -34,7 +34,11 @@ block contenido
                         td Agrego producto
 
                       td #{movimiento.usuario.nombre} #{movimiento.usuario.apellido}
-                      td Sin tecnica
+
+                      if movimiento.tecnica
+                        td #{movimiento.tecnica.nombre} #{movimiento.tecnica.apellido}
+                      else
+                        td Sin Tecnica
 
                       if movimiento.fecha.getMonth() < 10
                         - var month = "0"+movimiento.fecha.getMonth()
@@ -75,7 +79,12 @@ block contenido
                         td Agrego producto
 
                       td #{movimiento.usuario.nombre} #{movimiento.usuario.apellido}
-                      td Sin tecnica
+
+                      if movimiento.tecnica
+                        td #{movimiento.tecnica.nombre} #{movimiento.tecnica.apellido}
+                      else
+                        td Sin Tecnica
+
                       td #{movimiento.sucursal.plaza}
 
                       if movimiento.fecha.getMonth() < 10

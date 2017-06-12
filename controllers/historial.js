@@ -17,12 +17,12 @@ function historialMovimientosGet(req, res) {
             .populate("usuario", 'nombre apellido')
             .populate("producto", 'nombre')
             .populate("tecnica", 'nombre apellido')
-            .exec( (err, movimientos) => {
-                if(!err && movimientos){ // si no hay error y hay movimientos
-                    res.render("./historial/movimientos",{movimientos, usuario})
-                }else{ // si hubo error
-                    if(err) console.log(err)
+            .exec( (error, movimientos) => {
+                if(error){ // si no hay error y hay movimientos
+                    console.log(`Error al obtener los movimientos: ${error}`)
                     res.redirect("/almacen")
+                }else{ // si hubo error
+                    res.render("./historial/movimientos",{movimientos, usuario})
                 }
             })
     }else{ // si es administrador general
@@ -32,12 +32,12 @@ function historialMovimientosGet(req, res) {
             .populate("producto", 'nombre')
             .populate("tecnica", 'nombre apellido')
             .populate("sucursal", 'plaza')
-            .exec( (err, movimientos) => {
-                if(!err && movimientos){ // si no hubo error y hay movimientos
-                    res.render("./historial/movimientos",{movimientos, usuario })
-                }else{ // si hubo error
-                    if(err) console.log(err)
+            .exec( (error, movimientos) => {
+                if(error){ // si no hay error y hay movimientos
+                    console.log(`Error al obtener los movimientos: ${error}`)
                     res.redirect("/almacen")
+                }else{ // si hubo error
+                    res.render("./historial/movimientos",{movimientos, usuario})
                 }
             })
     }
@@ -47,24 +47,33 @@ function historialBajasGet(req, res) {
     let usuario = req.session.user
     if( usuario.permisos === 1){ // si es administrador de sucursal
         // busca las bajas de la sucursal
-        BajaModel.find({sucursal: usuario.sucursal}).populate("usuario producto tecnica").exec( (err, bajas) => {
-            if(!err && bajas){ // si no hubo error y hay bajas
-                res.render("./historial/bajas",{bajas, usuario})
-            }else{ // si hubo un error
-                if(err) console.log(err)
-                res.redirect("/almacen")
-            }
-        })
+        BajaModel.find({sucursal: usuario.sucursal},{_id:0,sucursal:0})
+            .populate("usuario", 'nombre apellido')
+            .populate("producto", 'nombre')
+            .populate("tecnica", 'nombre apellido')
+            .exec( (error, bajas) => {
+                if(error){ // si no hubo error y hay bajas
+                    console.log(`Error al obtener las bajas: ${err}`)
+                    res.redirect("/almacen")
+                }else{ // si hubo un error
+                    res.render("./historial/bajas",{bajas, usuario})
+                }
+            })
     }else{ // si es administrador general
         // busca todas las bajas de las sucursales
-        BajaModel.find({}).populate("usuario producto sucursal tecnica").exec( (err, bajas) => {
-            if(!err && bajas){ // si no hay error y existen bajas
-                res.render("./historial/bajas",{bajas, usuario})
-            }else{ // si hubo un error
-                if(err) console.log(err)
-                res.redirect("/almacen")
-            }
-        })
+        BajaModel.find({},{_id:0})
+            .populate("usuario", 'nombre apellido')
+            .populate("producto", 'nombre')
+            .populate("tecnica", 'nombre apellido')
+            .populate("sucursal", 'plaza')
+            .exec( (error, bajas) => {
+                if(error){ // si no hubo error y hay bajas
+                    console.log(`Error al obtener las bajas: ${err}`)
+                    res.redirect("/almacen")
+                }else{ // si hubo un error
+                    res.render("./historial/bajas",{bajas, usuario})
+                }
+            })
     }
 }
 
