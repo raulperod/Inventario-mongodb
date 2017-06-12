@@ -26,14 +26,14 @@ block contenido
                 if usuario.permisos === 1
                   for movimiento in movimientos
                     tr.odd.gradeX
-                      td #{movimiento.nombreProducto}
+                      td #{movimiento.producto.nombre}
                       td #{movimiento.cantidad}
                       if movimiento.tipo === 0
                         td Paso a consumo
                       else
                         td Agrego producto
 
-                      td #{movimiento.nombreUsuario}
+                      td #{movimiento.usuario.nombre} #{movimiento.usuario.apellido}
                       td Sin tecnica
 
                       if movimiento.fecha.getMonth() < 10
@@ -63,55 +63,20 @@ block contenido
                              
                       td #{movimiento.fecha.getFullYear()}/#{month}/#{day} #{hour}:#{minute}:#{second}
 
-                  for asignacion in asignaciones
-                    tr.odd.gradeX
-                      td #{asignacion.nombreProducto}
-                      td 1
-                      td Paso a consumo
-                      td #{asignacion.nombreUsuario}
-                      td #{asignacion.nombreTecnica}
-
-                      if asignacion.fecha.getMonth() < 10
-                        - var month = "0"+asignacion.fecha.getMonth()
-                      else
-                        - var month = asignacion.fecha.getMonth()
-
-                      if asignacion.fecha.getDate() < 10
-                        - var day = "0"+asignacion.fecha.getDate()
-                      else
-                        - var day = asignacion.fecha.getDate()
-
-                      if asignacion.fecha.getHours() < 10
-                        - var hour = "0"+asignacion.fecha.getHours()
-                      else
-                        - var hour = asignacion.fecha.getHours()
-
-                      if asignacion.fecha.getMinutes() < 10
-                        - var minute = "0"+ asignacion.fecha.getMinutes()
-                      else
-                        - var minute =  asignacion.fecha.getMinutes()
-
-                      if asignacion.fecha.getSeconds() < 10
-                        - var second = "0"+asignacion.fecha.getSeconds()
-                      else
-                        - var second = asignacion.fecha.getSeconds()
-
-                      td #{asignacion.fecha.getFullYear()}/#{month}/#{day} #{hour}:#{minute}:#{second}
-
                 else
 
                   for movimiento in movimientos
                     tr.odd.gradeX
-                      td #{movimiento.nombreProducto}
+                      td #{movimiento.producto.nombre}
                       td #{movimiento.cantidad}
                       if movimiento.tipo === 0
                         td Paso a consumo
                       else
                         td Agrego producto
 
-                      td #{movimiento.nombreUsuario}
+                      td #{movimiento.usuario.nombre} #{movimiento.usuario.apellido}
                       td Sin tecnica
-                      td #{movimiento.plaza}
+                      td #{movimiento.sucursal.plaza}
 
                       if movimiento.fecha.getMonth() < 10
                         - var month = "0"+movimiento.fecha.getMonth()
@@ -140,82 +105,42 @@ block contenido
 
                       td #{movimiento.fecha.getFullYear()}/#{month}/#{day} #{hour}:#{minute}:#{second}
 
-                  for asignacion in asignaciones
-                    tr.odd.gradeX
-                      td #{asignacion.nombreProducto}
-                      td 1
-                      td Paso a consumo
-                      td #{asignacion.nombreUsuario}
-                      td #{asignacion.nombreTecnica}
-                      td #{asignacion.plaza}
-
-                      if asignacion.fecha.getMonth() < 10
-                        - var month = "0"+asignacion.fecha.getMonth()
-                      else
-                        - var month = asignacion.fecha.getMonth()
-
-                      if asignacion.fecha.getDate() < 10
-                        - var day = "0"+asignacion.fecha.getDate()
-                      else
-                        - var day = asignacion.fecha.getDate()
-
-                      if asignacion.fecha.getHours() < 10
-                        - var hour = "0"+asignacion.fecha.getHours()
-                      else
-                        - var hour = asignacion.fecha.getHours()
-
-                      if asignacion.fecha.getMinutes() < 10
-                        - var minute = "0"+ asignacion.fecha.getMinutes()
-                      else
-                        - var minute =  asignacion.fecha.getMinutes()
-
-                      if asignacion.fecha.getSeconds() < 10
-                        - var second = "0"+asignacion.fecha.getSeconds()
-                      else
-                        - var second = asignacion.fecha.getSeconds()
-
-                      td #{asignacion.fecha.getFullYear()}/#{month}/#{day} #{hour}:#{minute}:#{second}
-        // /.panel
-      // /.col-lg-12
-    // /.row
-    // jQuery
-    
-    script(src='/public/vendor/jquery/jquery.min.js')
-    // Bootstrap Core JavaScript
-    script(src='/public/vendor/bootstrap/js/bootstrap.min.js')
-    // Metis Menu Plugin JavaScript
-    script(src='/public/vendor/metisMenu/metisMenu.min.js')
-    // DataTables JavaScript
-    script(src='/public/vendor/datatables/js/jquery.dataTables.min.js')
-    script(src='/public/vendor/datatables-plugins/dataTables.bootstrap.min.js')
-    script(src='/public/vendor/datatables-responsive/dataTables.responsive.js')
-    // Custom Theme JavaScript
-    script(src='/public/dist/js/sb-admin-2.js')
-    // Page-Level Demo Scripts - Tables - Use for reference
-    if usuario.permisos === 2
-      script.
-        $(document).ready(function() {
-          $('#dataTables-example').DataTable({
-            responsive: true,
-            "order": [[ 6, "desc" ]]
-          });
-        });
-
-    else
-      
-      script.
-        $(document).ready(function() {
-          $('#dataTables-example').DataTable({
-            responsive: true,
-            "order": [[ 5, "desc" ]]
-          });
-        });
-    script(src="/public/excel/js/xlsx.core.min.js")
-    script(src="/public/excel/js/FileSaver.min.js")
-    script(src="/public/excel/js/tableexport.min.js")
+  script(src='/public/vendor/jquery/jquery.min.js')
+  // Bootstrap Core JavaScript
+  script(src='/public/vendor/bootstrap/js/bootstrap.min.js')
+  // Metis Menu Plugin JavaScript
+  script(src='/public/vendor/metisMenu/metisMenu.min.js')
+  // DataTables JavaScript
+  script(src='/public/vendor/datatables/js/jquery.dataTables.min.js')
+  script(src='/public/vendor/datatables-plugins/dataTables.bootstrap.min.js')
+  script(src='/public/vendor/datatables-responsive/dataTables.responsive.js')
+  // Custom Theme JavaScript
+  script(src='/public/dist/js/sb-admin-2.js')
+  // Page-Level Demo Scripts - Tables - Use for reference
+  if usuario.permisos === 2
     script.
-      $("table").tableExport({
-          formats: ["xlsx"],
-          bootstrap: true,
-          fileName: "Movimientos"
+      $(document).ready(function() {
+        $('#dataTables-example').DataTable({
+          responsive: true,
+          "order": [[ 6, "desc" ]]
+        });
       });
+
+  else
+
+    script.
+      $(document).ready(function() {
+        $('#dataTables-example').DataTable({
+          responsive: true,
+          "order": [[ 5, "desc" ]]
+        });
+      });
+  script(src="/public/excel/js/xlsx.core.min.js")
+  script(src="/public/excel/js/FileSaver.min.js")
+  script(src="/public/excel/js/tableexport.min.js")
+  script.
+    $("table").tableExport({
+        formats: ["xlsx"],
+        bootstrap: true,
+        fileName: "Movimientos"
+    });
