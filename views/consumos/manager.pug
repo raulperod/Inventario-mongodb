@@ -32,7 +32,7 @@ block contenido
                       td #{consumo.categoria.nombre}
                       td(name=""+consumo._id) #{consumo.cantidadConsumo}
                       td
-                        if !consumo.esBasico
+                        if !consumo.producto.esBasico
                           form(id=""+consumo._id,style="display:inline" action="/consumos/"+consumo._id+"?_method=PUT",method="POST",  onsubmit="return false")
                             input.form-control(id=""+consumo.producto.codigo,type="number" name="cantidad" min="0" max="10000" value="0" required )
                             b &nbsp &nbsp &nbsp

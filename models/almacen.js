@@ -28,6 +28,6 @@ const mongoose = require("mongoose"),
               default: 0
           }
       }),
-      Almacen = mongoose.model("Almacen",almacen_schema,"Almacenes")
+      Almacen = mongoose.model("Almacen",almacen_schema,"almacenes")
 
 module.exports = Almacen

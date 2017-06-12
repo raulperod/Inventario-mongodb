@@ -9,6 +9,7 @@ const SucursalModel = require("../models/sucursal"),
       ProductModel = require('../models/producto'),
       MovimientoModel = require("../models/movimiento"),
       BajaModel = require("../models/baja"),
+      BasicoModel = require('../models/basico'),
       Utilidad = require('../ayuda/utilidad')
 
 function sucursalesGet(req, res) {
@@ -89,6 +90,9 @@ function sucursalesIdSucursalDelete(req, res) {
         if(error) console.log(error)
     })
     AlmacenModel.remove({sucursal}).exec( error => {
+        if(error) console.log(error)
+    })
+    BasicoModel.remove({sucursal}).exec( error => {
         if(error) console.log(error)
     })
     SucursalModel.findByIdAndRemove(sucursal).exec( error => {

@@ -30,9 +30,9 @@ block contenido
                     td #{producto.codigo}
                     td #{producto.minimo}
                     if producto.esBasico
-                      td Si #{producto.esBasico}
+                      td Si
                     else
-                      td No #{producto.esBasico}
+                      td No
                     td
                       a(class="btn btn btn-primary btn-circle" href="/products/"+producto._id)
                         i.fa.fa-list(title="Editar")

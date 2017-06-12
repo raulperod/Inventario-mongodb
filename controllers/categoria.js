@@ -8,6 +8,7 @@ const CategoriaModel = require("../models/categoria"),
       AlmacenModel = require("../models/almacen"),
       MovimientoModel = require("../models/movimiento"),
       BajaModel = require("../models/baja"),
+      BasicoModel = require('../models/basico'),
       Utilidad = require("../ayuda/utilidad")
 
 function categoriesGet(req, res) {

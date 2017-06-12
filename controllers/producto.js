@@ -9,6 +9,8 @@ const CategoriaModel = require("../models/categoria"),
       MovimientoModel = require("../models/movimiento"),
       BajaModel = require("../models/baja"),
       SucursalModel = require('../models/sucursal'),
+      BasicoModel = require('../models/basico'),
+      TecnicaModel = require('../models/tecnica'),
       fs = require('fs'),
       xlstojson = require("xls-to-json-lc"),
       xlsxtojson = require("xlsx-to-json-lc"),
@@ -51,10 +53,9 @@ function productsNewPost(req, res) {
                 descripcion: req.body.descripcion,
                 codigo: req.body.codigo,
                 minimo: req.body.minimo,
-                esbasico: req.body.basico === 'Si',
+                esBasico: req.body.basico === 'Si',
                 categoria: categoria._id
             })
-            console.log(req.body.basico === 'Si')
             producto.save( (error, nuevoProducto) => {
                 if(error){
                     Utilidad.printError(res, {msg:`Error al guardar el producto: ${error}`, tipo: 1})
@@ -62,7 +63,7 @@ function productsNewPost(req, res) {
                     // generar almacenes
                     generarAlmacenes(nuevoProducto)
                     // si el producto es basico, se generan los basicos en uso para las tecnicas
-                    if(nuevoProducto.esbasico) generarBasicosEnUso(nuevoProducto)
+                    if(nuevoProducto.esBasico) generarBasicosEnUso(nuevoProducto)
                     // si es basico, generar basicos en uso
                     res.json({msg:`Producto guardado correctamente`, tipo: 3})
                 }
@@ -104,7 +105,7 @@ function productsIdProductoPut(req, res) {
                 descripcion: req.body.descripcion,
                 codigo: req.body.codigo,
                 minimo: req.body.minimo,
-                esbasico: req.body.basico === 'Si',
+                esBasico: req.body.basico === 'Si',
                 categoria: categoria._id
             }
             // guardo el producto actualizado
@@ -112,7 +113,7 @@ function productsIdProductoPut(req, res) {
                 if(error){
                     Utilidad.printError(res, {msg:`Error al actualizar el producto: ${error}`, tipo:1})
                 }else{
-                    if(productoUp.esbasico && !req.session.productoUpdate.esBasico) generarBasicosEnUso(productoUp)
+                    if(productoUpdate.esBasico && !req.session.productoUpdate.esBasico) generarBasicosEnUso(productoUp)
                     // restablesco el productoUpdate
                     req.session.productoUpdate = null
                     // generar los basicos, si el producto es un basico y antes no era
@@ -255,7 +256,7 @@ function generarBasicosEnUso(producto) {
 }
 
 function generarBasicoEnUso(tecnica, producto) {
-    let basico = new BajaModel({
+    let basico = new BasicoModel({
         sucursal: tecnica.sucursal,
         tecnica: tecnica._id,
         producto,
