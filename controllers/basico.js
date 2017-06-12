@@ -14,7 +14,7 @@ const AlmacenModel = require("../models/almacen"),
 function basicosGet(req, res) {
     let usuario = req.session.user
     // busco las tecnicas de la sucursal del usuario
-    TecnicaModel.find({ sucursal: usuario.sucursal }).exec( (error, tecnicas) => {
+    TecnicaModel.find({ sucursal: usuario.sucursal },{sucursal:0}).exec( (error, tecnicas) => {
         if(error){ // si no hubo error y existen tecnicas
             console.log(`Error al obtener las tecnicas: ${error}`)
             res.redirect("/tecnicas/new")
@@ -43,21 +43,20 @@ function basicosPut(req, res) {
         tecnicas = req.session.tecnicas,
         productos = req.session.productos,
         tecnica =  obtenerIdTecnica(nombreTecnica,tecnicas),
-        producto = obtenerIdBasico(nombreProducto, productos),
+        producto = obtenerIdsBasico(nombreProducto, productos),
         basico = null,
         promesa = new Promise((resolve, reject) =>{
             // busco el basico en uso
-            BasicoModel.findOne({sucursal,tecnica,producto: producto._id},{esBasico:1}).exec((error, basico) => {
+            BasicoModel.findOne({sucursal,tecnica,producto: producto._id},{enUso:1}).exec((error, basico) => {
                 return(error) ? reject({msg:`Error al obtener el basico en uso: ${error}`, tipo: 0}) : resolve(basico)
             })
         })
-
     promesa
         .then(resolved => {
             return new Promise((resolve, reject) =>{
                 basico = resolved
                 if(basico.enUso){
-                    reject({msg:`Error el producto esta en uso`, tipo: 11})
+                    return reject({msg:`Error el producto esta en uso`, tipo: 11})
                 }else{
                     // busco en el almacen si hay productos disponibles
                     AlmacenModel.findOne({sucursal,producto: producto._id},{cantidadAlmacen:1,cantidadConsumo:1}).exec((error, almacen) => {
@@ -73,11 +72,11 @@ function basicosPut(req, res) {
                     almacen.cantidadAlmacen--
                     almacen.cantidadConsumo++
                     AlmacenModel.findByIdAndUpdate(almacen._id, almacen).exec( error => {
-                        (error) ? reject({msg:`Error al actualizar el almacen: ${error}`,tipo: 0}) : resolve(true)
+                        return(error) ? reject({msg:`Error al actualizar el almacen: ${error}`,tipo: 0}) : resolve(true)
                     })
                 } else {
                     // se manda una alerta de que no hay productos
-                    reject({msg:`Error no hay productos disponibles`, tipo: 12})
+                    return reject({msg:`Error no hay productos disponibles`, tipo: 12})
                 }
             })
         })
@@ -123,11 +122,11 @@ function basicosDelete(req, res) {
         tecnicas = req.session.tecnicas,
         productos = req.session.productos,
         tecnica =  obtenerIdTecnica(nombreTecnica,tecnicas),
-        producto = obtenerIdBasico(nombreProducto, productos),
+        producto = obtenerIdsBasico(nombreProducto, productos),
         basico = null,
         promesa = new Promise((resolve, reject) =>{
             // busco el basico en uso
-            BasicoModel.findOne({sucursal,tecnica,producto: producto._id},{esBasico:1}).exec((error, basico) => {
+            BasicoModel.findOne({sucursal,tecnica,producto: producto._id},{enUso:1}).exec((error, basico) => {
                 return(error) ? reject({msg:`Error al obtener el basico en uso: ${error}`, tipo: 0}) : resolve(basico)
             })
         })
@@ -191,11 +190,27 @@ function basicosDelete(req, res) {
 }
 
 function obtenerIdTecnica(nombre, tecnicas) {
-    tecnicas.forEach(tecnica => { if(tecnica.nombre+' '+tecnica.apellido === nombre) return tecnica._id })
+    let longitud = tecnicas.length,
+        id = null
+    for( let i = 0 ; i < longitud ; i++){
+        if(tecnicas[i].nombre+' '+tecnicas[i].apellido === nombre) {
+            id = tecnicas[i]._id
+            break
+        }
+    }
+    return id
 }
 
-function obtenerIdBasico(nombre, productos) {
-    productos.forEach(producto => { if(producto.nombre === nombre) return [producto.id, producto.categoria]})
+function obtenerIdsBasico(nombre, productos) {
+    let longitud = productos.length,
+        producto = null
+    for( let i = 0 ; i < longitud ; i++){
+        if(productos[i].nombre === nombre) {
+            producto = { _id: productos[i]._id, categoria: productos[i].categoria}
+            break
+        }
+    }
+    return producto
 }
 
 module.exports = {
