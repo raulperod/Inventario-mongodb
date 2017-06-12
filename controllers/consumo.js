@@ -12,7 +12,7 @@ function consumosGet(req, res) {
     if(usuario.permisos === 2){
         // busca los pruductos del almacen donde sea de la sucursal del usuario
         AlmacenModel.find({},{cantidadAlmacen:0})
-            .populate('producto', 'nombre codigo esBasico')  // obtengo el nombre del producto
+            .populate('producto', 'nombre codigo')  // obtengo el nombre del producto
             .populate('sucursal', 'plaza') // obtengo la plaza de la sucursal
             .populate('categoria', 'nombre') // obtengo el nombre de la categoria
             .exec( (error, consumos) => {
@@ -22,7 +22,7 @@ function consumosGet(req, res) {
     }else{
         // busca los pruductos del almacen donde sea de la sucursal del usuario
         AlmacenModel.find({sucursal: usuario.sucursal},{cantidadAlmacen:0,sucursal:0})
-            .populate('producto', 'nombre esBasico')  // obtengo el nombre del producto
+            .populate('producto', 'nombre codigo esBasico')  // obtengo el nombre del producto
             .populate('categoria', 'nombre') // obtengo el nombre de la categoria
             .exec( (error, consumos) => {
                 // si hubo error imprime el error, sino renderisa la vista
@@ -36,7 +36,11 @@ function consumosIdConsumoPut(req, res) {
     let cantidad = parseInt(req.body.cantidad),
         usuario = req.session.user,
         idAlmacen = req.params.idConsumo
-
+    // compruebo que no hayan mandado 0
+    if( cantidad === 0){
+        res.send("")
+        return
+    }
     // obtengo el almacen
     AlmacenModel.findById(idAlmacen,{_id:0,cantidadConsumo:1,producto:1,categoria:1}).exec((error, almacen) => {
         if(error){ // si hubo error

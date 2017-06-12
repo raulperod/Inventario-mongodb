@@ -137,7 +137,6 @@ function createUser(body, res, sucursal, permisos) {
         sucursal,
         permisos
     })
-    console.log(nuevoUsuario)
     // guardas al nuevo usuario
     nuevoUsuario.save( error => {
         if(error){

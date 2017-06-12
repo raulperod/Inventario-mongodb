@@ -35,6 +35,11 @@ function almacenIdAlmacenAddPut(req, res) {
     let idAlmacen = req.params.idAlmacen,
         cantidadPlus = parseInt( req.body.cantidad ),
         usuario = req.session.user
+    // compruebo que no hayan mandado 0
+    if( cantidadPlus === 0){
+        res.send("")
+        return
+    }
     // busco el almacen a actualizar
     AlmacenModel.findById(idAlmacen,{_id:0,cantidadAlmacen:1,cantidadConsumo:1,producto:1,categoria:1}).exec((error, almacen) => {
         if(error){
@@ -63,7 +68,7 @@ function almacenIdAlmacenAddPut(req, res) {
                         console.log(`Error al guardar movimiento: ${error}`)
                         res.send("")
                     } else {
-                        res.send(almacenUpdate.cantidadAlmacen)
+                        res.send(`${almacenUpdate.cantidadAlmacen}`)
                     }
                 })
             }
@@ -75,16 +80,21 @@ function almacenIdAlmacenSubPut(req, res) {
     let idAlmacen = req.params.idAlmacen,
         cantidadSub = parseInt( req.body.cantidad ),
         usuario = req.session.user
+    // compruebo que no hayan mandado 0
+    if( cantidadSub === 0){
+        res.send("")
+        return
+    }
     // busco el almacen
-    AlmacenModel.findById(idAlmacen,{_id:0,cantidadAlmacen:1,producto:1,categoria:1}).exec((error, almacen) => {
+    AlmacenModel.findById(idAlmacen,{cantidadAlmacen:1,producto:1,categoria:1,cantidadConsumo:1}).exec((error, almacen) => {
         if(error){
             console.log(`Error al obtener el almacen: ${error}`)
             res.send("")
             return
         }
-        let verificar = (cantidadPlus >= almacen.cantidadAlmacen),
+        let verificar = (cantidadSub >= almacen.cantidadAlmacen),
             almacenUpdate = {
-                cantidadAlmacen: (verificar) ? 0 : almacen.cantidadAlmacen + cantidadSub,
+                cantidadAlmacen: (verificar) ? 0 : (almacen.cantidadAlmacen-cantidadSub),
                 cantidadConsumo: (verificar) ? (almacen.cantidadConsumo+almacen.cantidadAlmacen) : (almacen.cantidadConsumo+cantidadSub)
             }
         // guardo los cambios
@@ -108,7 +118,7 @@ function almacenIdAlmacenSubPut(req, res) {
                         res.send("")
                     } else {
                         // mando la nueva cantidad del almacen
-                        (verificar) ? ( res.send(0) ) : ( res.send(`${almacenUpdate.cantidadAlmacen}`))
+                        (verificar) ? ( res.send("0") ) : ( res.send(`${almacenUpdate.cantidadAlmacen}`))
                     }
                 })
             }

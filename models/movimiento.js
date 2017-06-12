@@ -42,6 +42,6 @@ const mongoose = require("mongoose"),
               default: Date.now
           }
       }),
-      RegistroDeMovimiento = mongoose.model("RegistroDeMovimiento",registro_schema)
+      RegistroDeMovimiento = mongoose.model("Movimiento",registro_schema)
 
 module.exports = RegistroDeMovimiento
