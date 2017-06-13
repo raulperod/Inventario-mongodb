@@ -7,7 +7,8 @@ const MovimientoModel = require("../models/movimiento"),
       BajaModel = require("../models/baja"),
       TecnicaModel = require("../models/tecnica"),
       ProductoModel = require("../models/producto"),
-      SucursalModel = require("../models/sucursal")
+      SucursalModel = require("../models/sucursal"),
+      BasicoModel = require('../models/basico')
 
 function historialMovimientosGet(req, res) {
     let usuario = req.session.user
@@ -78,9 +79,10 @@ function historialBajasGet(req, res) {
 }
 
 function historialSucursalGet(req, res) {
-    BasicoModel.getBasicos( (error, basicos) => {
+    // obtengo el nombre de los productos basicos
+    BasicoModel.find({esBasico:true},{nombre:1}).exec((error, basicos) => {
         (error) ? (
-            Utilidad.printError(res, {msg:`Error al obtener los productos basicos: ${error}` , tipo: 0})
+            console.log(`Error al obtener los productos basicos: ${error}`)
         ) : (
             res.render('./historial/sucursal', { basicos, usuario: req.session.user} )
         )
@@ -120,16 +122,17 @@ function historialSucursalBasicosPost(req, res) {
 }
 
 function historialGeneralGet(req, res) {
-    SucursalModel.getPlazasOfSucursales((error, sucursales) => {
+    SucursalModel.find({},{plaza:1}).exec((error, sucursales) => {
         if(error){
-            Utilidad.printError(res, {msg:`Error al obtener las sucursales: ${error}` , tipo: 0})
+            console.log(`Error al obtener las sucursales: ${error}`)
             return
         }
-        BasicoModel.getBasicos( (error, basicos) => {
+        // obtengo el nombre de los productos basicos
+        BasicoModel.find({esBasico:true},{nombre:1}).exec((error, basicos) => {
             (error) ? (
-                Utilidad.printError(res, {msg:`Error al obtener los productos basicos: ${error}` , tipo: 0})
+                console.log(`Error al obtener los productos basicos: ${error}`)
             ) : (
-                res.render('./historial/general', {basicos, sucursales, usuario: req.session.user} )
+                res.render('./historial/sucursal', { basicos, sucursales, usuario: req.session.user} )
             )
         })
     })
