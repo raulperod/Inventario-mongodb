@@ -95,10 +95,31 @@ function historialSucursalTopPost(req, res) {
         final = sumarDia( req.body.finalt ),
         idSucursal = req.session.user.idSucursal
 
-    EstadisticaModel.getTopTen(idSucursal, inicio, final, (error, topten) => {
-        if(!error){
-            res.send(topten)
+    BajaModel.aggregate([
+        // WHERE sucursal = idSucursal AND (fecha BETWEEN inicio AND final)
+        /*{
+            $match: {
+                $and: [
+                    {
+                        fecha: {
+                            $gt: inicio,
+                            $lt: final
+                        }
+                    },
+                    {
+                        sucursal: idSucursal
+                    }
+                ]
+            }
+        },*/
+        {
+            $group: {
+                _id: "$producto",
+                total: { $sum: "$cantidad" }
+            }
         }
+    ]).exec((error, resultado) => {
+        res.send(resultado)
     })
 }
 
@@ -109,16 +130,6 @@ function historialSucursalBasicosPost(req, res) {
         idSucursal = req.session.user.idSucursal,
         nombreProducto = req.body.basico
 
-    // obtener el id del producto a comparar
-    ProductoModel.getIdProductoAndIdCategoriaByName(nombreProducto,(error, producto) => {
-        if(!error){
-            EstadisticaModel.getComparacion(idSucursal, producto.idProducto, inicio, final, (error, comparacion) => {
-                if(!error){
-                    res.send(comparacion)
-                }
-            })
-        }
-    })
 }
 
 function historialGeneralGet(req, res) {
@@ -144,16 +155,7 @@ function historialGeneralTopPost(req, res) {
         final = sumarDia( req.body.finalt ),
         sucursal = req.body.sucursaltop
 
-    // busco la sucursal por el nombre de la plaza
-    SucursalModel.getIdSucursalByPlaza(sucursal, (error, idSucursal) => {
-        if(!error){
-            EstadisticaModel.getTopTen(idSucursal, inicio, final, (error, topten) => {
-                if(!error){
-                    res.send(topten)
-                }
-            })
-        }
-    })
+
 }
 
 function historialGeneralBasicosPost(req, res) {
@@ -163,20 +165,7 @@ function historialGeneralBasicosPost(req, res) {
         sucursal = req.body.sucursalbas,
         nombreProducto = req.body.basico
 
-    SucursalModel.getIdSucursalByPlaza(sucursal, (error, idSucursal) => {
-        if(!error){
-            // obtener el id del producto a comparar
-            ProductoModel.getIdProductoAndIdCategoriaByName(nombreProducto,(error, producto) => {
-                if(!error) {
-                    EstadisticaModel.getComparacion(idSucursal, producto.idProducto, inicio, final, (error, comparacion) => {
-                        if(!error){
-                            res.send(comparacion)
-                        }
-                    })
-                }
-            })
-        }
-    })
+
 }
 
 function sumarDia(fecha) {
