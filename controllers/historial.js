@@ -165,19 +165,48 @@ function historialGeneralTopPost(req, res) {
     // obtengo las fechas
     let inicio = req.body.iniciot,
         final = sumarDia( req.body.finalt ),
-        sucursal = req.body.sucursaltop
+        nombreSucursal = req.body.sucursaltop
 
-
+    SucursalModel.findOne({plaza:nombreSucursal},{_id:1}).exec((error, sucursal) => {
+        if(error){
+            console.log(`Error al obtener la sucursal: ${error}`)
+            res.send({})
+        }else{
+            BajaModel.find({sucursal:sucursal._id,fecha: { $gte: inicio, $lt: final}},{producto:1,cantidad:1})
+                .populate('producto',"nombre codigo")
+                .exec( (error, bajas) => {
+                    (error) ? res.send({}) : res.send(bajas)
+                })
+        }
+    })
 }
 
 function historialGeneralBasicosPost(req, res) {
     // obtengo las fechas
     let inicio = req.body.iniciob,
         final = sumarDia( req.body.finalb ),
-        sucursal = req.body.sucursalbas,
+        nombreSucursal = req.body.sucursalbas,
         nombreProducto = req.body.basico
 
-
+    SucursalModel.findOne({plaza:nombreSucursal},{_id:1}).exec((error, sucursal) => {
+        if(error){
+            console.log(`Error al obtener la sucursal: ${error}`)
+            res.send({})
+        }else{
+            ProductoModel.findOne({nombre:nombreProducto},{id:1}).exec((error, producto) => {
+                if(error){
+                    console.log(`Error al obtener el producto: ${error}`)
+                    res.send({})
+                }else{
+                    BajaBasicoModel.find({sucursal:sucursal._id,fecha: { $gte: inicio, $lt: final},producto:producto._id},{tecnica:1})
+                        .populate('tecnica','nombre apellido')
+                        .exec( (error, bajasBasicos) => {
+                            (error) ? res.send({}) : res.send(bajasBasicos)
+                        })
+                }
+            })
+        }
+    })
 }
 
 function sumarDia(fecha) {
