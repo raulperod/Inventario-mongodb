@@ -19,10 +19,6 @@ const mongoose = require("mongoose"),
               type: Schema.Types.ObjectId,
               ref:"Categoria"
           },
-          tecnica:{
-              type: Schema.Types.ObjectId,
-              ref:"Tecnica"
-          },
           cantidad: {
               type: Number,
               require: true,

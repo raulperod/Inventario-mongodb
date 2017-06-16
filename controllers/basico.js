@@ -7,7 +7,7 @@ const AlmacenModel = require("../models/almacen"),
       MovimientoModel = require("../models/movimiento"),
       TecnicaModel = require('../models/tecnica'),
       ProductModel = require('../models/producto'),
-      BajaModel = require("../models/baja"),
+      BajaBasicoModel = require("../models/bajaBasico"),
       BasicoModel = require("../models/basico"),
       Utilidad = require('../ayuda/utilidad')
 
@@ -158,13 +158,11 @@ function basicosDelete(req, res) {
         .then(resolved => {
             return new Promise((resolve, reject) => {
                 // se genera la baja
-                let baja = new BajaModel({
+                let baja = new BajaBasicoModel({
                     sucursal,
                     usuario: req.session.user._id,
                     tecnica,
-                    producto: producto._id,
-                    categoria: producto.categoria,
-                    cantidad: 1
+                    producto: producto._id
                 })
                 baja.save( error => {
                     return(error) ? ( reject({msg:`Error al realizar la baja: ${error}`,tipo: 0}) ) : ( resolve(true) )

@@ -95,32 +95,7 @@ function historialSucursalTopPost(req, res) {
         final = sumarDia( req.body.finalt ),
         idSucursal = req.session.user.idSucursal
 
-    BajaModel.aggregate([
-        // WHERE sucursal = idSucursal AND (fecha BETWEEN inicio AND final)
-        /*{
-            $match: {
-                $and: [
-                    {
-                        fecha: {
-                            $gt: inicio,
-                            $lt: final
-                        }
-                    },
-                    {
-                        sucursal: idSucursal
-                    }
-                ]
-            }
-        },*/
-        {
-            $group: {
-                _id: "$producto",
-                total: { $sum: "$cantidad" }
-            }
-        }
-    ]).exec((error, resultado) => {
-        res.send(resultado)
-    })
+
 }
 
 function historialSucursalBasicosPost(req, res) {
