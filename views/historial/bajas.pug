@@ -28,11 +28,7 @@ block contenido
                       td #{baja.producto.nombre}
                       td #{baja.cantidad}
                       td #{baja.usuario.nombre} #{baja.usuario.apellido}
-
-                      if baja.tecnica
-                        td #{baja.tecnica.nombre} #{baja.tecnica.apellido}
-                      else
-                        td Sin Tecnica
+                      td Sin Tecnica
                       
                       if baja.fecha.getMonth() < 10
                         - var month = "0"+baja.fecha.getMonth()          
@@ -61,6 +57,44 @@ block contenido
                              
                       td #{baja.fecha.getFullYear()}/#{month}/#{day} #{hour}:#{minute}:#{second}
 
+                  for bajaBasico in bajasBasicos
+                    tr.odd.gradeX
+                      td #{bajaBasico.producto.nombre}
+                      td 1
+                      td #{bajaBasico.usuario.nombre} #{bajaBasico.usuario.apellido}
+
+                      if bajaBasico.tecnica
+                        td #{bajaBasico.tecnica.nombre} #{bajaBasico.tecnica.apellido}
+                      else
+                        td Sin Tecnica
+
+                      if bajaBasico.fecha.getMonth() < 10
+                        - var month = "0"+bajaBasico.fecha.getMonth()
+                      else
+                        - var month = bajaBasico.fecha.getMonth()
+
+                      if bajaBasico.fecha.getDate() < 10
+                        - var day = "0"+bajaBasico.fecha.getDate()
+                      else
+                        - var day = bajaBasico.fecha.getDate()
+
+                      if bajaBasico.fecha.getHours() < 10
+                        - var hour = "0"+bajaBasico.fecha.getHours()
+                      else
+                        - var hour = bajaBasico.fecha.getHours()
+
+                      if bajaBasico.fecha.getMinutes() < 10
+                        - var minute = "0"+ bajaBasico.fecha.getMinutes()
+                      else
+                        - var minute =  bajaBasico.fecha.getMinutes()
+
+                      if bajaBasico.fecha.getSeconds() < 10
+                        - var second = "0"+bajaBasico.fecha.getSeconds()
+                      else
+                        - var second = bajaBasico.fecha.getSeconds()
+
+                      td #{bajaBasico.fecha.getFullYear()}/#{month}/#{day} #{hour}:#{minute}:#{second}
+
                 else
 
                   for baja in bajas
@@ -68,12 +102,7 @@ block contenido
                       td #{baja.producto.nombre}
                       td #{baja.cantidad}
                       td #{baja.usuario.nombre} #{baja.usuario.apellido}
-
-                      if baja.tecnica
-                        td #{baja.tecnica.nombre} #{baja.tecnica.apellido}
-                      else
-                        td Sin Tecnica
-
+                      td Sin Tecnica
                       td #{baja.sucursal.plaza}
 
                       if baja.fecha.getMonth() < 10
@@ -102,6 +131,46 @@ block contenido
                         - var second = baja.fecha.getSeconds()
 
                       td #{baja.fecha.getFullYear()}/#{month}/#{day} #{hour}:#{minute}:#{second}
+
+                  for bajaBasico in bajasBasicos
+                    tr.odd.gradeX
+                      td #{bajaBasico.producto.nombre}
+                      td 1
+                      td #{bajaBasico.usuario.nombre} #{bajaBasico.usuario.apellido}
+
+                      if bajaBasico.tecnica
+                        td #{bajaBasico.tecnica.nombre} #{bajaBasico.tecnica.apellido}
+                      else
+                        td Sin Tecnica
+
+                      td #{bajaBasico.sucursal.plaza}
+
+                      if bajaBasico.fecha.getMonth() < 10
+                        - var month = "0"+bajaBasico.fecha.getMonth()
+                      else
+                        - var month = bajaBasico.fecha.getMonth()
+
+                      if bajaBasico.fecha.getDate() < 10
+                        - var day = "0"+bajaBasico.fecha.getDate()
+                      else
+                        - var day = bajaBasico.fecha.getDate()
+
+                      if bajaBasico.fecha.getHours() < 10
+                        - var hour = "0"+bajaBasico.fecha.getHours()
+                      else
+                        - var hour = bajaBasico.fecha.getHours()
+
+                      if bajaBasico.fecha.getMinutes() < 10
+                        - var minute = "0"+ bajaBasico.fecha.getMinutes()
+                      else
+                        - var minute =  bajaBasico.fecha.getMinutes()
+
+                      if bajaBasico.fecha.getSeconds() < 10
+                        - var second = "0"+bajaBasico.fecha.getSeconds()
+                      else
+                        - var second = bajaBasico.fecha.getSeconds()
+
+                      td #{bajaBasico.fecha.getFullYear()}/#{month}/#{day} #{hour}:#{minute}:#{second}
 
   // jQuery
   script(src='/public/vendor/jquery/jquery.min.js')

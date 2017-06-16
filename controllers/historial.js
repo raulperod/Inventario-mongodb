@@ -5,6 +5,7 @@
 
 const MovimientoModel = require("../models/movimiento"),
       BajaModel = require("../models/baja"),
+      BajaBasicoModel = require("../models/bajaBasico"),
       TecnicaModel = require("../models/tecnica"),
       ProductoModel = require("../models/producto"),
       SucursalModel = require("../models/sucursal"),
@@ -47,32 +48,51 @@ function historialMovimientosGet(req, res) {
 function historialBajasGet(req, res) {
     let usuario = req.session.user
     if( usuario.permisos === 1){ // si es administrador de sucursal
-        // busca las bajas de la sucursal
         BajaModel.find({sucursal: usuario.sucursal},{_id:0,sucursal:0})
             .populate("usuario", 'nombre apellido')
             .populate("producto", 'nombre')
-            .populate("tecnica", 'nombre apellido')
             .exec( (error, bajas) => {
-                if(error){ // si no hubo error y hay bajas
+                if(error){
                     console.log(`Error al obtener las bajas: ${err}`)
                     res.redirect("/almacen")
-                }else{ // si hubo un error
-                    res.render("./historial/bajas",{bajas, usuario})
+                }else{
+                    BajaBasicoModel.find({sucursal: usuario.sucursal},{_id:0,sucursal:0})
+                        .populate("usuario", 'nombre apellido')
+                        .populate("producto", 'nombre')
+                        .populate("tecnica", 'nombre apellido')
+                        .exec( (error, bajasBasicos) => {
+                            if(error){
+                                console.log(`Error al obtener las bajas basicas: ${err}`)
+                                res.redirect("/almacen")
+                            }else{
+                                res.render("./historial/bajas",{bajas, bajasBasicos, usuario})
+                            }
+                        })
                 }
             })
     }else{ // si es administrador general
-        // busca todas las bajas de las sucursales
         BajaModel.find({},{_id:0})
             .populate("usuario", 'nombre apellido')
             .populate("producto", 'nombre')
-            .populate("tecnica", 'nombre apellido')
             .populate("sucursal", 'plaza')
             .exec( (error, bajas) => {
-                if(error){ // si no hubo error y hay bajas
+                if(error){
                     console.log(`Error al obtener las bajas: ${err}`)
                     res.redirect("/almacen")
-                }else{ // si hubo un error
-                    res.render("./historial/bajas",{bajas, usuario})
+                }else{
+                    BajaBasicoModel.find({},{_id:0})
+                        .populate("sucursal", 'plaza')
+                        .populate("usuario", 'nombre apellido')
+                        .populate("producto", 'nombre')
+                        .populate("tecnica", 'nombre apellido')
+                        .exec( (error, bajasBasicos) => {
+                            if(error){
+                                console.log(`Error al obtener las bajas basicas: ${err}`)
+                                res.redirect("/almacen")
+                            }else{
+                                res.render("./historial/bajas",{bajas, bajasBasicos, usuario})
+                            }
+                        })
                 }
             })
     }
