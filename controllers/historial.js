@@ -111,11 +111,15 @@ function historialSucursalGet(req, res) {
 
 function historialSucursalTopPost(req, res) {
     // obtengo las fechas
-    let inicio = req.body.iniciot,
-        final = sumarDia( req.body.finalt ),
-        idSucursal = req.session.user.idSucursal
+    let inicio = new Date(req.body.iniciot),
+        final = new Date(sumarDia( req.body.finalt )),
+        idSucursal = req.session.user.sucursal
 
-
+    BajaModel.find({sucursal:idSucursal,fecha: { $gte: inicio, $lt: final}},{producto:1,cantidad:1})
+        .populate('producto',"nombre codigo")
+        .exec( (error, bajas) => {
+            (error) ? res.send({}) : res.send(bajas)
+        })
 }
 
 function historialSucursalBasicosPost(req, res) {
@@ -124,6 +128,19 @@ function historialSucursalBasicosPost(req, res) {
         final = sumarDia( req.body.finalb ),
         idSucursal = req.session.user.idSucursal,
         nombreProducto = req.body.basico
+
+    ProductoModel.findOne({nombre:nombreProducto},{id:1}).exec((error, producto) => {
+        if(error){
+            console.log(`Error al obtener el producto: ${error}`)
+            res.send({})
+        }else{
+            BajaBasicoModel.find({sucursal:idSucursal,fecha: { $gte: inicio, $lt: final},producto:producto._id},{tecnica:1})
+                .populate('tecnica','nombre apellido')
+                .exec( (error, bajasBasicos) => {
+                    (error) ? res.send({}) : res.send(bajasBasicos)
+                })
+        }
+    })
 
 }
 
