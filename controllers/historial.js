@@ -8,8 +8,8 @@ const MovimientoModel = require("../models/movimiento"),
       BajaBasicoModel = require("../models/bajaBasico"),
       TecnicaModel = require("../models/tecnica"),
       ProductoModel = require("../models/producto"),
-      SucursalModel = require("../models/sucursal"),
-      BasicoModel = require('../models/basico')
+      SucursalModel = require("../models/sucursal")
+
 
 function historialMovimientosGet(req, res) {
     let usuario = req.session.user
@@ -100,7 +100,7 @@ function historialBajasGet(req, res) {
 
 function historialSucursalGet(req, res) {
     // obtengo el nombre de los productos basicos
-    BasicoModel.find({esBasico:true},{nombre:1}).exec((error, basicos) => {
+    ProductoModel.find({esBasico:true},{nombre:1}).exec((error, basicos) => {
         (error) ? (
             console.log(`Error al obtener los productos basicos: ${error}`)
         ) : (
@@ -126,7 +126,7 @@ function historialSucursalBasicosPost(req, res) {
     // obtengo las fechas
     let inicio = req.body.iniciob,
         final = sumarDia( req.body.finalb ),
-        idSucursal = req.session.user.idSucursal,
+        idSucursal = req.session.user.sucursal,
         nombreProducto = req.body.basico
 
     ProductoModel.findOne({nombre:nombreProducto},{id:1}).exec((error, producto) => {
@@ -151,7 +151,7 @@ function historialGeneralGet(req, res) {
             return
         }
         // obtengo el nombre de los productos basicos
-        BasicoModel.find({esBasico:true},{nombre:1}).exec((error, basicos) => {
+        ProductoModel.find({esBasico:true},{nombre:1}).exec((error, basicos) => {
             (error) ? (
                 console.log(`Error al obtener los productos basicos: ${error}`)
             ) : (
