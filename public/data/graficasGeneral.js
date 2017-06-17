@@ -12,7 +12,6 @@ var formularioTopTen,
 },
     grafica;//para la grafica// funcion que obtiene el nombre de los productos
 
-// funcion que agrega las nuevas filas a la tabla
 function agregarFilas(bajas){
     for(var i=0 ; bajas[i] && i<10 ; i++){
         var nombre = bajas[i].nombre;
@@ -20,7 +19,6 @@ function agregarFilas(bajas){
         $('#dataTables-example tr:last').after('<tr><td>'+nombre+'</td><td>'+cantidad+'</td></tr>');
     }
 }
-// elimina todas las filas de la tabla, menos la principal
 function eliminaFilas(){
     // Obtenemos el total de columnas (tr) del id "dataTables-example"
     var trs=$("#dataTables-example tr").length;
@@ -28,8 +26,7 @@ function eliminaFilas(){
         // Eliminamos la ultima columna
         $("#dataTables-example tr:last").remove();
     }
-};
-// dibuja la grafica de comparar basicos por tecnica inicial
+}
 function dibujar(data){
     google.charts.load('current', {packages: ['corechart', 'bar']});
     google.charts.setOnLoadCallback(drawChart);
@@ -46,7 +43,44 @@ function dibujar(data){
         grafica.draw(datos, options);
     }
 }
-// obtencion de los datos para el top ten
+function contarBajasTopten(data) {
+    var bajas = data,
+        topten = [];
+
+    while( bajas.length !== 0 ){
+        var producto = bajas[0].producto,
+            total = 0;
+        bajas = bajas.filter(b => {
+            if(b.producto.codigo === producto.codigo){
+                total += b.cantidad;
+                return false;
+            }
+            return true;
+
+        })
+        topten.push({ nombre:producto.nombre, cantidad:total});
+    }
+    return topten;
+}
+function contarBajasTecnicas(data) {
+    var bajas = data,
+        comparacion = [];
+
+    while( bajas.length !== 0 ){
+        var tecnica = bajas[0].tecnica,
+            total = 0;
+        bajas = bajas.filter(b => {
+            if(b.tecnica.nombre === tecnica.nombre && b.tecnica.apellido === tecnica.apellido){
+                total++;
+                return false;
+            }
+            return true;
+        })
+        comparacion.push({ nombre:tecnica.nombre+' '+tecnica.apellido, cantidad:total});
+    }
+    return comparacion;
+}
+
 function obtenerTopTen() {
     $.ajax({
         url: '/historial/generaltop',
@@ -56,7 +90,7 @@ function obtenerTopTen() {
             // top ten
             eliminaFilas(); // elimino las filas
             // si no he inicializado productos
-            agregarFilas(data);
+            agregarFilas(contarBajasTopten(data));
         }
     });
 }
@@ -68,8 +102,7 @@ function obtenerComparacion() {
         data: formularioComparacion.serialize(),
         success : function(data) {
             // top ten
-            console.log(data)
-            dibujar(data)
+            dibujar(contarBajasTecnicas(data))
         }
     });
 }
